@@ -25,7 +25,7 @@ var game = new Phaser.Game(config);
 function preload()
 {
     //this.load.setBaseURL('https://labs.phaser.io');
-    this.load.image('logo', 'assets/interface/BakeryStudiosLogo.png');
+    this.load.image('logo', 'resources/img/interface/BakeryStudiosLogo.png');
 }
 
 function create ()
