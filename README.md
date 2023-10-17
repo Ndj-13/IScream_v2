@@ -285,15 +285,21 @@ Lista de los elementos:
 
  Los personajes de **_I-Scream vol.2_** son seres animados que encarnan diferentes variedades de helados, cada uno con su propia personalidad única. Los diseños de los personajes se basan en conceptos cuidadosamente elaborados que reflejan su sabor y estilo, lo que aporta un toque distintivo a cada uno. Los jugadores pueden seleccionar a su personaje favorito antes de embarcarse en la aventura, lo que les permite disfrutar de diferentes habilidades y armas relacionadas con su elección.
 
-Primeros concepts de los personajes:
+![Primeros concepts de los personajes](/resources/img/readmeImgs/conceptsJeR_II.jpg)
+_Primeros concepts de los personajes_
 
-Primeros sprites de los personajes:
+![Primeros sprites de los personajes](/resources/img/readmeImgs/conceptsJeR.jpg)
+_Primeros sprites de los personajes_
 
 ### 5.3. Paleta de Colores
 
  La paleta de colores de **_I-Scream vol.2_** está compuesta por una gama de tonos brillantes y atractivos que recuerdan a los colores de los helados y postres. Los fondos y entornos se diseñan de manera que reflejen una sensación de diversión y alegría, mientras que los enemigos y obstáculos presentan colores que contrastan para destacar en la pantalla y proporcionar una experiencia visual estimulante.
 
-Paleta de colores:
+![Paleta de colores 1](/resources/img/readmeImgs/paletaJeR_I.jpg)
+_Paleta de colores 1_
+
+![Paleta de colores 2](/resources/img/readmeImgs/paletaJeR_II.jpg)
+_Paleta de colores 2_
 
 ### 5.4. Enemigos
 
