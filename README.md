@@ -93,13 +93,13 @@ En este apartado se irán introduciendo los cambios que se vayan efectuando en l
 
 ## 2.   Introducción
 
- Este es el documento de diseño de I-Scream vol.2, es un videojuego de supervivencia cooperativa de 2024 desarrollado por Bakery Studios y disponible para PC. Se trata de una nueva versión de su predecesor I-Scream de 2023, en la que de la misma forma, los jugadores se enfrentan a hordas de enemigos pero esta vez en desafiantes plataformas que pondrán a prueba sus habilidades.
+ Este es el documento de diseño de **_I-Scream vol.2_**, es un videojuego de supervivencia cooperativa de 2024 desarrollado por Bakery Studios y disponible para PC. Se trata de una nueva versión de su predecesor I-Scream de 2023, en la que de la misma forma, los jugadores se enfrentan a hordas de enemigos pero esta vez en desafiantes plataformas que pondrán a prueba sus habilidades.
 
-Este escrito tiene como objetivo principal plasmar los elementos que debe incluir  I-Scream vol.2 y servir como carta de presentación del juego.
+Este escrito tiene como objetivo principal plasmar los elementos que debe incluir  **_I-Scream vol.2_** y servir como carta de presentación del juego.
 
 ### 2.1.   Concepto del juego
 
- I-Scream vol.2 es un videojuego en el que los jugadores deberán lograr superar las diferentes hordas de enemigos para lograr la victoria.
+ **_I-Scream vol.2_** es un videojuego en el que los jugadores deberán lograr superar las diferentes hordas de enemigos para lograr la victoria.
  
 ### 2.2.   Características principales
 
@@ -107,25 +107,25 @@ El juego se basa en los siguientes pilares:
 
 - Mecánica sencilla y profunda: se trata de un sistema de juego con normas y reglas sencillas que el jugador reconozca y le permitan adaptarse rápidamente, pero que a la vez ofrece un sinfín de posibilidades de manera que deba demostrar su habilidad y destreza para enfrentarse a los enemigos con éxito.
 - Rejugabilidad: el desarrollo de este juego dicta un aumento del reto que satisface la necesidad de autosuperación del jugador debido a la oportunidad de mejorar eliminando enemigos de forma más rápida y al incremento de la dificultad en cada ronda con un mayor número de objetivos a los que abatir.
-- Ampliación: I-Scream vol.2, al no tener una narrativa cerrada y contar con un desarrollo de un motor todo lo independiente posible del contenido, podrá ser ampliable a nuevos personajes y escenarios.
+- Ampliación: **_I-Scream vol.2_**, al no tener una narrativa cerrada y contar con un desarrollo de un motor todo lo independiente posible del contenido, podrá ser ampliable a nuevos personajes y escenarios.
 
 ### 2.3.   Género
 
- I-Scream vol.2 combina el género de plataformas y con el “hack and slash”, también conocido como mata-mata, de manera que cogiendo la esencia del primero, que se caracteriza por tener que caminar, correr, saltar o escalar sobre una serie de plataformas, y la del segundo, que destaca por sus enfrentamientos de forma continua a enemigos para poder ganar, queda como resultado un videojuego en el que los jugadores deberán desplazarse por un escenario de plataformas para lograr esquivar y eliminar a las hordas de enemigos que tratarán de acabar con ellos en ese limitado espacio, para poder obtener la victoria.
+ **_I-Scream vol.2_** combina el género de plataformas y con el “hack and slash”, también conocido como mata-mata, de manera que cogiendo la esencia del primero, que se caracteriza por tener que caminar, correr, saltar o escalar sobre una serie de plataformas, y la del segundo, que destaca por sus enfrentamientos de forma continua a enemigos para poder ganar, queda como resultado un videojuego en el que los jugadores deberán desplazarse por un escenario de plataformas para lograr esquivar y eliminar a las hordas de enemigos que tratarán de acabar con ellos en ese limitado espacio, para poder obtener la victoria.
  
 ### 2.4.   Propósito y público objetivo
 
- El principal objetivo de I-Scream vol.2 es entretener al usuario con este divertido pero desafiante juego que le permitirá autosuperarse con el fin de derrotar a los enemigos y también disfrutar del modo multijugador para jugar en compañía. Además, su estilo cuidado y detallado pretende lograr una buena inmersión que dé como resultado un lugar en el que el jugador se sienta cómodo y al que quiera regresar.
+ El principal objetivo de **_I-Scream vol.2_** es entretener al usuario con este divertido pero desafiante juego que le permitirá autosuperarse con el fin de derrotar a los enemigos y también disfrutar del modo multijugador para jugar en compañía. Además, su estilo cuidado y detallado pretende lograr una buena inmersión que dé como resultado un lugar en el que el jugador se sienta cómodo y al que quiera regresar.
 
- En cuanto al público, I-Scream vol.2 está dirigido a jugadores de un amplio rango de edades a los que les gusten los desafíos de batalla, y que dispongan de un tiempo limitado, puesto que el sistema de partidas cortas permite poder jugar de forma espontánea.
+ En cuanto al público, **_I-Scream vol.2_** está dirigido a jugadores de un amplio rango de edades a los que les gusten los desafíos de batalla, y que dispongan de un tiempo limitado, puesto que el sistema de partidas cortas permite poder jugar de forma espontánea.
  
 ### 2.5.   Plataformas
 
- I-Scream vol.2 estará disponible únicamente para PC.
+ **_I-Scream vol.2_** estará disponible únicamente para PC.
  
 ### 2.6.   Jugabilidad
 
- I-Scream vol.2 consta de un escenario en el que el jugador se enfrentará a hordas de enemigos con un tiempo limitado, y para combatirlos contará con los siguientes elementos:
+ **_I-Scream vol.2_** consta de un escenario en el que el jugador se enfrentará a hordas de enemigos con un tiempo limitado, y para combatirlos contará con los siguientes elementos:
  
 - Movilidad: el jugador controla a un personaje con el que desplazarse por todo el escenario, incluyendo el salto entre plataformas.
 - Selección de personajes: el jugador contará con distintos personajes entre los que elegir para jugar con él.
@@ -133,7 +133,7 @@ El juego se basa en los siguientes pilares:
 - Objetos: a lo largo y ancho del escenario habrá distribuidos objetos que podrán servir de ayuda para cubrirse o incluso atacar a los enemigos.
   
 ### 2.7.   Estilo visual
-  I-Scream vol.2 tendrá un estilo sencillo pero detallado y cuidado que pueda ser apreciado por los jugadores para que les ayude a sentirse cómodos e inmersos en el juego. Se trata de un estilo de pixel art muy suave y agradable a la vista con colores vivos acordes con la acción que requiere el juego que creen un ambiente de batalla pero acogedor a la vez. En cuanto a la temática, consistirá en un mundo de gominolas y dulces en los que todo está hecho de los más deliciosos manjares, incluyendo a los propios personajes, creando así un juego de supervivencia diferente a los que acostumbramos a ver.
+  **_I-Scream vol.2_** tendrá un estilo sencillo pero detallado y cuidado que pueda ser apreciado por los jugadores para que les ayude a sentirse cómodos e inmersos en el juego. Se trata de un estilo de pixel art muy suave y agradable a la vista con colores vivos acordes con la acción que requiere el juego que creen un ambiente de batalla pero acogedor a la vez. En cuanto a la temática, consistirá en un mundo de gominolas y dulces en los que todo está hecho de los más deliciosos manjares, incluyendo a los propios personajes, creando así un juego de supervivencia diferente a los que acostumbramos a ver.
 
 
 ## 3.   Mecánicas
@@ -207,7 +207,7 @@ Personajes - NPCs - Mundo virtual. Colisiones para saber cual es el terreno cami
 
 ## 4. Interfaz
 
-En esta sección se describe detalladamente cada una de las pantallas que componen  I-Scream vol.2, junto con sus transiciones y la utilidad de cada elemento de la GUI. Se adjuntan a continuación bocetos que marcan las partes de cada pantalla que tendrá el juego. Son, como antes dicho, simples ideas de lo que más adelante los artistas desarrollarán, aplicando el estilo y la estética definidas.
+En esta sección se describe detalladamente cada una de las pantallas que componen  **_I-Scream vol.2_**, junto con sus transiciones y la utilidad de cada elemento de la GUI. Se adjuntan a continuación bocetos que marcan las partes de cada pantalla que tendrá el juego. Son, como antes dicho, simples ideas de lo que más adelante los artistas desarrollarán, aplicando el estilo y la estética definidas.
 
 ### 4.1. Diagrama de flujo
 
@@ -279,11 +279,11 @@ Lista de los elementos:
 
 ### 5.1. Estilo Visual
 
- I-Scream vol.2 presenta un estilo de arte en pixel art que rinde homenaje a la estética clásica de los videojuegos, creando una experiencia visual nostálgica para los jugadores. El juego se desarrolla en un mundo vibrante y colorido que combina elementos del género de plataformas con una temática de helados.
+ **_I-Scream vol.2_** presenta un estilo de arte en pixel art que rinde homenaje a la estética clásica de los videojuegos, creando una experiencia visual nostálgica para los jugadores. El juego se desarrolla en un mundo vibrante y colorido que combina elementos del género de plataformas con una temática de helados.
  
 ### 5.2. Personajes
 
- Los personajes de I-Scream vol.2 son seres animados que encarnan diferentes variedades de helados, cada uno con su propia personalidad única. Los diseños de los personajes se basan en conceptos cuidadosamente elaborados que reflejan su sabor y estilo, lo que aporta un toque distintivo a cada uno. Los jugadores pueden seleccionar a su personaje favorito antes de embarcarse en la aventura, lo que les permite disfrutar de diferentes habilidades y armas relacionadas con su elección.
+ Los personajes de **_I-Scream vol.2_** son seres animados que encarnan diferentes variedades de helados, cada uno con su propia personalidad única. Los diseños de los personajes se basan en conceptos cuidadosamente elaborados que reflejan su sabor y estilo, lo que aporta un toque distintivo a cada uno. Los jugadores pueden seleccionar a su personaje favorito antes de embarcarse en la aventura, lo que les permite disfrutar de diferentes habilidades y armas relacionadas con su elección.
 
 Primeros concepts de los personajes:
 
@@ -291,7 +291,7 @@ Primeros sprites de los personajes:
 
 ### 5.3. Paleta de Colores
 
- La paleta de colores de I-Scream vol.2 está compuesta por una gama de tonos brillantes y atractivos que recuerdan a los colores de los helados y postres. Los fondos y entornos se diseñan de manera que reflejen una sensación de diversión y alegría, mientras que los enemigos y obstáculos presentan colores que contrastan para destacar en la pantalla y proporcionar una experiencia visual estimulante.
+ La paleta de colores de **_I-Scream vol.2_** está compuesta por una gama de tonos brillantes y atractivos que recuerdan a los colores de los helados y postres. Los fondos y entornos se diseñan de manera que reflejen una sensación de diversión y alegría, mientras que los enemigos y obstáculos presentan colores que contrastan para destacar en la pantalla y proporcionar una experiencia visual estimulante.
 
 Paleta de colores:
 
@@ -309,9 +309,9 @@ Primeras animaciones del personaje:
 
 ### 5.6. Fondos y Escenarios
 
-Los fondos y escenarios de I-Scream vol.2 son una parte crucial de la experiencia de juego. Cada nivel está cuidadosamente diseñado para ofrecer una variedad de entornos que incluyen paisajes de postres, áreas heladas y escenarios temáticos relacionados con los sabores de los personajes. Los fondos están llenos de detalles y elementos interactivos que contribuyen a la inmersión del jugador.
+Los fondos y escenarios de **_I-Scream vol.2_** son una parte crucial de la experiencia de juego. Cada nivel está cuidadosamente diseñado para ofrecer una variedad de entornos que incluyen paisajes de postres, áreas heladas y escenarios temáticos relacionados con los sabores de los personajes. Los fondos están llenos de detalles y elementos interactivos que contribuyen a la inmersión del jugador.
 
 Imágenes de referencia para los escenarios:
 
-En resumen, el arte de I-Scream vol.2 combina elementos nostálgicos del píxel art con diseños creativos que representan la temática de helados de una manera única. Tanto los personajes como los enemigos están diseñados con atención al detalle, y la paleta de colores y animaciones contribuyen a la creación de un mundo visualmente atractivo y cautivador que complementa la jugabilidad del juego.
+En resumen, el arte de **_I-Scream vol.2_** combina elementos nostálgicos del píxel art con diseños creativos que representan la temática de helados de una manera única. Tanto los personajes como los enemigos están diseñados con atención al detalle, y la paleta de colores y animaciones contribuyen a la creación de un mundo visualmente atractivo y cautivador que complementa la jugabilidad del juego.
  
