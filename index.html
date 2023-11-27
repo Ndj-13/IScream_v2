@@ -10,22 +10,29 @@
                 margin: 0;
             }
         </style>
+
+        <link rel="stylesheet" media="all" href="src/css/stylesheet.css">
         
     </head>
 
-    <body>
-        <!--div id="container"></div-->
+    <body style="text-align: center">
+
+        <div id="introTextoP1">
+            <input id="namebar" name="player1T" class="nk-namebar-input" type="text" placeholder="Introduce your name...">
+            <!--input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Introduce your name..."-->
+            <span class="nk-namebar-indicator"></span>
+        </div>
         
         <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">
 
-            var PantallaCarga = new Phaser.Class({
+            var LoadScreen = new Phaser.Class({
                 Extends: Phaser.Scene,
 
                 initialize:
 
-                    function PantallaCarga(){
-                        Phaser.Scene.call(this, {key:'PantallaCarga'});
+                    function LoadScreen(){
+                        Phaser.Scene.call(this, {key:'LoadScreen'});
                     },
 
                 preload: function(){
@@ -56,7 +63,7 @@
                     this.helado.setScale(1.3);
   
                     this.time.delayedCall(2000, () => {
-                        this.scene.start('PantallaInicio');
+                        this.scene.start('HomeScreen');
                     });
                 },
                 update: function(){
@@ -64,22 +71,191 @@
                 }
             });
 
-            var PantallaInicio = new Phaser.Class({
+            var HomeScreen = new Phaser.Class({
                 Extends: Phaser.Scene,
 
                 initialize:
 
-                function PantallaInicio(){
-                    Phaser.Scene.call(this, {key:'PantallaInicio'});
+                function HomeScreen(){
+                    Phaser.Scene.call(this, {key:'HomeScreen'});
                 },
 
                 preload: function(){
                     this.load.image('background', 'resources/img/interface/pantallaInicio.png');
                     this.load.image('title', 'resources/img/interface/LogoI-ScreamFondoBlanco.png');
+                    this.load.spritesheet('playButton',
+                        'resources/img/interface/playbutton.png',
+                        { frameWidth: 64, frameHeight: 47 });
+                    this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
                 },
                 create: function(){
                     this.add.image(400, 300, 'background');
                     this.add.image(game.renderer.width/2, 200, 'title');
+
+
+                    this.playButton = this.add.sprite(400, 425, "playButton").setInteractive().setScale(2.5);
+                    this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
+                    //this.markbox.setScale(1.2);
+
+                    //Interaccion botones
+                    this.playButton.on("pointerover", ()=>{
+                        document.body.style.cursor = "pointer";
+                        this.markbox.setVisible(true);
+                    })
+
+                    this.playButton.on("pointerout", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.markbox.setVisible(false);
+                    })
+
+                    this.playButton.on("pointerdown", ()=>{
+                        this.playButton.setFrame(1);
+                        this.markbox.setVisible(false);
+                    })
+
+                    this.playButton.on("pointerup", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.scene.start("CharacterSelect");
+                    })
+                },
+                update: function(){
+
+                }
+            })
+
+            var CharacterSelect = new Phaser.Class({
+                Extends: Phaser.Scene,
+
+                initialize:
+
+                function CharacterSelect(){
+                    Phaser.Scene.call(this, {key:'CharacterSelect'});
+                },
+
+                preload: function(){
+                    this.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
+                    this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
+                    this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
+                    //Aceptar
+                    this.load.spritesheet('ok',
+                        'resources/img/interface/botonOk.png',
+                        { frameWidth: 120, frameHeight: 47 });
+                    //Menu
+                    this.load.spritesheet('menu',
+                        'resources/img/interface/botonMenu.png',
+                        { frameWidth: 120, frameHeight: 47 });
+                    //Play
+                    /*this.load.spritesheet('play',
+                        'resources/img/interface/BotonPlay.png',
+                        { frameWidth: 120, frameHeight: 47 });*/
+
+                    this.load.spritesheet('player1',
+                        'resources/img/players/SpritesheetP1(Andar).png',
+                        { frameWidth: 64, frameHeight: 64 });
+                    
+                    
+                },
+                create: function(){
+                    this.add.image(400, 300, 'selectScreenBg');
+  
+                    //Recuadro personaje 1
+                    this.rec = this.add.image(225, 250, "chMarkbox");
+                    this.rec.setScale(3.5);
+  
+                    //Personaje 1
+                    this.player1 = this.add.sprite(225, 250, 'player1').setInteractive();
+                    this.player1.setFrame(3);
+                    this.player1.setScale(3);
+
+                    document.getElementById("namebar").style.visibility = "visible";
+                    //this.text1.style.marginLeft = '-130px';
+
+                    this.ok1 = this.add.sprite(225, 450, "ok").setInteractive(); 
+                    //CAMBIARIA EL OK POR UN READY Y CUANDO ESTEN TODOS READY QUE PASE A LA ESCENA DE JUGAR 
+
+                    this.markbox1 = this.add.image(225, 450, 'markbox').setVisible(false);
+                    this.markbox1.setScale(1.2);
+
+                    //Boton menu: volver al menu
+                    this.menu = this.add.sprite(100, 80, "menu").setInteractive();
+                    this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
+
+                    //Boton play
+                    this.play = this.add.sprite(695, 480, "playButton").setInteractive();
+                    this.play.setVisible(false);
+                    this.marcoPlay = this.add.image(695, 480, 'marco').setVisible(false);
+
+                    //FUNCIONALIDAD
+                    this.anims.create({
+                        key: 'pose',
+                        frames: this.anims.generateFrameNumbers('player1', {start: 0, end: 4}),
+                        frameRate: 10,
+                        repeat: -1
+                    })
+
+                    this.ok1.on("pointerover", ()=>{
+                        document.body.style.cursor = "pointer";
+                        this.markbox1.setVisible(true);    
+                    })
+                    this.ok1.on("pointerout", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.markbox1.setVisible(false);
+                    })
+                    this.ok1.on("pointerdown", ()=>{
+                        this.markbox1.setVisible(false);
+                        this.ok1.setFrame(1);
+                        player1T = document.getElementById("namebar");
+                        if(player1T.value == null) document.getElementById("namebar").value = "Player1";
+                        console.log("Player:"+ player1T.value);
+                        player1T.disabled = true;
+                    })
+                    this.ok1.on("pointerup", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.scene.start('MainGame');
+                        this.ok1.disableInteractive();
+                        player1T.style.visibility = "hidden";
+                        
+                    })
+  
+                    /*menu:
+                    this.menu.on("pointerover", ()=>{
+                        document.body.style.cursor = "pointer";
+                        //this.marcoMenu.setVisible(true);
+                    })
+                    this.menu.on("pointerout", ()=>{
+                        document.body.style.cursor = "auto";
+                        //this.marcoMenu.setVisible(false);
+                    })
+                    this.menu.on("pointerdown", ()=>{
+                        //this.marcoMenu.setVisible(false);
+                        this.menu.setFrame(1);
+                    })
+                    this.menu.on("pointerup", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.scene.start("MainScreen");
+                    })*/
+                    
+
+                },
+                update: function(){
+                    //Animacion personajes en pausa
+                    this.player1.anims.play('pose', true);
+                }
+            })
+
+            var MainGame = new Phaser.Class({
+                Extends: Phaser.Scene,
+
+                initialize:
+
+                function MainGame(){
+                    Phaser.Scene.call(this, {key:'MainGame'});
+                },
+
+                preload: function(){
+                },
+                create: function(){
+                    console.log("Hola");
                 },
                 update: function(){
 
@@ -106,7 +282,7 @@
                     create: create,
                     update: update
                 }*/
-                scene: [PantallaCarga, PantallaInicio]
+                scene: [LoadScreen, HomeScreen, CharacterSelect, MainGame]
             };
         
             var game = new Phaser.Game(config);
