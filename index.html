@@ -11,6 +11,8 @@
             }
         </style>
 
+        <script src="src/js/SelectPlayer.js"></script>
+
         <link rel="stylesheet" media="all" href="src/css/stylesheet.css">
         
     </head>
@@ -19,7 +21,7 @@
 
         <div id="introTextoP1">
             <input id="namebar" name="player1T" class="nk-namebar-input" type="text" placeholder="Introduce your name...">
-            <!--input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Introduce your name..."-->
+            <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Introduce your name...">
             <span class="nk-namebar-indicator"></span>
         </div>
         
@@ -27,6 +29,8 @@
         <script type="text/javascript">
 
             var player;
+            var player2;
+            var keys;
 
             var LoadScreen = new Phaser.Class({
                 Extends: Phaser.Scene,
@@ -132,40 +136,57 @@
 
                 function CharacterSelect(){
                     Phaser.Scene.call(this, {key:'CharacterSelect'});
+                    player1Panel = new SelectPlayer(this, 225, 'namebar');
+                    player2Panel = new SelectPlayer(this, 570, 'namebar2');
                 },
 
                 preload: function(){
                     this.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
-                    this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
+                    
+                    //this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
                     this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
-                    //Aceptar
-                    this.load.spritesheet('ok',
-                        'resources/img/interface/botonOk.png',
-                        { frameWidth: 120, frameHeight: 47 });
+
                     //Menu
                     this.load.spritesheet('menu',
                         'resources/img/interface/botonMenu.png',
                         { frameWidth: 120, frameHeight: 47 });
-                    //Play
-                    /*this.load.spritesheet('play',
-                        'resources/img/interface/BotonPlay.png',
-                        { frameWidth: 120, frameHeight: 47 });*/
 
+                    player1Panel.preload();
+                    player2Panel.preload();
+                    /*
+                    //Aceptar
+                    this.load.spritesheet('ok',
+                        'resources/img/interface/botonOk.png',
+                        { frameWidth: 120, frameHeight: 47 });
+                    
+                    
                     this.load.spritesheet('player1',
                         'resources/img/players/SpritesheetP1(Andar).png',
+                        { frameWidth: 64, frameHeight: 64 });
+                    */
+                    //Multiplayer
+                    this.load.image("plus", "resources/img/interface/plus.png");
+
+                    this.load.spritesheet('player2',
+                        'resources/img/players/SpritesheetP2(Andar).png',
                         { frameWidth: 64, frameHeight: 64 });
                     
                     
                 },
                 create: function(){
                     this.add.image(400, 300, 'selectScreenBg');
-  
+
+                    //Boton menu: volver al menu
+                    this.menu = this.add.sprite(100, 80, "menu").setInteractive();
+                    this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
+
+                    player1Panel.create();
+                    /*
                     //Recuadro personaje 1
-                    this.rec = this.add.image(225, 250, "chMarkbox");
-                    this.rec.setScale(3.5);
+                    this.add.image(225, 250, "chMarkbox").setScale(3.5);
   
                     //Personaje 1
-                    this.player1 = this.add.sprite(225, 250, 'player1').setInteractive();
+                    this.player1 = this.add.sprite(225, 235, 'player1').setInteractive();
                     this.player1.setFrame(3);
                     this.player1.setScale(3);
 
@@ -181,20 +202,46 @@
                     //Boton menu: volver al menu
                     this.menu = this.add.sprite(100, 80, "menu").setInteractive();
                     this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
+                    */
+                    //MULTIPLAYER
+                    
+                    this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
+                    this.plus = this.add.image(570, 250, "plus").setScale(0.1);
+                    /*
+                    this.markbox2 = this.add.image(570, 250, "chMarkbox").setScale(3.5);
+                    this.player2 = this.add.sprite(570, 235, 'player2').setInteractive();
+                    this.player2.setFrame(3);
+                    this.player2.setScale(3);
 
-                    //Boton play
-                    this.play = this.add.sprite(695, 480, "playButton").setInteractive();
-                    this.play.setVisible(false);
-                    this.marcoPlay = this.add.image(695, 480, 'marco').setVisible(false);
+                    document.getElementById("namebar2").style.visibility = "visible";
+                    document.getElementById("namebar2").style.marginLeft = '45px';
+                    //this.text1.style.marginLeft = '-130px';
+
+                    this.ok2 = this.add.sprite(570, 450, "ok").setInteractive(); 
+                    //CAMBIARIA EL OK POR UN READY Y CUANDO ESTEN TODOS READY QUE PASE A LA ESCENA DE JUGAR 
+
+                    this.markbox2 = this.add.image(570, 450, 'markbox').setVisible(false);
+                    this.markbox2.setScale(1.2);*/
 
                     //FUNCIONALIDAD
+                    //-Players
+                    /*
                     this.anims.create({
-                        key: 'pose',
+                        key: 'poseP1',
                         frames: this.anims.generateFrameNumbers('player1', {start: 0, end: 4}),
                         frameRate: 10,
                         repeat: -1
-                    })
+                    })*/
+                    /*
+                    this.anims.create({
+                        key: 'poseP2',
+                        frames: this.anims.generateFrameNumbers('player2', {start: 0, end: 4}),
+                        frameRate: 10,
+                        repeat: -1
+                    })*/
 
+                    //-Ok
+                    /*
                     this.ok1.on("pointerover", ()=>{
                         document.body.style.cursor = "pointer";
                         this.markbox1.setVisible(true);    
@@ -217,6 +264,27 @@
                         this.ok1.disableInteractive();
                         player1T.style.visibility = "hidden";
                         
+                    })*/
+
+                    //-New player
+                    this.newPlayer.on("pointerover", ()=>{
+                        document.body.style.cursor = "pointer";
+                        this.newPlayer.setScale(1.1);
+                        this.plus.setScale(0.15);
+                    })
+                    this.newPlayer.on("pointerout", ()=>{
+                        document.body.style.cursor = "auto";
+                        this.newPlayer.setScale(1);
+                        this.plus.setScale(0.1);
+                    })
+                    this.newPlayer.on("pointerdown", ()=>{
+                        this.newPlayer.setVisible(false);
+                        this.plus.setVisible(false);
+                        player2Panel.create();
+                        this.addPlayer = true
+                    })
+                    this.newPlayer.on("pointerup", ()=>{
+                        document.body.style.cursor = "auto";
                     })
   
                     /*menu:
@@ -240,8 +308,11 @@
 
                 },
                 update: function(){
+                    player1Panel.update();
+                    if(this.addPlayer == true) player2Panel.update();
                     //Animacion personajes en pausa
-                    this.player1.anims.play('pose', true);
+                    //this.player1.anims.play('poseP1', true);
+                    //this.player2.anims.play('poseP2', true);
                 }
             })
 
@@ -282,11 +353,11 @@
                         repeat: -1
                     });
 
-                    /*this.anims.create({
-                        key: 'turn',
-                        frames: [ { key: 'player1', frame: 4 } ],
+                    this.anims.create({
+                        key: 'stopped',
+                        frames: [ { key: 'player1', frame: 0 } ],
                         frameRate: 20
-                    });*/
+                    });
 
                     this.anims.create({
                         key: 'right',
@@ -299,23 +370,28 @@
                     this.physics.add.collider(player, platforms);
 
                     //CONTROLS
-                    cursors = this.input.keyboard.createCursorKeys();
+                    keyInput = this.input.keyboard.createCursorKeys();
                     /*cursors = this.input.keyboard.addKeys({
-                        'a_left': Phaser.Input.Keyboard.KeyCodes.A,
-                        'd_right': Phaser.Input.Keyboard.KeyCodes.D,
+                        'a': Phaser.Input.Keyboard.KeyCodes.A,
+                        'd': Phaser.Input.Keyboard.KeyCodes.D,
+                    });*/
+                    /*this.keys = this.scene.input.keyboard.addKeys({
+                        A: Phaser.Input.Keyboard.KeyCodes.A,
+                        B: Phaser.Input.Keyboard.KeyCodes.D
                     });*/
 
                     
                 },
                 update: function(){
                     //KEYBOARD
-                    if (cursors.left.isDown)
+                    if (keyInput.left.isDown)
                     {
+                        console.log('A');
                         player.setVelocityX(-160);
 
                         player.anims.play('left', true);
                     }
-                    else if (cursors.right.isDown)
+                    else if (keyInput.right.isDown)
                     {
                         player.setVelocityX(160);
 
@@ -326,12 +402,12 @@
                     {
                         player.setVelocityX(0);
 
-                        //player.anims.play('pose');
+                        player.anims.play('stopped');
                     }
-
-                    if (cursors.up.isDown && player.body.touching.down)
+                    
+                    if (keyInput.up.isDown && player.body.touching.down)
                     {
-                        player.setVelocityY(-330);
+                        player.setVelocityY(-630);
                     }
                 }
             })
@@ -344,7 +420,7 @@
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        gravity: {y: 300},
+                        gravity: {y: 980},
                         debug: false
                     }
                 },
@@ -356,7 +432,7 @@
                     create: create,
                     update: update
                 }*/
-                scene: [/*LoadScreen, HomeScreen, CharacterSelect,*/MainGame]
+                scene: [/*LoadScreen, HomeScreen,*/ CharacterSelect, MainGame]
             };
         
             var game = new Phaser.Game(config);
