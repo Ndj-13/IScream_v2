@@ -26,6 +26,8 @@
         <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">
 
+            var player;
+
             var LoadScreen = new Phaser.Class({
                 Extends: Phaser.Scene,
 
@@ -253,12 +255,84 @@
                 },
 
                 preload: function(){
+                    this.load.image('ground', 'resources/img/scene/platform.png');
+                    this.load.spritesheet('player1',
+                        'resources/img/players/SpritesheetP1(Andar).png',
+                        { frameWidth: 64, frameHeight: 64 });
                 },
                 create: function(){
-                    console.log("Hola");
+                    //SCENE
+                    platforms = this.physics.add.staticGroup();
+                    
+                    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+                    platforms.create(600, 400, 'ground');
+                    platforms.create(50, 250, 'ground');
+                    platforms.create(750, 220, 'ground');
+                    
+                    //PLAYER
+                    player = this.physics.add.sprite(100, 450, 'player1');
+                    player.setBounce(0.2);
+                    player.setCollideWorldBounds(true);
+
+                    this.anims.create({
+                        key: 'left',
+                        frames: this.anims.generateFrameNumbers('player1', { start: 28, end: 32 }),
+                        frameRate: 15,
+                        repeat: -1
+                    });
+
+                    /*this.anims.create({
+                        key: 'turn',
+                        frames: [ { key: 'player1', frame: 4 } ],
+                        frameRate: 20
+                    });*/
+
+                    this.anims.create({
+                        key: 'right',
+                        frames: this.anims.generateFrameNumbers('player1', { start: 21, end: 25 }),
+                        frameRate: 15,
+                        repeat: -1
+                    });
+
+                    //COLLISIONS
+                    this.physics.add.collider(player, platforms);
+
+                    //CONTROLS
+                    cursors = this.input.keyboard.createCursorKeys();
+                    /*cursors = this.input.keyboard.addKeys({
+                        'a_left': Phaser.Input.Keyboard.KeyCodes.A,
+                        'd_right': Phaser.Input.Keyboard.KeyCodes.D,
+                    });*/
+
+                    
                 },
                 update: function(){
+                    //KEYBOARD
+                    if (cursors.left.isDown)
+                    {
+                        player.setVelocityX(-160);
 
+                        player.anims.play('left', true);
+                    }
+                    else if (cursors.right.isDown)
+                    {
+                        player.setVelocityX(160);
+
+                        player.anims.play('right', true);
+                    }
+                    
+                    else
+                    {
+                        player.setVelocityX(0);
+
+                        //player.anims.play('pose');
+                    }
+
+                    if (cursors.up.isDown && player.body.touching.down)
+                    {
+                        player.setVelocityY(-330);
+                    }
                 }
             })
 
@@ -270,7 +344,7 @@
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        gravity: {y: 0},
+                        gravity: {y: 300},
                         debug: false
                     }
                 },
@@ -282,7 +356,7 @@
                     create: create,
                     update: update
                 }*/
-                scene: [LoadScreen, HomeScreen, CharacterSelect, MainGame]
+                scene: [/*LoadScreen, HomeScreen, CharacterSelect,*/MainGame]
             };
         
             var game = new Phaser.Game(config);
