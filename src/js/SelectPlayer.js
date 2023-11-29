@@ -1,9 +1,12 @@
 class SelectPlayer {
+
     constructor(scene, x, namebar){    
 
         this.scene = scene;
         this.posX = x;
-        this.namebar = namebar;
+        this.namebar = namebar;    
+        this.playerName = document.getElementById(this.namebar);;
+
     }
 
     preload(){
@@ -62,23 +65,36 @@ class SelectPlayer {
             this.markbox1.setVisible(false);
             this.ok1.setFrame(1);
 
-            //player = new Player();
-            this.playerName = document.getElementById(this.namebar);
-
-            if(this.playerName.value == null) document.getElementById(this.namebar).value = "Player1";
+          if(this.playerName.value == null) document.getElementById(this.namebar).value = "Player1";
             console.log("Player:"+ this.playerName.value);
             this.playerName.disabled = true;
         })
         this.ok1.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-            this.scene.scene.start('MainGame');
+            //this.scene.scene.start('MainGame');
             this.ok1.disableInteractive();
-            this.playerName.style.visibility = "hidden";
+            //this.playerName.style.visibility = "hidden";
             
         })
+
+
     }
     update()
     {
         this.player1.anims.play('poseP1', true);
+    }        
+    
+    desactivarInput() {
+            // Desactiva la barra de input manualmente
+            //this.playerName.disabled = true;
+            this.playerName.style.visibility = "hidden";
+        }
+    checkReady() {
+        if(this.playerName.disabled == true){ 
+            return true
+        }
+        else{
+            return false
+        }
     }
 }
