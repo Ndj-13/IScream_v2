@@ -326,6 +326,10 @@
                 },
 
                 preload: function(){
+                    //borrar
+                        //canon
+                    this.load.image('red', 'resources/img/scene/red.png');
+                    this.load.image('rock', 'resources/img/scene/rock.png');
                     this.load.image('ground', 'resources/img/scene/platform.png');
                     this.load.spritesheet('player1',
                         'resources/img/players/SpritesheetP1(Andar).png',
@@ -333,6 +337,8 @@
                 },
                 create: function(){
                     //SCENE
+
+                    //PLATAFORMAS
                     platforms = this.physics.add.staticGroup();
                     
                     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
@@ -340,6 +346,40 @@
                     platforms.create(600, 400, 'ground');
                     platforms.create(50, 250, 'ground');
                     platforms.create(750, 220, 'ground');
+                    
+                    
+                    //CAÑONES
+                    canon1 = this.physics.add.sprite(200, 0, 'red');
+                    canon1.body.allowGravity = false;
+                    canon1.setCollideWorldBounds(true);
+                    canon1.setVelocityX(100);
+
+                    canon2 = this.physics.add.sprite(400, 0, 'red');
+                    canon2.setTint(0x495BB2);
+                    canon2.body.allowGravity = false;
+                    canon2.setCollideWorldBounds(true);
+                    canon2.setVelocityX(100);
+
+                    //BOLAS
+
+                    bolas = this.physics.add.group({
+                        allowGravity: false,
+                        velocityY: 150 
+                    });
+                    bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
+
+                    // Crear un evento que se ejecute cada 2 segundos
+                    let evento = this.time.addEvent({
+                        delay: 1000, 
+                        callback: createBall, // La función que se ejecutará
+                        callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
+                        loop: true // Establecer en true para que se repita
+                    });
+
+                    function createBall() {
+                        bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
+                        //debug
+                    }
                     
                     //PLAYER
                     player = this.physics.add.sprite(100, 450, 'player1');
@@ -379,6 +419,8 @@
                         A: Phaser.Input.Keyboard.KeyCodes.A,
                         B: Phaser.Input.Keyboard.KeyCodes.D
                     });*/
+                        
+                    
 
                     
                 },
@@ -409,6 +451,30 @@
                     {
                         player.setVelocityY(-630);
                     }
+
+                    //movimiento canyones
+                    if(canon1.x > 748 || canon1.x < 52)
+                    {
+                        canon1.setVelocityX(canon1.body.velocity.x * (-1));
+                    }
+                    if(canon2.x > 748 || canon2.x < 52)
+                    {
+                        canon2.setVelocityX(canon2.body.velocity.x * (-1));
+                    }
+                    //overlap(bolaC1, player, bolaFuera);
+
+                    //colision bola-jugador
+                    this.physics.add.overlap(player, bolas, function(player, bolaC1) {
+                        //quitar vida jugador   
+                        bolaC1.destroy();
+                        //debug
+                        console.log("colisión player-bola");
+                    }, null, this);
+                    
+                    //debug
+                    //console.log("pos canon1: " + canon1.x, canon1.y);
+                    //console.log("pos canon2: " + canon2.x, canon2.y);
+                    //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)
                 }
             })
 
@@ -421,7 +487,7 @@
                     default: 'arcade',
                     arcade: {
                         gravity: {y: 980},
-                        debug: false
+                        debug: true
                     }
                 },
         
@@ -432,7 +498,7 @@
                     create: create,
                     update: update
                 }*/
-                scene: [/*LoadScreen, HomeScreen,*/ CharacterSelect, MainGame]
+                scene: [/*LoadScreen, HomeScreen, CharacterSelect,*/ MainGame]
             };
         
             var game = new Phaser.Game(config);
