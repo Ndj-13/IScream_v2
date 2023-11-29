@@ -20,8 +20,8 @@
     <body style="text-align: center">
 
         <div id="introTextoP1">
-            <input id="namebar" name="player1T" class="nk-namebar-input" type="text" placeholder="Introduce your name...">
-            <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Introduce your name...">
+            <input id="namebar" name="player1T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
+            <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
             <span class="nk-namebar-indicator"></span>
         </div>
         
@@ -92,7 +92,7 @@
                     this.load.spritesheet('playButton',
                         'resources/img/interface/playbutton.png',
                         { frameWidth: 64, frameHeight: 47 });
-                    this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
+                    //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
                 },
                 create: function(){
                     this.add.image(400, 300, 'background');
@@ -100,23 +100,22 @@
 
 
                     this.playButton = this.add.sprite(400, 425, "playButton").setInteractive().setScale(2.5);
-                    this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
+                    //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
                     //this.markbox.setScale(1.2);
 
                     //Interaccion botones
                     this.playButton.on("pointerover", ()=>{
                         document.body.style.cursor = "pointer";
-                        this.markbox.setVisible(true);
+                        this.playButton.setFrame(1);
                     })
 
                     this.playButton.on("pointerout", ()=>{
                         document.body.style.cursor = "auto";
-                        this.markbox.setVisible(false);
+                        this.playButton.setFrame(0);
                     })
 
                     this.playButton.on("pointerdown", ()=>{
-                        this.playButton.setFrame(1);
-                        this.markbox.setVisible(false);
+                        this.playButton.setFrame(2);
                     })
 
                     this.playButton.on("pointerup", ()=>{
@@ -133,6 +132,7 @@
                 Extends: Phaser.Scene,
 
                 initialize:
+
 
                 function CharacterSelect(){
                     Phaser.Scene.call(this, {key:'CharacterSelect'});
@@ -181,6 +181,8 @@
                     this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
 
                     player1Panel.create();
+                    player2Panel.create();
+
                     /*
                     //Recuadro personaje 1
                     this.add.image(225, 250, "chMarkbox").setScale(3.5);
@@ -205,8 +207,9 @@
                     */
                     //MULTIPLAYER
                     
-                    this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
-                    this.plus = this.add.image(570, 250, "plus").setScale(0.1);
+                    //this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
+                    //this.plus = this.add.image(570, 250, "plus").setScale(0.1);
+
                     /*
                     this.markbox2 = this.add.image(570, 250, "chMarkbox").setScale(3.5);
                     this.player2 = this.add.sprite(570, 235, 'player2').setInteractive();
@@ -264,7 +267,7 @@
                         this.ok1.disableInteractive();
                         player1T.style.visibility = "hidden";
                         
-                    })*/
+                    })
 
                     //-New player
                     this.newPlayer.on("pointerover", ()=>{
@@ -285,9 +288,9 @@
                     })
                     this.newPlayer.on("pointerup", ()=>{
                         document.body.style.cursor = "auto";
-                    })
+                    })*/
   
-                    /*menu:
+                    //menu:
                     this.menu.on("pointerover", ()=>{
                         document.body.style.cursor = "pointer";
                         //this.marcoMenu.setVisible(true);
@@ -302,17 +305,27 @@
                     })
                     this.menu.on("pointerup", ()=>{
                         document.body.style.cursor = "auto";
-                        this.scene.start("MainScreen");
-                    })*/
+                        player1Panel.desactivarInput();
+                        player2Panel.desactivarInput();
+                        console.log("VA A HOME")
+                        this.scene.start("HomeScreen");
+                    })
                     
 
                 },
                 update: function(){
                     player1Panel.update();
-                    if(this.addPlayer == true) player2Panel.update();
+                    //if(this.addPlayer == true) 
+                    player2Panel.update();
                     //Animacion personajes en pausa
                     //this.player1.anims.play('poseP1', true);
                     //this.player2.anims.play('poseP2', true);
+                    if(player1Panel.checkReady() && player2Panel.checkReady()){
+                        player1Panel.desactivarInput();
+                        player2Panel.desactivarInput();
+                        console.log("VA A JUEGO")
+                        this.scene.start('MainGame');
+                    }
                 }
             })
 
