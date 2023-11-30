@@ -46,7 +46,7 @@ class Pause extends Phaser.Scene {
             origin: 'center',
             x: game.renderer.width / 2,
             y: 100,
-            text: 'PAUSE',
+            text: 'PAUSA',
             style: {
                 color: '#000000',
                 fontSize: 30,
@@ -113,10 +113,10 @@ class Pause extends Phaser.Scene {
             }
         }
         //Puntuación
-        this.make.text(confVariables).setText('Puntuación').setPosition(170,270);
+        this.make.text(confVariables).setText('Score').setPosition(150,270);
         //this.add.image(260, 270, 'vidaJ1');
 
-        this.make.text(confVariables).setText('Puntuación').setPosition(470, 270);
+        this.make.text(confVariables).setText('Score').setPosition(450, 270);
         //this.add.image(610, 270, 'vidaJ2');
 
         /*let vidaJ1 = this.add.graphics({
@@ -156,7 +156,7 @@ class Pause extends Phaser.Scene {
         this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
         //this.pestaña = this.add.image(400, 300, 'aviso').setVisible(false);
         this.abandonar = this.make.text(confVariables).setText(
-            '¿Abandonar la partida?').setPosition(
+            'Are you sure you want to exit?').setPosition(
                 400, 230).setFontSize(25).setVisible(false);
 
         //yes y no

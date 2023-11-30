@@ -6,7 +6,7 @@ class SelectPlayer {
         this.scene = scene;
         this.posX = x;
         this.namebar = namebar;    
-        this.playerName = document.getElementById(this.namebar);
+        this.playerName = document.getElementById(namebar);
         this.options = 2;
         this.index = 0;
     }
@@ -67,6 +67,8 @@ class SelectPlayer {
         //document.getElementById(this.namebar).style.visibility = "visible"; 
         this.playerName.style.visibility = "visible";
         if(this.namebar == 'namebar2') this.playerName.style.marginLeft = '45px';
+        console.log(this.playerName.value);
+
 
         this.ok1 = this.scene.add.sprite(this.posX, 450, "ok").setInteractive(); 
         //CAMBIARIA EL OK POR UN READY Y CUANDO ESTEN TODOS READY QUE PASE A LA ESCENA DE JUGAR 
