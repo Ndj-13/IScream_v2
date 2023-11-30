@@ -1,8 +1,15 @@
 class Player {
-    constructor(){
+    constructor(id){
 
-        this.lifeBar = 100;
+        this.id = id;
         this.playerName = 'Player1';
+        this.score = 0;
+        this.ready = false;
+        this.charactId = 1;
+    }
+    
+    getId(){
+        return this.id;
     }
 
     setName(newName){
@@ -10,5 +17,22 @@ class Player {
     }
     getName(){
         return this.playerName;
+    }
+
+    getCharactId(){
+        return this.charactId;
+    }
+
+    setCharactId(newCharactId)
+    {
+        this.charactId = newCharactId;
+    }
+
+    confirmReady(){
+        return this.ready;
+    }
+
+    readyToPlay(){
+        this.ready = true;
     }
 }
