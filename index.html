@@ -341,6 +341,7 @@
                 preload: function(){
                     this.load.image('red', 'resources/img/scene/red.png');
                     this.load.image('rock', 'resources/img/scene/rock.png');
+                    this.load.image('fruit', 'resources/img/scene/fruit.png');
                     this.load.image('trans', 'resources/img/scene/trans.png');
 
                     this.load.image('ground', 'resources/img/scene/platform.png');
@@ -360,45 +361,59 @@
                     platforms.create(50, 250, 'ground');
                     platforms.create(750, 220, 'ground');
                     
+                    //FRUTAS
+                    fruits = this.physics.add.group({
+                        allowGravity: false,
+                        velocityY: 150
+                    })
+                    fruitSpawn = this.time.addEvent({
+                        delay: 3000, 
+                        callback: createFruit, // La función que se ejecutará
+                        callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
+                        loop: true // Establecer en true para que se repita
+                    });
+                    function createFruit() {
+                        randomNum = Phaser.Math.Between(10, 780);
+                        fruit = fruits.create(randomNum, 10, 'fruit');
+                        //debug
+                    }
                     
                     //CAÑONES
+                    /*
                     canon = this.physics.add.group({
                         allowGravity: false,
                         velocityX: 1000
                     })
                     canon1 = canon.create(200, 0, 'red');
-
                     canon2 = canon.create(400, 0, 'red');
-                    canon2.setTint(0x495BB2);
+                    canon2.setTint(0x495BB2);*/
 
                     //BOLAS
                     bolas = this.physics.add.group({
                         allowGravity: false,
-                        velocityY: 150 
+                        velocityY: 150,
                     });
-                    bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
-
-                    //HITBOXES
-                    hitbox = this.physics.add.group({
-                        allowGravity: false
-                    });
-                    hitboxL = hitbox.create(-10, 30, 'trans');
-                    hitboR = hitbox.create(810, 30, 'trans');
-
-
                     // Crear un evento que se ejecute cada 2 segundos
-                    let evento = this.time.addEvent({
+                    bolaSpawn = this.time.addEvent({
                         delay: 1000, 
                         callback: createBall, // La función que se ejecutará
                         callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
                         loop: true // Establecer en true para que se repita
                     });
-
                     function createBall() {
-                        bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
+                        randomNum = Phaser.Math.Between(10, 780);
+                        bola = bolas.create(randomNum, 10, 'rock');
                         //debug
                     }
+
                     
+                    //HITBOXES
+                    hitbox = this.physics.add.group({
+                        allowGravity: false
+                    });
+                    hitboxOOB = hitbox.create(400, 850, 'trans');
+                    hitboxOOB.setScale(35, 1);
+
                     //PLAYER
                     player = this.physics.add.sprite(100, 450, 'player1');
                     player.setBounce(0.2);
@@ -426,6 +441,9 @@
 
                     //COLLISIONS
                     this.physics.add.collider(player, platforms);
+                    //this.physics.add.collider(bolas, platforms);
+                    this.physics.add.collider(fruits, platforms);
+                    
 
                     //CONTROLS
                     keyInput = this.input.keyboard.createCursorKeys();
@@ -471,22 +489,35 @@
                     }
                     
                     //colision canon-hitbox
+                    /*
                     this.physics.add.overlap(canon, hitbox, function(canon, hitbox) {
                         console.log("colision hitbox-canon");
                         canon.setVelocityX(canon.body.velocity.x * (-1)); 
-                    }, null, this);
+                    }, null, this);*/
                     
                     //colision bola-jugador
-                    this.physics.add.overlap(player, bolas, function(player, bolaC1) {
+                    this.physics.add.overlap(player, bolas, function(player, bola) {
                         //quitar vida jugador   
-                        bolaC1.destroy();
+                        bola.destroy();
                         console.log("colisión player-bola");
                     }, null, this);
-                    
 
+                    //colision fruta-jugador
+                    this.physics.add.overlap(player, fruits, function(player, fruit) {
+                        //añadir punto jugador  
+                        fruit.destroy();
+                        console.log("colisión player-fruit");
+                    }, null, this);
+                    
+                    this.physics.add.overlap(bolas, hitbox, function(bola, hitbox)
+                    {
+                        bola.destroy();
+                        //debug
+                        console.log("borrado bola: " + bola);
+                    }
 
                     /*
-                    //movimiento canyones
+                    //movimiento canones
                     if(canon1.x > 748 || canon1.x < 52)
                     {
                         canon1.setVelocityX(canon1.body.velocity.x * (-1));
@@ -502,7 +533,7 @@
                     //console.log("pos canon1: " + canon1.x, canon1.y);
                     //console.log("pos canon2: " + canon2.x, canon2.y);
                     //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)
-                }
+                )}
             })
 
             var config = {
