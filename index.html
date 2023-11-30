@@ -339,10 +339,10 @@
                 },
 
                 preload: function(){
-                    //borrar
-                        //canon
                     this.load.image('red', 'resources/img/scene/red.png');
                     this.load.image('rock', 'resources/img/scene/rock.png');
+                    this.load.image('trans', 'resources/img/scene/trans.png');
+
                     this.load.image('ground', 'resources/img/scene/platform.png');
                     this.load.spritesheet('player1',
                         'resources/img/players/SpritesheetP1(Andar).png',
@@ -362,24 +362,29 @@
                     
                     
                     //CAÑONES
-                    canon1 = this.physics.add.sprite(200, 0, 'red');
-                    canon1.body.allowGravity = false;
-                    canon1.setCollideWorldBounds(true);
-                    canon1.setVelocityX(100);
+                    canon = this.physics.add.group({
+                        allowGravity: false,
+                        velocityX: 1000
+                    })
+                    canon1 = canon.create(200, 0, 'red');
 
-                    canon2 = this.physics.add.sprite(400, 0, 'red');
+                    canon2 = canon.create(400, 0, 'red');
                     canon2.setTint(0x495BB2);
-                    canon2.body.allowGravity = false;
-                    canon2.setCollideWorldBounds(true);
-                    canon2.setVelocityX(100);
 
                     //BOLAS
-
                     bolas = this.physics.add.group({
                         allowGravity: false,
                         velocityY: 150 
                     });
                     bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
+
+                    //HITBOXES
+                    hitbox = this.physics.add.group({
+                        allowGravity: false
+                    });
+                    hitboxL = hitbox.create(-10, 30, 'trans');
+                    hitboR = hitbox.create(810, 30, 'trans');
+
 
                     // Crear un evento que se ejecute cada 2 segundos
                     let evento = this.time.addEvent({
@@ -464,7 +469,23 @@
                     {
                         player.setVelocityY(-630);
                     }
+                    
+                    //colision canon-hitbox
+                    this.physics.add.overlap(canon, hitbox, function(canon, hitbox) {
+                        console.log("colision hitbox-canon");
+                        canon.setVelocityX(canon.body.velocity.x * (-1)); 
+                    }, null, this);
+                    
+                    //colision bola-jugador
+                    this.physics.add.overlap(player, bolas, function(player, bolaC1) {
+                        //quitar vida jugador   
+                        bolaC1.destroy();
+                        console.log("colisión player-bola");
+                    }, null, this);
+                    
 
+
+                    /*
                     //movimiento canyones
                     if(canon1.x > 748 || canon1.x < 52)
                     {
@@ -474,16 +495,9 @@
                     {
                         canon2.setVelocityX(canon2.body.velocity.x * (-1));
                     }
-                    //overlap(bolaC1, player, bolaFuera);
+                    */
 
-                    //colision bola-jugador
-                    this.physics.add.overlap(player, bolas, function(player, bolaC1) {
-                        //quitar vida jugador   
-                        bolaC1.destroy();
-                        //debug
-                        console.log("colisión player-bola");
-                    }, null, this);
-                    
+
                     //debug
                     //console.log("pos canon1: " + canon1.x, canon1.y);
                     //console.log("pos canon2: " + canon2.x, canon2.y);
@@ -506,7 +520,7 @@
         
                 backgroundColor: '#5B2970',
         
-                /*scene: {
+                /*scene: {  
                     preload: preload,
                     create: create,
                     update: update
