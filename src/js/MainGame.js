@@ -243,8 +243,7 @@ class MainGame extends Phaser.Scene {
         })
         
     }
-<<<<<<< Updated upstream
-=======
+
     mostrarFinDeJuego() {
         var graphics = this.add.graphics();
         var rectWidth = 350; // Ancho del rectángulo
@@ -262,7 +261,7 @@ class MainGame extends Phaser.Scene {
         pantallaFin.setDepth(1)
         this.scene.pause('MainGame');
     }
->>>>>>> Stashed changes
+
 
     update(){
         //KEYBOARD
