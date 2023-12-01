@@ -145,17 +145,23 @@ class MainGame extends Phaser.Scene {
             //this.physics.add.collider(bolas, platforms);
             this.physics.add.collider(this.fruits, platforms);
 
+            //Name
+            this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
+            this.name.setScale(0.5);
+            this.name.setPosition(this.posX, this.player.y+45);
+            namesText.push(this.name);
+
             this.players.push(this.player);
 
             //Interface
-            this.rec = this.add.image(this.posXRec, 30, 'score'+i).setScale(1.4);
+            this.rec = this.add.image(this.posXRec, 40, 'score'+i).setScale(1.4);
             if(playersList[i].getId() == 'p2'){
                 this.rec.flipX = true;
             }
-            this.add.image(this.posX, 30, 'charactIcon'+playersList[i].getCharactId());
+            this.add.image(this.posX, 40, 'charactIcon'+playersList[i].getCharactId());
             this.score = this.make.text(confJugadores).setText(playersList[i].showScore());
-            this.score.setPosition(this.posXRec+30, 30);
-            if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 30);
+            this.score.setPosition(this.posXRec+30, 40);
+            if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
             this.scoresText.push(this.score);
 
             this.posX = this.posX + 700;  
@@ -175,7 +181,7 @@ class MainGame extends Phaser.Scene {
         });
             
         // PAUSE
-        this.pause = this.add.sprite(400, 50, "pause").setInteractive();
+        this.pause = this.add.sprite(400, 40, "pause").setInteractive();
 
         this.pause.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -236,7 +242,10 @@ class MainGame extends Phaser.Scene {
                 //debug
                 //console.log("bola hitbox");
             });
-        }
+
+            //console.log(this.players[i].x+', '+this.players[i].y);
+            namesText[i].setPosition(this.players[i].x, this.players[i].y-40);
+        } 
         
         //debug
         //console.log("pos canon1: " + canon1.x, canon1.y);
@@ -249,7 +258,6 @@ class MainGame extends Phaser.Scene {
         //1st Player controlls
         if (keyInput.A.isDown)
         {
-            console.log('A');
             playerController.setVelocityX(-160);
 
             playerController.anims.play('leftP'+pIndex, true);

@@ -124,7 +124,7 @@ class SelectPlayer {
             
             if(this.namebar == 'namebar1')
             {
-                if(this.playerName.value == null) this.playerName.value = "Player1";
+                if(this.playerName.value == null) this.playerName.value = 'Player1';
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
                 playersList[0].setName(this.playerName);
                 console.log("Player:"+ playersList[0].getName().value);
