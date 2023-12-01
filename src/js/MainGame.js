@@ -115,13 +115,19 @@ class MainGame extends Phaser.Scene {
 
             this.players.push(this.player);
 
-            this.posX = this.posX + 500;
+            this.posX = this.posX + 600;
         }
         
         
 
         //CONTROLS
-        keyInput = this.input.keyboard.createCursorKeys();
+        cursorInput = this.input.keyboard.createCursorKeys();
+        keyInput = this.input.keyboard.addKeys(
+        {
+            'A': Phaser.Input.Keyboard.KeyCodes.A,
+            'D': Phaser.Input.Keyboard.KeyCodes.D,
+            'W': Phaser.Input.Keyboard.KeyCodes.W,
+        });
         /*cursors = this.input.keyboard.addKeys({
             'a': Phaser.Input.Keyboard.KeyCodes.A,
             'd': Phaser.Input.Keyboard.KeyCodes.D,
@@ -156,34 +162,21 @@ class MainGame extends Phaser.Scene {
 
     update(){
         //KEYBOARD
+        //1 player:
+        if(playersList.length == 1){
+            this.firstPlayerController(this.players[0], 0);
+            //this.secondPlayerController(this.players[0], 0);
+        }
+        //2 players:
+        else {
+            this.firstPlayerController(this.players[0], 0);
+            this.secondPlayerController(this.players[1], 1);
+        }
+
+        //Collisions
         for(var i = 0; i < this.players.length; i++)
-        {
-            if (keyInput.left.isDown)
-            {
-                //console.log('A');
-                this.players[i].setVelocityX(-160);
-
-                this.players[i].anims.play('leftP'+i, true);
-            }
-            else if (keyInput.right.isDown)
-            {
-                this.players[i].setVelocityX(160);
-
-                this.players[i].anims.play('rightP'+i, true);
-            }
-        
-            else
-            {
-                this.players[i].setVelocityX(0);
-
-                this.players[i].anims.play('stoppedP'+i);
-            }
-        
-            if (keyInput.up.isDown && this.players[i].body.touching.down)
-            {
-                this.players[i].setVelocityY(-630);
-            }
-        
+        {        
+            //inputController(this.players[i]);
             //colision bola-jugador
             this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
                 //quitar vida jugador   
@@ -213,8 +206,68 @@ class MainGame extends Phaser.Scene {
         //console.log("pos canon2: " + canon2.x, canon2.y);
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
     }
-        
+      
+    firstPlayerController(playerController, pIndex)
+    {
+        //1st Player controlls
+        if (keyInput.A.isDown)
+        {
+            console.log('A');
+            playerController.setVelocityX(-160);
 
+            playerController.anims.play('leftP'+pIndex, true);
+        }
+        else if (keyInput.D.isDown)
+        {
+            playerController.setVelocityX(160);
+
+            playerController.anims.play('rightP'+pIndex, true);
+        }
+        
+        else
+        {
+            playerController.setVelocityX(0);
+
+            playerController.anims.play('stoppedP'+pIndex);
+        }
+        
+        if (keyInput.W.isDown && playerController.body.touching.down)
+        {
+            playerController.setVelocityY(-630);
+        }
+
+    }
+
+    secondPlayerController(playerController, pIndex)
+    {
+        //1st Player controlls
+        if (cursorInput.left.isDown)
+        {
+            console.log('A');
+            playerController.setVelocityX(-160);
+
+            playerController.anims.play('leftP'+pIndex, true);
+        }
+        else if (cursorInput.right.isDown)
+        {
+            playerController.setVelocityX(160);
+
+            playerController.anims.play('rightP'+pIndex, true);
+        }
+        
+        else
+        {
+            playerController.setVelocityX(0);
+
+            playerController.anims.play('stoppedP'+pIndex);
+        }
+        
+        if (cursorInput.up.isDown && playerController.body.touching.down)
+        {
+            playerController.setVelocityY(-630);
+        }
+
+    }
         
     
 }
