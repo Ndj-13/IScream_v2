@@ -3,7 +3,7 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         this.pauseScene = new Pause(this);
-        this.playerPaused = false;
+        this.playersPaused = false; 
     }
 
     preload(){
@@ -59,16 +59,16 @@ class MainGame extends Phaser.Scene {
         var tiempoPartida = 1000; // Duración de la partida en segundos
         var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
-        var timer = this.time.addEvent({
+        this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 tiempoPartida--;
                 timerText.setText('Tiempo: ' + tiempoPartida);
                 
                 if (tiempoPartida === 0) {
-                    timer.paused = true; // Pausar el temporizador cuando llegue a 0
+                    this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
                     
-                    this.mostrarFinDeJuego();                    
+                    this.scene.start("Results");                    
                 }
                 if (tiempoPartida<=5){
                     timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
@@ -282,8 +282,7 @@ class MainGame extends Phaser.Scene {
             console.log("cambiado pos bola: " + bola1);
         }); 
     }
-
-
+    
     update(){
         //KEYBOARD
         //1 player:
@@ -412,20 +411,26 @@ class MainGame extends Phaser.Scene {
         this.fruitSpawn.paused = true;
         //this.bolaSpawn.paused = true;
         this.fruits.paused = true;
-        this.bolas.paused = true;
-        for(var i = 0; i < this.players.length; i++){
-            this.players[i].paused = true;
-        }
+        //this.bolas.paused = true;
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.playersPaused = true;
+        this.timer.paused = true;
+
     }
 
     continuarJuego(){
         this.fruitSpawn.paused = false;
         //this.bolaSpawn.paused = false;
         this.fruits.paused = false;
-        this.bolas.paused = false;
-        for(var i = 0; i < this.players.length; i++){
-            this.players[i].paused = false;
-        }
+        //this.bolas.paused = false;
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
+        });
+        this.playersPaused = false;
+        this.timer.paused = false;
+
     }
 
     

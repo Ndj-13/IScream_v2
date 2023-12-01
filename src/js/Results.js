@@ -6,14 +6,11 @@ class Results extends Phaser.Scene {
     preload() {
         //Background:
         this.load.image("stop", "resources/img/scene/fondoNivel1.png");
+        this.load.image("fondo", "resources/img/interface/pauseFondo1.png");
+        this.load.image("fondo2", "resources/img/interface/pauseFondo2.png");
 
         //Botones
         this.load.image("marco", "resources/img/interface/recuadroBoton.png");
-
-        //x
-        this.load.spritesheet('exit',
-            'resources/img/interface/closeButton.png',
-            { frameWidth: 80, frameHeight: 47 });
 
         // menu
         this.load.spritesheet('menu',
@@ -36,55 +33,43 @@ class Results extends Phaser.Scene {
     }
 
     create() {
-        //CREACION ESCENA
-        //Background
-        this.add.image(400, 300, "stop");
-
-        //Titulo PAUSA
-        //Modo de juego:
         const confTitulo = {
             origin: 'center',
             x: game.renderer.width / 2,
             y: 100,
             text: 'RESULTS',
             style: {
-                color: '#000000',
+                color: '#FFFFFF',
                 fontSize: 30,
                 fontFamily: 'titulo',
             }
-        }
-        this.make.text(confTitulo);
-
-        //Recuadro
-        let recuadroP = this.add.graphics({
-            fillStyle: {
-                color: 0xFFFFFF, //color barra de cargar (CAMBIAR)
-                alpha: 0.4,
+        }        
+        
+        const confJugadores = {
+            origin: 'center',
+            x: 275,
+            y: 200,
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 25,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                justifyContent: 'center',
             }
-        })
-        recuadroP.fillRect(80, 140, 640, 300);
-
-        let resaltarP = this.add.graphics({
-            fillStyle: {
-                color: 0xF5DCA2, //color barra de cargar (CAMBIAR)
-                alpha: 1
+        }        
+        const confScore = {
+            origin: 'center',
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 75,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                justifyContent: 'center',
             }
-        })
-        resaltarP.fillRect(80, 140, 640, 75);
-
-        //Botones
-        //x
-        this.exit = this.add.sprite(710, 70, "exit").setInteractive();
-        this.exit.setScale(0.8);
-        //menu
-        this.menu = this.add.sprite(400, 500, "menu").setInteractive();
-        this.marcoMenu = this.add.image(400, 500, 'marco').setVisible(false);
-
-        //Iconos jugadores
-        this.add.image(140, 180, 'iconoJ1');
-        this.add.image(440, 180, 'iconoJ2');
-
-        //Variables
+        }   
+        
         const confVariables = {
             origin: 'right',
             style: {
@@ -93,10 +78,36 @@ class Results extends Phaser.Scene {
                 fontSize: 20,
             }
         }
-        //Puntuación
-        this.make.text(confVariables).setText('Score').setPosition(150,270);
 
-        this.make.text(confVariables).setText('Score').setPosition(450, 270);
+
+        this.add.image(400, 300, "stop");
+        this.fondo1 = this.add.image(400,300,"fondo");
+        this.fondo1.setScale(1.1);
+        this.fondo2 = this.add.image(405,200,"fondo2");
+        this.fondo2.setScale(3.35);
+
+        this.make.text(confTitulo);
+
+        //menu
+        this.menu = this.add.sprite(400, 525, "menu").setInteractive();
+        this.marcoMenu = this.add.image(400, 525, 'marco').setVisible(false);
+
+       //Jugadores
+       this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value); 
+       this.icon1 = this.add.image(175, 200, 'charactIcon'+playersList[0].getCharactId());
+       this.score1 = this.make.text(confVariables).setText('Score').setPosition(180,280);
+
+       this.score1number = this.make.text(confScore).setText(playersList[0].showScore());
+       this.score1number.setPosition(250, 350);
+
+       if (playersList.length > 1) {
+           this.name2 = this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(500, 200);
+           this.icon2 = this.add.image(440, 200, 'charactIcon'+playersList[1].getCharactId());
+           this.score2 = this.make.text(confVariables).setText('Score').setPosition(450, 280);
+
+           this.score2number = this.make.text(confScore).setText(playersList[1].showScore());
+           this.score2number.setPosition(550, 350);        
+       }
         
         //Mensaje abandonar partida
         //tapar fondo
@@ -123,20 +134,6 @@ class Results extends Phaser.Scene {
         this.marcoNo.scale = 1.2;
 
         //FUNCIONALIDADES
-        //exit
-        this.exit.on("pointerover", () => {
-            document.body.style.cursor = "pointer";
-        })
-        this.exit.on("pointerout", () => {
-            document.body.style.cursor = "auto";
-        })
-        this.exit.on("pointerdown", () => {
-            this.exit.setFrame(1);
-        })
-        this.exit.on("pointerup", () => {
-            document.body.style.cursor = "auto";
-            this.scene.start('MainGame')
-        })
         //menu
         this.menu.on("pointerover", () => {
             document.body.style.cursor = "pointer";
@@ -158,7 +155,6 @@ class Results extends Phaser.Scene {
             this.yes.setVisible(true).setInteractive();
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
-            this.exit.disableInteractive();
         })
 
         //yes
@@ -199,7 +195,6 @@ class Results extends Phaser.Scene {
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
-            this.exit.setInteractive();
         })
 
     }
