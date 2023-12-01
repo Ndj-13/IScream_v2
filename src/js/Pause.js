@@ -1,50 +1,38 @@
-class Pause extends Phaser.Scene {
+class Pause{
 
-    constructor() {
-        super({ key: 'Pause' });
+    constructor(scene) {
+        this.scene = scene;
     }
     preload() {
-        //Background:
-        this.load.image("stop", "resources/img/scene/fondoNivel1.png");
-
         //Botones
-        this.load.image("marco", "resources/img/interface/recuadroBoton.png");
+        this.scene.load.image("marco", "resources/img/interface/recuadroBoton.png");
 
         //x
-        this.load.spritesheet('exit',
+        this.scene.load.spritesheet('exit',
             'resources/img/interface/closeButton.png',
             { frameWidth: 80, frameHeight: 47 });
 
         // menu
-        this.load.spritesheet('menu',
+        this.scene.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
 
         //Iconos:
-        this.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
-        this.load.image('iconoJ2', 'resources/img/players/blueIceHead.png');
+        this.scene.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
+        this.scene.load.image('iconoJ2', 'resources/img/players/blueIceHead.png');
 
         //Variables
         //Puntuacion:
 
         //Pestaña aviso
-        this.load.image('aviso', 'resources/img/interface/Warning.png');
-
-        this.load.spritesheet('yes', 'resources/img/interface/confirmButton.png', { frameWidth: 120, frameHeight: 47 });
-        this.load.spritesheet('no', 'resources/img/interface/cancelButton.png', { frameWidth: 120, frameHeight: 47 });
+        this.scene.load.image('aviso', 'resources/img/interface/Warning.png');
+        this.scene.load.spritesheet('yes', 'resources/img/interface/confirmButton.png', { frameWidth: 120, frameHeight: 47 });
+        this.scene.load.spritesheet('no', 'resources/img/interface/cancelButton.png', { frameWidth: 120, frameHeight: 47 });
 
     }
 
     create() {
-        console.log("Player 1: " + playersList[0].getName().value)
-        //console.log("Player 2: " + player2.getId())
-
-        //CREACION ESCENA
-        //Backgrou"nd
-        this.add.image(400, 300, "stop");
-
         //Titulo PAUSA
-        //Modo de juego:
         const confTitulo = {
             origin: 'center',
             x: game.renderer.width / 2,
@@ -56,32 +44,28 @@ class Pause extends Phaser.Scene {
                 fontFamily: 'titulo',
             }
         }
-        this.make.text(confTitulo);
+        this.titulo = this.scene.make.text(confTitulo);
 
-        //Recuadro
-        let recuadroP = this.add.graphics({
+        //Recuadro CAMBIAR QUEDA FEO
+        this.recuadroP = this.scene.add.graphics({
             fillStyle: {
-                color: 0xFFFFFF, //color barra de cargar (CAMBIAR)
-                alpha: 0.4,
+                color: 0xFFFFFF,
+                alpha: 1,
             }
         })
-        recuadroP.fillRect(80, 140, 640, 300);
+        this.recuadroP.fillRect(80, 140, 640, 300);
 
-        let resaltarP = this.add.graphics({
+        this.resaltarP = this.scene.add.graphics({
             fillStyle: {
-                color: 0xF5DCA2, //color barra de cargar (CAMBIAR)
+                color: 0xF5DCA2,
                 alpha: 1
             }
         })
-        resaltarP.fillRect(80, 140, 640, 75);
+        this.resaltarP.fillRect(80, 140, 640, 75);
 
         //Botones
-        //x
-        this.exit = this.add.sprite(710, 70, "exit").setInteractive();
-        this.exit.setScale(0.8);
-        //menu
-        this.menu = this.add.sprite(400, 500, "menu").setInteractive();
-        this.marcoMenu = this.add.image(400, 500, 'marco').setVisible(false);
+        this.menu = this.scene.add.sprite(400, 500, "menu").setInteractive();
+        this.marcoMenu = this.scene.add.image(400, 500, 'marco').setVisible(false);
         //this.marcoMenu.setScale("1");
 
         //Jugadores
@@ -98,12 +82,13 @@ class Pause extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confJugadores).setText(playersList[0].getName().value);                                                
-        this.add.image(140, 180, 'iconoJ1');
+        this.name1 = this.scene.make.text(confJugadores).setText(playersList[0].getName().value);                                                
+        this.icon1 = this.scene.add.image(140, 180, 'iconoJ1');
 
         if (playersList.length > 1) {
-            this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 180);
-            this.add.image(440, 180, 'iconoJ2');
+            this.name2 = this.scene.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 180);
+            this.icon2 = this.scene.add.image(440, 180, 'iconoJ2');        
+            this.score2 = this.scene.make.text(confVariables).setText('Score').setPosition(450, 270);
         }
 
         //Variables
@@ -116,41 +101,14 @@ class Pause extends Phaser.Scene {
             }
         }
         //Puntuación
-        this.make.text(confVariables).setText('Score').setPosition(150,270);
+        this.score1 = this.scene.make.text(confVariables).setText('Score').setPosition(150,270);
         //this.add.image(260, 270, 'vidaJ1');
-
-        this.make.text(confVariables).setText('Score').setPosition(450, 270);
-        //this.add.image(610, 270, 'vidaJ2');
-
-        /*let vidaJ1 = this.add.graphics({
-            fillStyle: {
-                color: 0x32C93B
-            }
-        })
-        
-        //Vida Jugador 1:
-        if (player1.health == 100) {
-            vidaJ1.fillRect(214, 267, 132, 10);
-        } else if (player1.health < 100 && player1.health > 0) {
-            vidaJ1.fillRect(214, 267, (132 / 100) * player1.health, 10);
-        } else if (player1.health <= 0) {
-            vidaJ1.fillRect(214, 267, 0, 10);
-        }
-        //Vida Jugador 2:
-        if (player2.health == 100) {
-            vidaJ1.fillRect(657, 267, -132, 10);
-        } else if (player2.health < 100 && player1.health > 0) {
-            vidaJ1.fillRect(657, 267, -(132 / 100) * player2.health, 10);
-        } else if (player2.health <= 0) {
-            vidaJ1.fillRect(657, 267, 0, 10);
-        }
-*/
         
         //Mensaje abandonar partida
         //tapar fondo
-        this.niebla = this.add.graphics({
+        this.niebla = this.scene.add.graphics({
             fillStyle: {
-                color: 0x828282, //color barra de cargar (CAMBIAR)
+                color: 0x828282,
                 alpha: 0.6,
             }
         })        
@@ -158,34 +116,20 @@ class Pause extends Phaser.Scene {
         //warning
         this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
         //this.pestaña = this.add.image(400, 300, 'aviso').setVisible(false);
-        this.abandonar = this.make.text(confVariables).setText(
+        this.abandonar = this.scene.make.text(confVariables).setText(
             'Are you sure you want to exit?').setPosition(
                 400, 230).setFontSize(25).setVisible(false);
 
         //yes y no
-        this.yes = this.add.sprite(300, 350, 'yes').setVisible(false);
-        this.marcoYes = this.add.image(300, 350, 'marco').setVisible(false);
+        this.yes = this.scene.add.sprite(300, 350, 'yes').setVisible(false);
+        this.marcoYes = this.scene.add.image(300, 350, 'marco').setVisible(false);
         this.marcoYes.scale = 1.2;
 
-        this.no = this.add.sprite(500, 350, 'no').setVisible(false);
-        this.marcoNo = this.add.image(500, 350, 'marco').setVisible(false);
+        this.no = this.scene.add.sprite(500, 350, 'no').setVisible(false);
+        this.marcoNo = this.scene.add.image(500, 350, 'marco').setVisible(false);
         this.marcoNo.scale = 1.2;
 
         //FUNCIONALIDADES
-        //exit
-        this.exit.on("pointerover", () => {
-            document.body.style.cursor = "pointer";
-        })
-        this.exit.on("pointerout", () => {
-            document.body.style.cursor = "auto";
-        })
-        this.exit.on("pointerdown", () => {
-            this.exit.setFrame(1);
-        })
-        this.exit.on("pointerup", () => {
-            document.body.style.cursor = "auto";
-            this.scene.start('MainGame')
-        })
         //menu
         this.menu.on("pointerover", () => {
             document.body.style.cursor = "pointer";
@@ -208,7 +152,7 @@ class Pause extends Phaser.Scene {
             this.yes.setVisible(true).setInteractive();
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
-            this.exit.disableInteractive();
+            //this.exit.disableInteractive();
         })
 
         //yes
@@ -226,7 +170,7 @@ class Pause extends Phaser.Scene {
         })
         this.yes.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            this.scene.start("HomeScreen");
+            this.scene.scene.start("CharacterSelect");
         })
         //no
         this.no.on("pointerover", () => {
@@ -250,8 +194,30 @@ class Pause extends Phaser.Scene {
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
-            this.exit.setInteractive();
+            //this.exit.setInteractive();
         })
 
+    }
+
+    destroy(){
+        this.titulo.destroy();
+        this.no.destroy();
+        this.yes.destroy();
+        this.abandonar.destroy();
+        this.menu.destroy();
+        this.niebla.destroy();
+        this.recuadroP.destroy();
+        this.resaltarP.destroy();
+        this.marcoMenu.destroy();
+        this.marcoYes.destroy();
+        this.marcoNo.destroy();
+        this.name1.destroy();
+        this.icon1.destroy();
+        this.score1.destroy();
+        if (playersList.length > 1) {
+            this.name2.destroy();
+            this.icon2.destroy();
+            this.score2.destroy();
+        }
     }
 }

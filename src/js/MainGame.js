@@ -2,6 +2,7 @@ class MainGame extends Phaser.Scene {
 
     constructor() {
         super({ key: 'MainGame' });
+        this.pauseScene = new Pause(this);
     }
 
     preload(){
@@ -27,13 +28,11 @@ class MainGame extends Phaser.Scene {
             this.load.image('charactIcon'+playersList[i].getCharactId(), 'resources/img/interface/charactIcon'+playersList[i].getCharactId()+'.png');
             this.load.image('score'+i, 'resources/img/interface/InterfazPuntuacionVacio.png');
         }
-        
-        //Interface
+
         this.load.spritesheet('pause', 'resources/img/interface/botonPause.png',
             { frameWidth: 80, frameHeight: 47});
-        
-            
-        
+
+        this.pauseScene.preload();
     }
     
     create(){
@@ -50,13 +49,36 @@ class MainGame extends Phaser.Scene {
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
         */
+        //        TIMER              /////////////////
+        // Inicialización de variables
+        var tiempoPartida = 20; // Duración de la partida en segundos
+        var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+
+        var timer = this.time.addEvent({
+            delay: 1000, // Ejecutar cada segundo
+            callback: ()=> {
+                tiempoPartida--;
+                timerText.setText('Tiempo: ' + tiempoPartida);
+                
+                if (tiempoPartida === 0) {
+                    timer.paused = true; // Pausar el temporizador cuando llegue a 0
+                    
+                    this.mostrarFinDeJuego();                    
+                }
+                if (tiempoPartida<=5){
+                    timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
+                }
+            },
+            callbackScope: this,
+            loop: true // Repetir el evento
+        });
         
         //FRUTAS
         this.fruits = this.physics.add.group({
             allowGravity: false,
             velocityY: 150
         })
-        var fruitSpawn = this.time.addEvent({
+        this.fruitSpawn = this.time.addEvent({
             delay: 3000, 
             callback: createFruit, // La función que se ejecutará
             callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
@@ -183,24 +205,56 @@ class MainGame extends Phaser.Scene {
         // PAUSE
         this.pause = this.add.sprite(400, 40, "pause").setInteractive();
 
-        this.pause.on("pointerover", ()=>{
+        this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
         })
-        this.pause.on("pointerout", ()=>{
+        this.pauseButton.on("pointerout", ()=>{
             document.body.style.cursor = "auto";
             //this.marcoMenu.setVisible(false);
-        })
-        this.pause.on("pointerdown", ()=>{
+        })            
+        this.pauseButton.on("pointerdown", ()=>{
             //this.marcoMenu.setVisible(false);
-            this.pause.setFrame(1);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
         })
-        this.pause.on("pointerup", ()=>{
+
+        this.pauseButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-            console.log("VA A PAUSE")
-            this.scene.start("Pause");
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+
+            }
         })
         
+    }
+    mostrarFinDeJuego() {
+        var graphics = this.add.graphics();
+        var rectWidth = 350; // Ancho del rectángulo
+        var rectHeight = 100; // Alto del rectángulo
+
+        // Dibujar el rectángulo redondeado detrás del mensaje
+        graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
+        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
+
+        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
+        var pantallaFin = this.add.text(270, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
+
+        // Asegurarse de que el mensaje esté encima del rectángulo
+        pantallaFin.setDepth(1)
+        this.scene.pause('MainGame');
     }
 
     update(){
@@ -314,6 +368,27 @@ class MainGame extends Phaser.Scene {
 
     }
         
+        
+    pararJuego(){
+        this.fruitSpawn.paused = true;
+        //this.bolaSpawn.paused = true;
+        this.fruits.paused = true;
+        this.bolas.paused = true;
+        for(var i = 0; i < this.players.length; i++){
+            this.players[i].paused = true;
+        }
+    }
+
+    continuarJuego(){
+        this.fruitSpawn.paused = false;
+        //this.bolaSpawn.paused = false;
+        this.fruits.paused = false;
+        this.bolas.paused = false;
+        for(var i = 0; i < this.players.length; i++){
+            this.players[i].paused = false;
+        }
+    }
+
     
 }
 
