@@ -5,11 +5,9 @@ class MainGame extends Phaser.Scene {
     }
 
     preload(){
-        //borrar
-            //canon
         this.load.image('red', 'resources/img/scene/red.png');
         this.load.image('rock', 'resources/img/scene/rock.png');
-        this.load.image('fruit', 'resources/img/scene/fruit.png');
+        this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
 
         this.load.image('ground', 'resources/img/scene/platform.png');
@@ -54,36 +52,33 @@ class MainGame extends Phaser.Scene {
             let randomNum = Phaser.Math.Between(10, 780);
             this.fruit = this.fruits.create(randomNum, 10, 'fruit');
             //debug
+            console.log("fruta");
         }
 
         //BOLAS
-
+            //grupo bolas
         this.bolas = this.physics.add.group({
             allowGravity: false,
             velocityY: 150,
         });
-        //bolaC1 = bolas.create(canon1.body.position.x, canon1.body.position.y + 100, 'rock');
 
-        // Crear un evento que se ejecute cada 2 segundos
-        var bolaSpawn = this.time.addEvent({
-            delay: 1000, 
-            callback: createBall, // La función que se ejecutará
-            callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
-            loop: true // Establecer en true para que se repita
-        });
-        function createBall() {
+         //creacion n bolas
+        var yBolaPos = 10;
+        for(let i = 0; i < 5; i++)
+        { 
             let randomNum = Phaser.Math.Between(10, 780);
-            this.bola = this.bolas.create(randomNum, 10, 'rock');
+            this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
+            yBolaPos -= 200;
             //debug
+            //console.log("yBolaPos: " + yBolaPos);
         }
-
         
         //HITBOXES
-        var hitbox = this.physics.add.group({
+        this.hitbox = this.physics.add.group({
             allowGravity: false
         });
-        var hitboxOOB = hitbox.create(400, 850, 'trans');
-        hitboxOOB.setScale(35, 1);
+        this.hitboxOOB = this.hitbox.create(400, 850, 'trans');
+        this.hitboxOOB.setScale(35, 1);
 
         this.players = [];
         this.posX = 100;
@@ -165,7 +160,7 @@ class MainGame extends Phaser.Scene {
         {
             if (keyInput.left.isDown)
             {
-                console.log('A');
+                //console.log('A');
                 this.players[i].setVelocityX(-160);
 
                 this.players[i].anims.play('leftP'+i, true);
@@ -189,56 +184,29 @@ class MainGame extends Phaser.Scene {
                 this.players[i].setVelocityY(-630);
             }
         
-            //colision canon-hitbox
-            /*
-            this.physics.add.overlap(canon, hitbox, function(canon, hitbox) {
-            console.log("colision hitbox-canon");
-            canon.setVelocityX(canon.body.velocity.x * (-1)); 
-            }, null, this);*/
-        
             //colision bola-jugador
-            this.physics.add.overlap(this.players[i], this.bolas, function(bola) {
+            this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
                 //quitar vida jugador   
-                this.bola.destroy();
-                //console.log("colisión player-bola");
+                bola.setTint(0x001020);
             }, null, this);
 
+            
             //colision fruta-jugador
-            this.physics.add.overlap(this.players[i], this.fruits, function(fruit) {
+            this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
                 //añadir punto jugador  
-                this.fruit.destroy();
+                fruit.destroy();
                 //console.log("colisión player-fruit");
             }, null, this);
-        
+            
+            
             this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
             {
-                this.bola.destroy();
+                let randomNum = Phaser.Math.Between(10, 780);
+                bola.setPosition(randomNum, -25);
                 //debug
-                //console.log("borrado bola: " + bola);
+                //console.log("bola hitbox");
             });
         }
-
-        /*
-        //movimiento canones
-        if(canon1.x > 748 || canon1.x < 52)
-        {
-            console.log('VEL1: ' + canon1.body.velocity.x)
-            canon1.setVelocityX(canon1.body.velocity.x * (-1));
-        }
-        if(canon2.x > 748 || canon2.x < 52)
-        {
-            console.log('VEL2: ' + canon2.body.velocity.x)
-            canon2.setVelocityX(canon2.body.velocity.x * (-1));
-        }
-        //overlap(bolaC1, player, bolaFuera);
-
-        //colision bola-jugador
-        this.physics.add.overlap(player, bolas, function(player, bolaC1) {
-            //quitar vida jugador   
-            bolaC1.destroy();
-            //debug
-            console.log("colisión player-bola");
-        }, null, this);
         
         //debug
         //console.log("pos canon1: " + canon1.x, canon1.y);
