@@ -5,37 +5,51 @@ class MainGame extends Phaser.Scene {
     }
 
     preload(){
+        //Scene
+        this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
+        this.load.image('ground', 'resources/img/scene/suelo.png');
+
+        //Items
         this.load.image('red', 'resources/img/scene/red.png');
         this.load.image('rock', 'resources/img/scene/rock.png');
         this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
 
-        this.load.image('ground', 'resources/img/scene/platform.png');
-
+        //Players
         for(var i = 0; i < playersList.length; i++)
         {
             console.log('Character del Player 1: ' + playersList[i].getCharactId())
             this.load.spritesheet('character'+playersList[i].getCharactId(),
             'resources/img/players/SpritesheetP'+playersList[i].getCharactId()+'(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
+
+            //Character interface
+            this.load.image('charactIcon'+playersList[i].getCharactId(), 'resources/img/interface/charactIcon'+playersList[i].getCharactId()+'.png');
+            this.load.image('score'+i, 'resources/img/interface/InterfazPuntuacionVacio.png');
         }
         
-
+        //Interface
         this.load.spritesheet('pause', 'resources/img/interface/botonPause.png',
             { frameWidth: 80, frameHeight: 47});
+        
+            
+        
     }
     
     create(){
         //SCENE
+        this.add.image(400, 300, 'gameBg');
 
         //PLATAFORMAS
         var platforms = this.physics.add.staticGroup();
         
-        platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        platforms.create(400, 580, 'ground').refreshBody();
 
+        /*
         platforms.create(600, 400, 'ground');
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
+        */
         
         //FRUTAS
         this.fruits = this.physics.add.group({
@@ -80,8 +94,26 @@ class MainGame extends Phaser.Scene {
         this.hitboxOOB = this.hitbox.create(400, 850, 'trans');
         this.hitboxOOB.setScale(35, 1);
 
+        //Configuration text
+        const confJugadores = {
+            origin: 'center',
+            x: 240,
+            y: 180,
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 25,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                justifyContent: 'center',
+            }
+        }
+
+        //PLAYERS
         this.players = [];
-        this.posX = 100;
+        this.scoresText = [];
+        this.posX = 50;
+        this.posXRec = 70;
         for(var i = 0; i < playersList.length; i++)
         {
             this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
@@ -115,7 +147,20 @@ class MainGame extends Phaser.Scene {
 
             this.players.push(this.player);
 
-            this.posX = this.posX + 600;
+            //Interface
+            this.rec = this.add.image(this.posXRec, 30, 'score'+i).setScale(1.4);
+            if(playersList[i].getId() == 'p2'){
+                this.rec.flipX = true;
+            }
+            this.add.image(this.posX, 30, 'charactIcon'+playersList[i].getCharactId());
+            this.score = this.make.text(confJugadores).setText(playersList[i].showScore());
+            this.score.setPosition(this.posXRec+30, 30);
+            if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 30);
+            this.scoresText.push(this.score);
+
+            this.posX = this.posX + 700;  
+            this.posXRec = this.posXRec + 660;
+
         }
         
         
@@ -128,14 +173,6 @@ class MainGame extends Phaser.Scene {
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
         });
-        /*cursors = this.input.keyboard.addKeys({
-            'a': Phaser.Input.Keyboard.KeyCodes.A,
-            'd': Phaser.Input.Keyboard.KeyCodes.D,
-        });*/
-        /*this.keys = this.scene.input.keyboard.addKeys({
-            A: Phaser.Input.Keyboard.KeyCodes.A,
-            B: Phaser.Input.Keyboard.KeyCodes.D
-        });*/
             
         // PAUSE
         this.pause = this.add.sprite(400, 50, "pause").setInteractive();

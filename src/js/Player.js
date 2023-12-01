@@ -28,6 +28,15 @@ class Player {
         this.charactId = newCharactId;
     }
 
+    showScore()
+    {
+        return this.score;
+    }
+    updateSore(addN)
+    {
+        this.score+=addN;
+    }
+
     confirmReady(){
         return this.ready;
     }
