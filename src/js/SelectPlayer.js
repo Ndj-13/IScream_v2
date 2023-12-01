@@ -36,7 +36,6 @@ class SelectPlayer {
 
     create()
     {
-        //aaaaaaaaaaaaaaaaa
         //Recuadro personaje 1
         this.scene.add.image(this.posX, 250, "chMarkbox").setScale(3.5);
   

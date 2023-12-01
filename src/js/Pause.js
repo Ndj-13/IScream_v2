@@ -36,8 +36,11 @@ class Pause extends Phaser.Scene {
     }
 
     create() {
+        console.log("Player 1: " + player1.getName().value)
+        //console.log("Player 2: " + player2.getId())
+
         //CREACION ESCENA
-        //Background
+        //Backgrou"nd
         this.add.image(400, 300, "stop");
 
         //Titulo PAUSA
@@ -46,7 +49,7 @@ class Pause extends Phaser.Scene {
             origin: 'center',
             x: game.renderer.width / 2,
             y: 100,
-            text: 'PAUSA',
+            text: 'PAUSE',
             style: {
                 color: '#000000',
                 fontSize: 30,
@@ -82,7 +85,7 @@ class Pause extends Phaser.Scene {
         //this.marcoMenu.setScale("1");
 
         //Jugadores
-        /*const confJugadores = {
+        const confJugadores = {
             origin: 'center',
             x: 240,
             y: 180,
@@ -95,13 +98,13 @@ class Pause extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        // player1T.text es el nombre del jugador 1, igual con el 2
-        this.make.text(confJugadores).setText(player1T.text);                                                
-        this.make.text(confJugadores).setText(player2T.text).setPosition(game.renderer.width * 3 / 4, 180);*/
-
-        //Iconos jugadores
+        this.make.text(confJugadores).setText(player1.getName().value);                                                
         this.add.image(140, 180, 'iconoJ1');
-        this.add.image(440, 180, 'iconoJ2');
+
+        if (player2 && typeof player2 === 'object') {
+            this.make.text(confJugadores).setText(player2.getName().value).setPosition(540, 180);
+            this.add.image(440, 180, 'iconoJ2');
+        }
 
         //Variables
         const confVariables = {
