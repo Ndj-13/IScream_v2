@@ -203,7 +203,7 @@ class MainGame extends Phaser.Scene {
         });
             
         // PAUSE
-        this.pause = this.add.sprite(400, 40, "pause").setInteractive();
+        this.pauseButton = this.add.sprite(400, 40, "pause").setInteractive();
 
         this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -239,22 +239,6 @@ class MainGame extends Phaser.Scene {
             }
         })
         
-    }
-    mostrarFinDeJuego() {
-        var graphics = this.add.graphics();
-        var rectWidth = 350; // Ancho del rectángulo
-        var rectHeight = 100; // Alto del rectángulo
-
-        // Dibujar el rectángulo redondeado detrás del mensaje
-        graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
-        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
-
-        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
-        var pantallaFin = this.add.text(270, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
-
-        // Asegurarse de que el mensaje esté encima del rectángulo
-        pantallaFin.setDepth(1)
-        this.scene.pause('MainGame');
     }
 
     update(){
@@ -305,6 +289,23 @@ class MainGame extends Phaser.Scene {
         //console.log("pos canon1: " + canon1.x, canon1.y);
         //console.log("pos canon2: " + canon2.x, canon2.y);
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
+    }
+
+    mostrarFinDeJuego() {
+        var graphics = this.add.graphics();
+        var rectWidth = 350; // Ancho del rectángulo
+        var rectHeight = 100; // Alto del rectángulo
+
+        // Dibujar el rectángulo redondeado detrás del mensaje
+        graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
+        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
+
+        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
+        var pantallaFin = this.add.text(270, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
+
+        // Asegurarse de que el mensaje esté encima del rectángulo
+        pantallaFin.setDepth(1)
+        this.scene.pause('MainGame');
     }
       
     firstPlayerController(playerController, pIndex)
