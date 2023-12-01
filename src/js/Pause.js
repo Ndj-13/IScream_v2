@@ -36,7 +36,7 @@ class Pause extends Phaser.Scene {
     }
 
     create() {
-        console.log("Player 1: " + player1.getName().value)
+        console.log("Player 1: " + playersList[0].getName().value)
         //console.log("Player 2: " + player2.getId())
 
         //CREACION ESCENA
@@ -98,11 +98,11 @@ class Pause extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confJugadores).setText(player1.getName().value);                                                
+        this.make.text(confJugadores).setText(playersList[0].getName().value);                                                
         this.add.image(140, 180, 'iconoJ1');
 
-        if (player2 && typeof player2 === 'object') {
-            this.make.text(confJugadores).setText(player2.getName().value).setPosition(540, 180);
+        if (playersList.length > 1) {
+            this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 180);
             this.add.image(440, 180, 'iconoJ2');
         }
 
