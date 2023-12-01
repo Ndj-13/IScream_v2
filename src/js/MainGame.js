@@ -3,6 +3,7 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         this.pauseScene = new Pause(this);
+        this.playerPaused = false;
     }
 
     preload(){
@@ -15,7 +16,7 @@ class MainGame extends Phaser.Scene {
 
         //Items
         this.load.image('red', 'resources/img/scene/red.png');
-        this.load.image('rock', 'resources/img/scene/rock.png');
+        //this.load.image('rock', 'resources/img/scene/rock.png');
         this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
 
@@ -39,6 +40,7 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+        //this.time.timeScale = 10; para cambiar la velocidad de ejecucións
         //SCENE
         this.add.image(400, 300, 'gameBg');
 
@@ -52,9 +54,9 @@ class MainGame extends Phaser.Scene {
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
         */
-        //        TIMER              /////////////////
-        // Inicialización de variables
-        var tiempoPartida = 20; // Duración de la partida en segundos
+        //TIMER   
+                  
+        var tiempoPartida = 1000; // Duración de la partida en segundos
         var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
         var timer = this.time.addEvent({
@@ -76,22 +78,24 @@ class MainGame extends Phaser.Scene {
             loop: true // Repetir el evento
         });
         
+        
         //FRUTAS
         this.fruits = this.physics.add.group({
             allowGravity: false,
             velocityY: 150
         })
+        
         this.fruitSpawn = this.time.addEvent({
             delay: 3000, 
-            callback: createFruit, // La función que se ejecutará
-            callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
-            loop: true // Establecer en true para que se repita
+            callback: createFruit, 
+            callbackScope: this, 
+            loop: true 
         });
         function createFruit() {
-            let randomNum = Phaser.Math.Between(10, 780);
-            this.fruit = this.fruits.create(randomNum, 10, 'fruit');
+            let randomNum = Phaser.Math.Between(100, 700);
+            this.fruit = this.fruits.create(randomNum, 0, 'fruit');
             //debug
-            console.log("fruta");
+            //console.log("fruta");
         }
 
         //BOLAS
@@ -103,7 +107,7 @@ class MainGame extends Phaser.Scene {
 
          //creacion n bolas
         var yBolaPos = 10;
-        for(let i = 0; i < 5; i++)
+        for(let i = 0; i < 10; i++)
         { 
             let randomNum = Phaser.Math.Between(10, 780);
             this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
@@ -191,11 +195,8 @@ class MainGame extends Phaser.Scene {
 
             this.posX = this.posX + 700;  
             this.posXRec = this.posXRec + 660;
-
         }
         
-        
-
         //CONTROLS
         cursorInput = this.input.keyboard.createCursorKeys();
         keyInput = this.input.keyboard.addKeys(
@@ -207,7 +208,6 @@ class MainGame extends Phaser.Scene {
             
         // PAUSE
         this.pauseButton = this.add.sprite(400, 40, "pause").setInteractive();
-
         this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
@@ -238,47 +238,69 @@ class MainGame extends Phaser.Scene {
                     console.log("ESCENA DE PAUSA CREADA");
                 }
                 this.pauseScene.destroy();
-
             }
         })
+
+        /*
+        function spawnHitbox()
+        {
+            this.hitboxV = hitbox.create(70, 550, 'trans');
+            this.hitboxV.setScale(0.1, 10);
+            this.hitboxH = hitbox.create(70, 450, 'trans');
+            this.hitboxH.setScale(5, 0.1);
+        }*/
         
-    }
+        //colision bolas-jugador
+        this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
+            /*
+            player.setPosition(0, 500);
+            spawnHitbox();*/
+        }, null, this);
+        
+        //colision fruta-jugador
+        this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
+            //añadir punto jugador  
+            fruit.destroy();    
+            //console.log("colisión player-fruit");
+        }, null, this);
 
-    mostrarFinDeJuego() {
-        var graphics = this.add.graphics();
-        var rectWidth = 350; // Ancho del rectángulo
-        var rectHeight = 100; // Alto del rectángulo
+        //colision bolas-hitbox
+        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
 
-        // Dibujar el rectángulo redondeado detrás del mensaje
-        /*graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
-        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina*/
-        this.add.image(400, 250, "defeat");
+        }); 
 
-        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
-        var pantallaFin = this.add.text(255, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
-
-        // Asegurarse de que el mensaje esté encima del rectángulo
-        pantallaFin.setDepth(1)
-        this.scene.pause('MainGame');
+        //colision bola-bola
+        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola1.setPosition(randomNum, -25);
+            console.log("cambiado pos bola: " + bola1);
+        }); 
     }
 
 
     update(){
         //KEYBOARD
         //1 player:
-        if(playersList.length == 1){
+        if(playersList.length == 1 && !this.playersPaused){
             this.firstPlayerController(this.players[0], 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else {
+        else if (playersList.length == 2 && !this.playersPaused) {
             this.firstPlayerController(this.players[0], 0);
             this.secondPlayerController(this.players[1], 1);
         }
-
         //Collisions
         for(var i = 0; i < this.players.length; i++)
-        {        
+        {
+            namesText[i].setPosition(this.players[i].x, this.players[i].y-40);
+            /*   
             //inputController(this.players[i]);
             //colision bola-jugador
             this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
@@ -290,7 +312,8 @@ class MainGame extends Phaser.Scene {
             //colision fruta-jugador
             this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
                 //añadir punto jugador  
-                fruit.destroy();
+                let randomNum = Phaser.Math.Between(10, 780);
+                fruit.setPosition(randomNum, -100);
                 //console.log("colisión player-fruit");
             }, null, this);
             
@@ -302,32 +325,25 @@ class MainGame extends Phaser.Scene {
                 //debug
                 //console.log("bola hitbox");
             });
-
+            */
             //console.log(this.players[i].x+', '+this.players[i].y);
-            namesText[i].setPosition(this.players[i].x, this.players[i].y-40);
         } 
         
+
+       
+        
+        /*
+        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+        {
+            //let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(10, -25);
+            //debug
+            //console.log("bola hitbox");
+        });  */ 
         //debug
         //console.log("pos canon1: " + canon1.x, canon1.y);
         //console.log("pos canon2: " + canon2.x, canon2.y);
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
-    }
-
-    mostrarFinDeJuego() {
-        //var graphics = this.add.graphics();
-        var rectWidth = 350; // Ancho del rectángulo
-        var rectHeight = 100; // Alto del rectángulo
-
-        // Dibujar el rectángulo redondeado detrás del mensaje
-        //graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
-        //graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
-
-        this.add.image(400, 250, "defeat");
-        var pantallaFin = this.add.text(255, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
-
-        // Asegurarse de que el mensaje esté encima del rectángulo
-        pantallaFin.setDepth(1)
-        this.scene.pause('MainGame');
     }
       
     firstPlayerController(playerController, pIndex)
