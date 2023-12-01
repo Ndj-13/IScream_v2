@@ -24,6 +24,14 @@ class LoadScreen extends Phaser.Scene {
         this.load.on("complete", ()=>{
             console.log('done');
         })
+
+        //Recursos que se usan en varias escenas:
+        for(var i = 1; i <= this.options; i++)
+        {
+            this.scene.load.spritesheet('character'+i,
+            'resources/img/players/SpritesheetP'+i+'(Andar).png',
+            { frameWidth: 64, frameHeight: 64 });
+        }
     }
 
     create()

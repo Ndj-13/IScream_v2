@@ -13,9 +13,16 @@ class MainGame extends Phaser.Scene {
         this.load.image('trans', 'resources/img/scene/trans.png');
 
         this.load.image('ground', 'resources/img/scene/platform.png');
-        this.load.spritesheet('player1',
-            'resources/img/players/SpritesheetP1(Andar).png',
+
+        for(var i = 0; i < playersList.length; i++)
+        {
+            console.log('Character del Player 1: ' + playersList[i].getCharactId())
+            this.load.spritesheet('character'+playersList[i].getCharactId(),
+            'resources/img/players/SpritesheetP'+playersList[i].getCharactId()+'(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
+        }
+        
+
         this.load.spritesheet('pause', 'resources/img/interface/botonPause.png',
             { frameWidth: 80, frameHeight: 47});
     }
@@ -78,35 +85,44 @@ class MainGame extends Phaser.Scene {
         var hitboxOOB = hitbox.create(400, 850, 'trans');
         hitboxOOB.setScale(35, 1);
 
-        //PLAYER
-        this.player = this.physics.add.sprite(100, 450, 'player1');
-        this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true);
+        this.players = [];
+        this.posX = 100;
+        for(var i = 0; i < playersList.length; i++)
+        {
+            this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
+            this.player.setBounce(0.2);
+            this.player.setCollideWorldBounds(true);
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('player1', { start: 28, end: 32 }),
-            frameRate: 15,
-            repeat: -1
-        });
+            this.anims.create({
+                key: 'leftP'+i,
+                frames: this.anims.generateFrameNumbers('character'+playersList[i].getCharactId(), { start: 28, end: 32 }),
+                frameRate: 15,
+                repeat: -1
+            });
 
-        this.anims.create({
-            key: 'stopped',
-            frames: [ { key: 'player1', frame: 0 } ],
-            frameRate: 20
-        });
+            this.anims.create({
+                key: 'stoppedP'+i,
+                frames: [ { key: 'character'+playersList[i].getCharactId(), frame: 0 } ],
+                frameRate: 20
+            });
 
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('player1', { start: 21, end: 25 }),
-            frameRate: 15,
-            repeat: -1
-        });
+            this.anims.create({
+                key: 'rightP'+i,
+                frames: this.anims.generateFrameNumbers('character'+playersList[i].getCharactId(), { start: 21, end: 25 }),
+                frameRate: 15,
+                repeat: -1
+            });
 
-        //COLLISIONS
-        this.physics.add.collider(this.player, platforms);
-        //this.physics.add.collider(bolas, platforms);
-        this.physics.add.collider(this.fruits, platforms);
+            //COLLISIONS
+            this.physics.add.collider(this.player, platforms);
+            //this.physics.add.collider(bolas, platforms);
+            this.physics.add.collider(this.fruits, platforms);
+
+            this.players.push(this.player);
+
+            this.posX = this.posX + 500;
+        }
+        
         
 
         //CONTROLS
@@ -145,59 +161,62 @@ class MainGame extends Phaser.Scene {
 
     update(){
         //KEYBOARD
-        if (keyInput.left.isDown)
+        for(var i = 0; i < this.players.length; i++)
         {
-            console.log('A');
-            this.player.setVelocityX(-160);
+            if (keyInput.left.isDown)
+            {
+                console.log('A');
+                this.players[i].setVelocityX(-160);
 
-            this.player.anims.play('left', true);
-        }
-        else if (keyInput.right.isDown)
-        {
-            this.player.setVelocityX(160);
+                this.players[i].anims.play('leftP'+i, true);
+            }
+            else if (keyInput.right.isDown)
+            {
+                this.players[i].setVelocityX(160);
 
-            this.player.anims.play('right', true);
-        }
+                this.players[i].anims.play('rightP'+i, true);
+            }
         
-        else
-        {
-            this.player.setVelocityX(0);
+            else
+            {
+                this.players[i].setVelocityX(0);
 
-            this.player.anims.play('stopped');
-        }
+                this.players[i].anims.play('stoppedP'+i);
+            }
         
-        if (keyInput.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-630);
-        }
+            if (keyInput.up.isDown && this.players[i].body.touching.down)
+            {
+                this.players[i].setVelocityY(-630);
+            }
         
-        //colision canon-hitbox
-        /*
-        this.physics.add.overlap(canon, hitbox, function(canon, hitbox) {
+            //colision canon-hitbox
+            /*
+            this.physics.add.overlap(canon, hitbox, function(canon, hitbox) {
             console.log("colision hitbox-canon");
             canon.setVelocityX(canon.body.velocity.x * (-1)); 
-        }, null, this);*/
+            }, null, this);*/
         
-        //colision bola-jugador
-        this.physics.add.overlap(this.player, this.bolas, function(player, bola) {
-            //quitar vida jugador   
-            this.bola.destroy();
-            console.log("colisión player-bola");
-        }, null, this);
+            //colision bola-jugador
+            this.physics.add.overlap(this.players[i], this.bolas, function(bola) {
+                //quitar vida jugador   
+                this.bola.destroy();
+                //console.log("colisión player-bola");
+            }, null, this);
 
-        //colision fruta-jugador
-        this.physics.add.overlap(this.player, this.fruits, function(player, fruit) {
-            //añadir punto jugador  
-            this.fruit.destroy();
-            console.log("colisión player-fruit");
-        }, null, this);
+            //colision fruta-jugador
+            this.physics.add.overlap(this.players[i], this.fruits, function(fruit) {
+                //añadir punto jugador  
+                this.fruit.destroy();
+                //console.log("colisión player-fruit");
+            }, null, this);
         
-        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-        {
-            this.bola.destroy();
-            //debug
-            console.log("borrado bola: " + bola);
-        },
+            this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+            {
+                this.bola.destroy();
+                //debug
+                //console.log("borrado bola: " + bola);
+            });
+        }
 
         /*
         //movimiento canones
@@ -225,6 +244,10 @@ class MainGame extends Phaser.Scene {
         //console.log("pos canon1: " + canon1.x, canon1.y);
         //console.log("pos canon2: " + canon2.x, canon2.y);
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
-    )}
+    }
+        
+
+        
+    
 }
 

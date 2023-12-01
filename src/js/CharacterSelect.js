@@ -2,8 +2,20 @@ class CharacterSelect extends Phaser.Scene {
 
     constructor() {
         super({ key: 'CharacterSelect' });
+        this.playersPanels = [];
+        this.playersPanelsCreated = [];
+        this.posX = 225;
+        for(var i = 1; i <= maxPlayers; i++){
+            
+            console.log('Posicion' + this.posX)
+            this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i);
+            this.playersPanels.push(this.playerPanel);
+            this.posX = this.posX + 345;
+        }
+        /*
         this.player1Panel = new SelectPlayer(this, 225, 'namebar');
         this.player2Panel = new SelectPlayer(this, 570, 'namebar2');
+        */
     }
 
     preload(){
@@ -17,8 +29,11 @@ class CharacterSelect extends Phaser.Scene {
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
 
+        for(var i = 0; i < maxPlayers ; i++) this.playersPanels[i].preload();
+        /*
         this.player1Panel.preload();
         this.player2Panel.preload();
+        */
         /*
         //Aceptar
         this.load.spritesheet('ok',
@@ -33,10 +48,11 @@ class CharacterSelect extends Phaser.Scene {
         //Multiplayer
         this.load.image("plus", "resources/img/interface/plus.png");
 
+        /*
         this.load.spritesheet('player2',
             'resources/img/players/SpritesheetP2(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
-        
+        */
         
     }
 
@@ -47,8 +63,13 @@ class CharacterSelect extends Phaser.Scene {
         this.menu = this.add.sprite(100, 80, "menu").setInteractive();
         this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
 
-        player1 = new Player('p1');
-        this.player1Panel.create();
+        this.player1 = new Player('p1');
+        playersList.push(this.player1);
+        //player1 = new Player('p1');
+        this.playersPanels[0].create();
+        this.playersPanelsCreated.push(this.playersPanels[0]);
+        console.log('Panel 1 creado');
+        //this.player1Panel.create();
         
         this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
         this.plus = this.add.image(570, 250, "plus").setScale(0.1);
@@ -68,8 +89,12 @@ class CharacterSelect extends Phaser.Scene {
         this.newPlayer.on("pointerdown", ()=>{
             this.newPlayer.setVisible(false);
             this.plus.setVisible(false);
-            this.player2Panel.create();
-            player2 = new Player('p2');
+            //this.player2Panel.create();
+            this.playersPanels[1].create();
+            this.playersPanelsCreated.push(this.playersPanels[1]);
+            //player2 = new Player('p2');
+            this.player2 = new Player('p2');
+            playersList.push(this.player2);
             this.addPlayer = true
         })
         this.newPlayer.on("pointerup", ()=>{
@@ -91,8 +116,14 @@ class CharacterSelect extends Phaser.Scene {
         })
         this.menu.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
+            for(var i = 1; i <= playersPanelsCreated.length; i++)
+            {
+                document.getElementById("namebar"+i).style.visibility = 'hidden';  
+            }
+            /*
             this.player1Panel.desactivarInput();
             this.player2Panel.desactivarInput();
+            */
             console.log("VA A HOME")
             this.scene.start("HomeScreen");
         })
@@ -101,10 +132,14 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     update(){
+        for(var i = 0; i < this.playersPanelsCreated.length; i++) this.playersPanelsCreated[i].update();
+        /*
         this.player1Panel.update();
         if(this.addPlayer == true) 
         this.player2Panel.update();
+        */
 
+        /*
         if(this.addPlayer == true){
             if(player1.confirmReady() && player2.confirmReady()){
                 document.getElementById("namebar").style.visibility = 'hidden';
@@ -118,6 +153,19 @@ class CharacterSelect extends Phaser.Scene {
                 document.getElementById("namebar").style.visibility = 'hidden';
                 this.scene.start('MainGame');
             }
+        }*/
+        this.allReady = 0;
+        for(var i = 0; i < playersList.length; i++)
+        {
+            if(playersList[i].confirmReady()) this.allReady++;
+        }
+        if(this.allReady == playersList.length)
+        {
+            for(var i = 1; i <= playersList.length; i++)
+            {
+                document.getElementById("namebar"+i).style.visibility = 'hidden';  
+            }
+            this.scene.start('MainGame');
         }
         
         //Animacion personajes en pausa

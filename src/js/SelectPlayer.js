@@ -36,7 +36,6 @@ class SelectPlayer {
 
     create()
     {
-        //aaaaaaaaaaaaaaaaa
         //Recuadro personaje 1
         this.scene.add.image(this.posX, 250, "chMarkbox").setScale(3.5);
   
@@ -123,23 +122,23 @@ class SelectPlayer {
             this.markbox1.setVisible(false);
             this.ok1.setFrame(1);
             
-            if(this.namebar == 'namebar')
+            if(this.namebar == 'namebar1')
             {
                 if(this.playerName.value == null) this.playerName.value = "Player1";
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
-                player1.setName(this.playerName);
-                console.log("Player:"+ player1.getName().value);
+                playersList[0].setName(this.playerName);
+                console.log("Player:"+ playersList[0].getName().value);
                 this.playerName.disabled = true;
-                player1.readyToPlay();
-                player1.setCharactId(this.index);
+                playersList[0].readyToPlay();
+                playersList[0].setCharactId(this.index+1);
             } else {
                 if(this.playerName.value == null) this.playerName.value = "Player2";
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
-                player2.setName(this.playerName);
-                console.log("Player:"+ player2.getName().value);
+                playersList[1].setName(this.playerName);
+                console.log("Player:"+ playersList[1].getName().value);
                 this.playerName.disabled = true;
-                player2.readyToPlay();
-                player2.setCharactId(this.index);
+                playersList[1].readyToPlay();
+                playersList[1].setCharactId(this.index+1);
             }
 
             this.rightArrow.disableInteractive();
@@ -162,18 +161,4 @@ class SelectPlayer {
         this.charactArray[this.index].anims.play('pose'+(this.index+1), true);
     }        
     
-    /*
-    desactivarInput() {
-            // Desactiva la barra de input manualmente
-            //this.playerName.disabled = true;
-            this.playerName.style.visibility = "hidden";
-        }
-    checkReady() {
-        if(this.playerName.disabled == true){ 
-            return true
-        }
-        else{
-            return false
-        }
-    }*/
 }
