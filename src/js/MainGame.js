@@ -9,6 +9,9 @@ class MainGame extends Phaser.Scene {
         //Scene
         this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
         this.load.image('ground', 'resources/img/scene/suelo.png');
+        //interface
+        this.load.image('defeat', 'resources/img/interface/pantallaDefeat.png');
+
 
         //Items
         this.load.image('red', 'resources/img/scene/red.png');
@@ -240,6 +243,26 @@ class MainGame extends Phaser.Scene {
         })
         
     }
+<<<<<<< Updated upstream
+=======
+    mostrarFinDeJuego() {
+        var graphics = this.add.graphics();
+        var rectWidth = 350; // Ancho del rectángulo
+        var rectHeight = 100; // Alto del rectángulo
+
+        // Dibujar el rectángulo redondeado detrás del mensaje
+        /*graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
+        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina*/
+        this.add.image(400, 250, "defeat");
+
+        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
+        var pantallaFin = this.add.text(255, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
+
+        // Asegurarse de que el mensaje esté encima del rectángulo
+        pantallaFin.setDepth(1)
+        this.scene.pause('MainGame');
+    }
+>>>>>>> Stashed changes
 
     update(){
         //KEYBOARD
