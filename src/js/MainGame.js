@@ -49,6 +49,29 @@ class MainGame extends Phaser.Scene {
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
         */
+        //        TIMER              /////////////////
+        // Inicialización de variables
+        var tiempoPartida = 20; // Duración de la partida en segundos
+        var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+
+        var timer = this.time.addEvent({
+            delay: 1000, // Ejecutar cada segundo
+            callback: ()=> {
+                tiempoPartida--;
+                timerText.setText('Tiempo: ' + tiempoPartida);
+                
+                if (tiempoPartida === 0) {
+                    timer.paused = true; // Pausar el temporizador cuando llegue a 0
+                    
+                    this.mostrarFinDeJuego();                    
+                }
+                if (tiempoPartida<=5){
+                    timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
+                }
+            },
+            callbackScope: this,
+            loop: true // Repetir el evento
+        });
         
         //FRUTAS
         this.fruits = this.physics.add.group({
@@ -212,6 +235,22 @@ class MainGame extends Phaser.Scene {
             }
         })
         
+    }
+    mostrarFinDeJuego() {
+        var graphics = this.add.graphics();
+        var rectWidth = 350; // Ancho del rectángulo
+        var rectHeight = 100; // Alto del rectángulo
+
+        // Dibujar el rectángulo redondeado detrás del mensaje
+        graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
+        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
+
+        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
+        var pantallaFin = this.add.text(270, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
+
+        // Asegurarse de que el mensaje esté encima del rectángulo
+        pantallaFin.setDepth(1)
+        this.scene.pause('MainGame');
     }
 
     update(){
