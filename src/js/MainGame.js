@@ -2,6 +2,7 @@ class MainGame extends Phaser.Scene {
 
     constructor() {
         super({ key: 'MainGame' });
+        this.pauseScene = new Pause(this);
     }
 
     preload(){
@@ -19,10 +20,11 @@ class MainGame extends Phaser.Scene {
             'resources/img/players/SpritesheetP'+playersList[i].getCharactId()+'(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
         }
-        
 
         this.load.spritesheet('pause', 'resources/img/interface/botonPause.png',
             { frameWidth: 80, frameHeight: 47});
+
+        this.pauseScene.preload();
     }
     
     create(){
@@ -42,7 +44,7 @@ class MainGame extends Phaser.Scene {
             allowGravity: false,
             velocityY: 150
         })
-        var fruitSpawn = this.time.addEvent({
+        this.fruitSpawn = this.time.addEvent({
             delay: 3000, 
             callback: createFruit, // La función que se ejecutará
             callbackScope: this, // El ámbito en el que se ejecutará la función (opcional, puede ser 'this' si es en la escena)
@@ -138,24 +140,42 @@ class MainGame extends Phaser.Scene {
         });*/
             
         // PAUSE
-        this.pause = this.add.sprite(400, 50, "pause").setInteractive();
+        //this.pauseScene.create();
+        //this.pauseScene.ocultarContenido();
+        this.pauseButton = this.add.sprite(400, 50, "pause").setInteractive();
 
-        this.pause.on("pointerover", ()=>{
+        this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
         })
-        this.pause.on("pointerout", ()=>{
+        this.pauseButton.on("pointerout", ()=>{
             document.body.style.cursor = "auto";
             //this.marcoMenu.setVisible(false);
-        })
-        this.pause.on("pointerdown", ()=>{
+        })            
+        this.pauseButton.on("pointerdown", ()=>{
             //this.marcoMenu.setVisible(false);
-            this.pause.setFrame(1);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
         })
-        this.pause.on("pointerup", ()=>{
+
+        this.pauseButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-            console.log("VA A PAUSE")
-            this.scene.start("Pause");
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+
+            }
         })
         
     }
@@ -269,6 +289,27 @@ class MainGame extends Phaser.Scene {
 
     }
         
+        
+    pararJuego(){
+        this.fruitSpawn.paused = true;
+        //this.bolaSpawn.paused = true;
+        this.fruits.paused = true;
+        this.bolas.paused = true;
+        for(var i = 0; i < this.players.length; i++){
+            this.players[i].paused = true;
+        }
+    }
+
+    continuarJuego(){
+        this.fruitSpawn.paused = false;
+        //this.bolaSpawn.paused = false;
+        this.fruits.paused = false;
+        this.bolas.paused = false;
+        for(var i = 0; i < this.players.length; i++){
+            this.players[i].paused = false;
+        }
+    }
+
     
 }
 
