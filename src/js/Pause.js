@@ -4,25 +4,15 @@ class Pause{
         this.scene = scene;
     }
     preload() {
+        this.scene.load.image("fondo1", "resources/img/interface/pauseFondo_chico.png");
+
         //Botones
         this.scene.load.image("marco", "resources/img/interface/recuadroBoton.png");
-
-        //x
-        this.scene.load.spritesheet('exit',
-            'resources/img/interface/closeButton.png',
-            { frameWidth: 80, frameHeight: 47 });
 
         // menu
         this.scene.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
-
-        //Iconos:
-        this.scene.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
-        this.scene.load.image('iconoJ2', 'resources/img/players/blueIceHead.png');
-
-        //Variables
-        //Puntuacion:
 
         //Pestaña aviso
         this.scene.load.image('aviso', 'resources/img/interface/Warning.png');
@@ -36,63 +26,15 @@ class Pause{
         const confTitulo = {
             origin: 'center',
             x: game.renderer.width / 2,
-            y: 100,
+            y: 150,
             text: 'PAUSE',
             style: {
-                color: '#000000',
+                color: '#FFFFFF',
                 fontSize: 30,
                 fontFamily: 'titulo',
             }
-        }
-        this.titulo = this.scene.make.text(confTitulo);
-
-        //Recuadro CAMBIAR QUEDA FEO
-        this.recuadroP = this.scene.add.graphics({
-            fillStyle: {
-                color: 0xFFFFFF,
-                alpha: 1,
-            }
-        })
-        this.recuadroP.fillRect(80, 140, 640, 300);
-
-        this.resaltarP = this.scene.add.graphics({
-            fillStyle: {
-                color: 0xF5DCA2,
-                alpha: 1
-            }
-        })
-        this.resaltarP.fillRect(80, 140, 640, 75);
-
-        //Botones
-        this.menu = this.scene.add.sprite(400, 500, "menu").setInteractive();
-        this.marcoMenu = this.scene.add.image(400, 500, 'marco').setVisible(false);
-        //this.marcoMenu.setScale("1");
-
-        //Jugadores
-        const confJugadores = {
-            origin: 'center',
-            x: 240,
-            y: 180,
-            style: {
-                fontFamily: 'estilo',
-                color: '#000000',
-                fontSize: 25,
-                fontStyle: 'bold',
-                textAlign: 'center',
-                justifyContent: 'center',
-            }
-        }
-        this.name1 = this.scene.make.text(confJugadores).setText(playersList[0].getName().value);                                                
-        this.icon1 = this.scene.add.image(140, 180, 'iconoJ1');
-
-        if (playersList.length > 1) {
-            this.name2 = this.scene.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 180);
-            this.icon2 = this.scene.add.image(440, 180, 'iconoJ2');        
-            this.score2 = this.scene.make.text(confVariables).setText('Score').setPosition(450, 270);
-        }
-
-        //Variables
-        const confVariables = {
+        }        
+        const confTexto = {
             origin: 'right',
             style: {
                 fontFamily: 'estilo',
@@ -100,10 +42,14 @@ class Pause{
                 fontSize: 20,
             }
         }
-        //Puntuación
-        this.score1 = this.scene.make.text(confVariables).setText('Score').setPosition(150,270);
-        //this.add.image(260, 270, 'vidaJ1');
-        
+        this.titulo = this.scene.make.text(confTitulo);        
+        this.fondo1 = this.scene.add.image(400,300,"fondo1");
+        this.fondo1.setScale(1.1);
+
+
+        //Botones
+        this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
+        this.marcoMenu = this.scene.add.image(400, 300, 'marco').setVisible(false);
         //Mensaje abandonar partida
         //tapar fondo
         this.niebla = this.scene.add.graphics({
@@ -115,8 +61,7 @@ class Pause{
         
         //warning
         this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
-        //this.pestaña = this.add.image(400, 300, 'aviso').setVisible(false);
-        this.abandonar = this.scene.make.text(confVariables).setText(
+        this.abandonar = this.scene.make.text(confTexto).setText(
             'Are you sure you want to exit?').setPosition(
                 400, 230).setFontSize(25).setVisible(false);
 
@@ -147,12 +92,10 @@ class Pause{
             this.menu.setFrame(0);
             document.body.style.cursor = "auto";
             this.niebla.setVisible(true);
-            //this.pestaña.setVisible(true);
             this.abandonar.setVisible(true);
             this.yes.setVisible(true).setInteractive();
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
-            //this.exit.disableInteractive();
         })
 
         //yes
@@ -189,14 +132,11 @@ class Pause{
             this.no.setFrame(0);
             document.body.style.cursor = "auto";
             this.niebla.setVisible(false);
-            //this.pestaña.setVisible(false);
             this.abandonar.setVisible(false);
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
-            //this.exit.setInteractive();
         })
-
     }
 
     destroy(){
@@ -206,18 +146,9 @@ class Pause{
         this.abandonar.destroy();
         this.menu.destroy();
         this.niebla.destroy();
-        this.recuadroP.destroy();
-        this.resaltarP.destroy();
+        this.fondo1.destroy();
         this.marcoMenu.destroy();
         this.marcoYes.destroy();
         this.marcoNo.destroy();
-        this.name1.destroy();
-        this.icon1.destroy();
-        this.score1.destroy();
-        if (playersList.length > 1) {
-            this.name2.destroy();
-            this.icon2.destroy();
-            this.score2.destroy();
-        }
     }
 }

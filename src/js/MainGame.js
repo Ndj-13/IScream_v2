@@ -52,9 +52,11 @@ class MainGame extends Phaser.Scene {
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
         */
+
+
         //        TIMER              /////////////////
         // Inicialización de variables
-        var tiempoPartida = 20; // Duración de la partida en segundos
+        var tiempoPartida = 10; // Duración de la partida en segundos
         var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
         var timer = this.time.addEvent({
@@ -66,7 +68,7 @@ class MainGame extends Phaser.Scene {
                 if (tiempoPartida === 0) {
                     timer.paused = true; // Pausar el temporizador cuando llegue a 0
                     
-                    this.mostrarFinDeJuego();                    
+                    this.scene.start("Results");                    
                 }
                 if (tiempoPartida<=5){
                     timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
@@ -194,8 +196,6 @@ class MainGame extends Phaser.Scene {
 
         }
         
-        
-
         //CONTROLS
         cursorInput = this.input.keyboard.createCursorKeys();
         keyInput = this.input.keyboard.addKeys(
@@ -238,30 +238,10 @@ class MainGame extends Phaser.Scene {
                     console.log("ESCENA DE PAUSA CREADA");
                 }
                 this.pauseScene.destroy();
-
             }
         })
         
     }
-
-    mostrarFinDeJuego() {
-        var graphics = this.add.graphics();
-        var rectWidth = 350; // Ancho del rectángulo
-        var rectHeight = 100; // Alto del rectángulo
-
-        // Dibujar el rectángulo redondeado detrás del mensaje
-        /*graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
-        graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina*/
-        this.add.image(400, 250, "defeat");
-
-        // Mostrar el mensaje de "Tiempo Acabado" encima del rectángulo
-        var pantallaFin = this.add.text(255, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
-
-        // Asegurarse de que el mensaje esté encima del rectángulo
-        pantallaFin.setDepth(1)
-        this.scene.pause('MainGame');
-    }
-
 
     update(){
         //KEYBOARD
@@ -313,7 +293,7 @@ class MainGame extends Phaser.Scene {
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
     }
 
-    mostrarFinDeJuego() {
+   /* mostrarFinDeJuego() {
         //var graphics = this.add.graphics();
         var rectWidth = 350; // Ancho del rectángulo
         var rectHeight = 100; // Alto del rectángulo
@@ -328,7 +308,7 @@ class MainGame extends Phaser.Scene {
         // Asegurarse de que el mensaje esté encima del rectángulo
         pantallaFin.setDepth(1)
         this.scene.pause('MainGame');
-    }
+    }*/
       
     firstPlayerController(playerController, pIndex)
     {
@@ -398,7 +378,7 @@ class MainGame extends Phaser.Scene {
         this.fruits.paused = true;
         this.bolas.paused = true;
         for(var i = 0; i < this.players.length; i++){
-            this.players[i].paused = true;
+            //this.players[i].paused = true;
         }
     }
 
@@ -408,7 +388,7 @@ class MainGame extends Phaser.Scene {
         this.fruits.paused = false;
         this.bolas.paused = false;
         for(var i = 0; i < this.players.length; i++){
-            this.players[i].paused = false;
+            //this.players[i].paused = false;
         }
     }
 
