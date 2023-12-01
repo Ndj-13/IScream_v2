@@ -3,6 +3,7 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         this.pauseScene = new Pause(this);
+        this.playersPaused = false; 
     }
 
     preload(){
@@ -59,14 +60,14 @@ class MainGame extends Phaser.Scene {
         var tiempoPartida = 10; // Duración de la partida en segundos
         var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
-        var timer = this.time.addEvent({
+        this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 tiempoPartida--;
                 timerText.setText('Tiempo: ' + tiempoPartida);
                 
                 if (tiempoPartida === 0) {
-                    timer.paused = true; // Pausar el temporizador cuando llegue a 0
+                    this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
                     
                     this.scene.start("Results");                    
                 }
@@ -246,12 +247,12 @@ class MainGame extends Phaser.Scene {
     update(){
         //KEYBOARD
         //1 player:
-        if(playersList.length == 1){
+        if(playersList.length == 1 && !this.playersPaused){
             this.firstPlayerController(this.players[0], 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else {
+        else if (playersList.length == 2 && !this.playersPaused) {
             this.firstPlayerController(this.players[0], 0);
             this.secondPlayerController(this.players[1], 1);
         }
@@ -293,23 +294,6 @@ class MainGame extends Phaser.Scene {
         //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
     }
 
-   /* mostrarFinDeJuego() {
-        //var graphics = this.add.graphics();
-        var rectWidth = 350; // Ancho del rectángulo
-        var rectHeight = 100; // Alto del rectángulo
-
-        // Dibujar el rectángulo redondeado detrás del mensaje
-        //graphics.fillStyle(0x5F2D1D, 1); // Color y opacidad del relleno
-        //graphics.fillRoundedRect(242, 170, rectWidth, rectHeight, 20); // x, y, ancho, alto, radio de esquina
-
-        this.add.image(400, 250, "defeat");
-        var pantallaFin = this.add.text(255, 200, '¡Tiempo acabado!', { font: '32px estilo', fill: '#ffffff' });
-
-        // Asegurarse de que el mensaje esté encima del rectángulo
-        pantallaFin.setDepth(1)
-        this.scene.pause('MainGame');
-    }*/
-      
     firstPlayerController(playerController, pIndex)
     {
         //1st Player controlls
@@ -376,20 +360,26 @@ class MainGame extends Phaser.Scene {
         this.fruitSpawn.paused = true;
         //this.bolaSpawn.paused = true;
         this.fruits.paused = true;
-        this.bolas.paused = true;
-        for(var i = 0; i < this.players.length; i++){
-            //this.players[i].paused = true;
-        }
+        //this.bolas.paused = true;
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.playersPaused = true;
+        this.timer.paused = true;
+
     }
 
     continuarJuego(){
         this.fruitSpawn.paused = false;
         //this.bolaSpawn.paused = false;
         this.fruits.paused = false;
-        this.bolas.paused = false;
-        for(var i = 0; i < this.players.length; i++){
-            //this.players[i].paused = false;
-        }
+        //this.bolas.paused = false;
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
+        });
+        this.playersPaused = false;
+        this.timer.paused = false;
+
     }
 
     

@@ -90,7 +90,7 @@ class Results extends Phaser.Scene {
 
         //menu
         this.menu = this.add.sprite(400, 525, "menu").setInteractive();
-        this.marcoMenu = this.add.image(400, 500, 'marco').setVisible(false);
+        this.marcoMenu = this.add.image(400, 525, 'marco').setVisible(false);
 
        //Jugadores
        this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value); 

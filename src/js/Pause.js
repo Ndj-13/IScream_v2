@@ -49,7 +49,11 @@ class Pause{
 
         //Botones
         this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
-        this.marcoMenu = this.scene.add.image(400, 300, 'marco').setVisible(false);
+        this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
+
+        this.retry = this.scene.add.sprite(400, 325, "menu").setInteractive();
+        this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
+
         //Mensaje abandonar partida
         //tapar fondo
         this.niebla = this.scene.add.graphics({
@@ -91,11 +95,26 @@ class Pause{
         this.menu.on("pointerup", () => {
             this.menu.setFrame(0);
             document.body.style.cursor = "auto";
-            this.niebla.setVisible(true);
-            this.abandonar.setVisible(true);
-            this.yes.setVisible(true).setInteractive();
-            this.no.setVisible(true).setInteractive();
-            this.menu.disableInteractive();
+            this.scene.scene.start("CharacterSelect");
+        })
+
+        //retry
+        this.retry.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.marcoRetry.setVisible(true);
+        })
+        this.retry.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerdown", () => {
+            this.retry.setFrame(1);
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerup", () => {
+            this.retry.setFrame(0);
+            document.body.style.cursor = "auto";
+            this.scene.scene.start("MainGame");
         })
 
         //yes
