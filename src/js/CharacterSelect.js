@@ -63,7 +63,7 @@ class CharacterSelect extends Phaser.Scene {
         this.menu = this.add.sprite(100, 80, "menu").setInteractive();
         this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
 
-        this.player1 = new Player('p1');
+        this.player1 = new Player('p1', 50, this);
         playersList.push(this.player1);
         //player1 = new Player('p1');
         this.playersPanels[0].create();

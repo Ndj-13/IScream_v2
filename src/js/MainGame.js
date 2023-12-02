@@ -13,13 +13,20 @@ class MainGame extends Phaser.Scene {
         this.load.image('ground', 'resources/img/scene/suelo.png');
         //interface
         this.load.image('defeat', 'resources/img/interface/pantallaDefeat.png');
+        this.load.image('timerImg', 'resources/img/interface/timer.png');
+        this.load.spritesheet('timer', 'resources/img/interface/timerSpritesheet.png',
+            { frameWidth: 800, frameHeight: 600 });
 
+        //Tutorial
+        this.load.image('tutorial', 'resources/img/scene/tutorial.png');
 
         //Items
         this.load.image('red', 'resources/img/scene/red.png');
         //this.load.image('rock', 'resources/img/scene/rock.png');
         this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
+        this.load.spritesheet('fireball', 'resources/img/scene/fireball.png',
+            { frameWidth: 65, frameHeight: 100 });
 
         //Players
         for(var i = 0; i < playersList.length; i++)
@@ -51,30 +58,40 @@ class MainGame extends Phaser.Scene {
         
         platforms.create(400, 580, 'ground').refreshBody();
 
-        /*
-        platforms.create(600, 400, 'ground');
-        platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
-        */
+        
+        platforms.create(800, 410, 'ground');
+        platforms.create(-100, 270, 'ground');
+        platforms.create(1000, 220, 'ground');
 
-        //TIMER        
-        var tiempoPartida = 1000; // Duración de la partida en segundos
-        var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+        
+        //////////TIMER///////////////////
+        this.add.image(400, 300, 'timerImg');
+        //this.timerSprite = this.add.sprite(400, 300, 'timer');
+        this.anims.create({
+            key: 'timer',
+            frames: this.anims.generateFrameNumbers('timer', { start: 0, end: 12 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        //this.timerSpriteCount = 1;
+        this.tiempoPartida = 59; // Duración de la partida en segundos
+        var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
 
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
-                tiempoPartida--;
-                timerText.setText('Tiempo: ' + tiempoPartida);
+                this.tiempoPartida--;
+                timerText.setText('00:'+this.tiempoPartida);
                 
-                if (tiempoPartida === 0) {
+                if (this.tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
                     
                     this.scene.start("Results");                    
                 }
-                if (tiempoPartida<=5){
-                    timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
+                if (this.tiempoPartida<=5){
+                    timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
+
             },
             callbackScope: this,
             loop: true // Repetir el evento
@@ -111,11 +128,19 @@ class MainGame extends Phaser.Scene {
 
          //creacion n bolas
         var yBolaPos = 10;
+        this.animatedBolas = [];
         for(let i = 0; i < 10; i++)
         { 
-            let randomNum = Phaser.Math.Between(100, 700);
-            this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
+            let randomNum = Phaser.Math.Between(10, 700);
+            this.bola = this.bolas.create(randomNum, yBolaPos, 'fireball');
+            this.anims.create({
+                key: 'fireball'+i,
+                frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
+                frameRate: 15,
+                repeat: -1
+            });
             yBolaPos -= 200;
+            this.animatedBolas.push(this.bola);
             //debug
             //console.log("yBolaPos: " + yBolaPos);
         }
@@ -146,9 +171,10 @@ class MainGame extends Phaser.Scene {
         this.players = [];
         this.scoresText = [];
         this.posX = 50;
-        this.posXRec = 70;
+        this.posXRec = 75;
         for(var i = 0; i < playersList.length; i++)
         {
+            
             this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
             this.player.setBounce(0.2);
             this.player.setCollideWorldBounds(true);
@@ -185,7 +211,10 @@ class MainGame extends Phaser.Scene {
             this.name.setPosition(this.posX, this.player.y+45);
             namesText.push(this.name);
 
-            this.players.push(this.player);
+            //this.players.push(this.player);
+            console.log(this.player);
+            playersList[i].hitbox = this.player;
+            //console.log(playersList[i].hitbox);
 
             //Interface
             this.rec = this.add.image(this.posXRec, 40, 'score'+i).setScale(1.4);
@@ -209,18 +238,78 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
+            //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
+        this.contadorPause = false;
             
-        // PAUSE
-        this.pauseButton = this.add.sprite(400, 40, "pause").setInteractive();
-        this.pauseButton.on("pointerover", ()=>{
-            document.body.style.cursor = "pointer";
-            //this.marcoMenu.setVisible(true);
-        })
-        this.pauseButton.on("pointerout", ()=>{
-            document.body.style.cursor = "auto";
-            //this.marcoMenu.setVisible(false);
-        })            
+
+        /*
+        function spawnHitbox()
+        {
+            this.hitboxV = hitbox.create(70, 550, 'trans');
+            this.hitboxV.setScale(0.1, 10);
+            this.hitboxH = hitbox.create(70, 450, 'trans');
+            this.hitboxH.setScale(5, 0.1);
+        }*/
+        
+        //console.log(this.players);
+        ///COLLISIONS///////////////////////////
+        
+
+        //JUGADOR 1
+        var player1 = playersList[0];
+        //colision bolas-jugador
+        this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
+            /*
+            player.setPosition(0, 500);
+            spawnHitbox();*/
+        }, null, this);
+        //colision fruta-jugador
+        this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
+            //console.log('Player 1: '+player1.getName().value);
+            player1.updateScore(1);
+            //console.log('Player 1 Score: '+player1.showScore()); 
+            fruit.destroy();    
+        }, null, this);
+
+        if(playersList.length > 1)
+        {
+            var player2 = playersList[1];
+            this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
+                let randomNum = Phaser.Math.Between(10, 780);
+                bola.setPosition(randomNum, -25);
+                /*
+                player.setPosition(0, 500);
+                spawnHitbox();*/
+            }, null, this);
+            this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
+                player2.updateScore(1);
+                //console.log('Player 2 score: '+player2.showScore()); 
+                fruit.destroy();    
+            }, null, this);
+        }
+
+        //colision bolas-hitbox
+        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
+
+        }); 
+
+        //colision bola-bola
+        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola1.setPosition(randomNum, -25);
+            console.log("cambiado pos bola: " + bola1);
+        }); 
+        //}
+
+        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
         this.pauseButton.on("pointerdown", ()=>{
             //this.marcoMenu.setVisible(false);
             if(this.pauseButton.frame.name === 0){
@@ -331,30 +420,108 @@ class MainGame extends Phaser.Scene {
             bola1.setPosition(randomNum, -25);
             console.log("cambiado pos bola: " + bola1);
         }); */
+
+        //////TUTORIAL/////////
+        this.tutorial = this.add.image(400, 300, 'tutorial');
+        this.tiempoTutorial = 3; // Duración de la partida en segundos
+        this.pausaTutorial(); 
+        this.timer = this.time.addEvent({
+            delay: 1000, // Ejecutar cada segundo
+            callback: ()=> {
+                this.tiempoTutorial--;
+                if (this.tiempoTutorial === 0) {
+                    this.comenzarJuego();
+                    this.tutorial.setVisible(false);                   
+                }
+            },
+            callbackScope: this,
+            loop: true // Repetir el evento
+        });
     }
     
     update(){
-        //KEYBOARD
+        //console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
+        
+        ////////KEYBOARD INPUT//////////////7
         //1 player:
-        if(playersList.length == 1 && !this.player1Paused){
-            this.firstPlayerController(this.players[0], 0);
+        if(playersList.length == 1 && !this.playersPaused){
+            this.firstPlayerController(playersList[0].hitbox, 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else {
-            if(!this.player1Paused){
-                this.firstPlayerController(this.players[0], 0);
-            }
-            if(!this.player2Paused){
-                this.secondPlayerController(this.players[1], 1);
-            }
+        else if (playersList.length == 2 && !this.playersPaused) {
+            this.firstPlayerController(playersList[0].hitbox, 0);
+            this.secondPlayerController(playersList[1].hitbox, 1);
         }
-        //Collisions
-        for(var i = 0; i < this.players.length; i++)
+        
+        for(let i = 0; i < 10; i++)
         {
-            namesText[i].setPosition(this.players[i].x, this.players[i].y-40);
-            //inputController(this.players[i]);
+            this.animatedBolas[i].anims.play('fireball'+i, true);
+        }
+
+        ///TIMER ANIMATION////
+        /*
+        if(this.tiempoPartida % 10 == 0)
+        {
+            this.timerSprite.setFrame(this.timerSpriteCount);
+            this.timerSpriteCount++;
+        }*/
+
+        ///////TIMER/////////////////
+        //this.timerSprite.anims.play('time', true);
+        /* 
+        this.pauseButton.on("pointerdown", ()=>{
+            //this.marcoMenu.setVisible(false);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
+        })
+
+        this.pauseButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+            }
+        })*/
+
+        /*this.input.keyboard.on('keydown_ESC', (event) => {
+            if (event.repeat) return;
+            if(this.timer.paused == true)
+            {
+                this.continuarJuego();
+                this.pauseScene.destroy();
+            }
+            else 
+            {
+                this.contadorPause = true;
+                this.pararJuego();
+                this.pauseScene.create();
+            }
+        });
+*/
+
+        /////////COLLISIONS///////////7
+        for(var i = 0; i < playersList.length; i++)
+        {
+            namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
         } 
+
+        ////////SCORE////////////
+        for(var i = 0; i < playersList.length; i++)
+        {
+            this.scoresText[i].setText(playersList[i].showScore());
+        }
     }
       
     firstPlayerController(playerController, pIndex)
@@ -392,7 +559,6 @@ class MainGame extends Phaser.Scene {
         //2nd Player controlls
         if (cursorInput.left.isDown)
         {
-            console.log('A');
             playerController.setVelocityX(-160);
 
             playerController.anims.play('leftP'+pIndex, true);
@@ -428,6 +594,8 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = true;
         this.player2Paused = true;
+        this.anims.pauseAll();
+
         this.timer.paused = true;
 
     }
@@ -442,6 +610,34 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = false;
         this.player2Paused = false;
+        this.anims.resumeAll();
+
+        this.timer.paused = false;
+
+    }
+
+    pausaTutorial(){
+        this.fruitSpawn.paused = true;
+        //this.fruits.paused = true;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.timer.paused = true;
+
+    }
+
+    comenzarJuego(){
+        this.fruitSpawn.paused = false;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
+        });
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
+        });
+
         this.timer.paused = false;
 
     }

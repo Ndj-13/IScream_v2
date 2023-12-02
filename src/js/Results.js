@@ -9,6 +9,8 @@ class Results extends Phaser.Scene {
         this.load.image("fondo", "resources/img/interface/pauseFondo1.png");
         this.load.image("fondo2", "resources/img/interface/pauseFondo2.png");
 
+        this.load.image("titulo", "resources/img/interface/RESULTS.png");
+
         //Botones
         this.load.image("marco", "resources/img/interface/recuadroBoton.png");
 
@@ -16,6 +18,11 @@ class Results extends Phaser.Scene {
         this.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
+
+        this.load.spritesheet('retry',
+            'resources/img/interface/botonRepeat.png',
+            { frameWidth: 120, frameHeight: 47 });
+
 
         //Iconos:
         this.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
@@ -33,7 +40,7 @@ class Results extends Phaser.Scene {
     }
 
     create() {
-        const confTitulo = {
+        /*const confTitulo = {
             origin: 'center',
             x: game.renderer.width / 2,
             y: 100,
@@ -43,7 +50,7 @@ class Results extends Phaser.Scene {
                 fontSize: 30,
                 fontFamily: 'titulo',
             }
-        }        
+        }   */     
         
         const confJugadores = {
             origin: 'center',
@@ -86,11 +93,16 @@ class Results extends Phaser.Scene {
         this.fondo2 = this.add.image(405,200,"fondo2");
         this.fondo2.setScale(3.35);
 
-        this.make.text(confTitulo);
+        //this.make.text(confTitulo);
+        this.add.image(game.renderer.width / 2, 100, 'titulo');
 
         //menu
-        this.menu = this.add.sprite(400, 525, "menu").setInteractive();
-        this.marcoMenu = this.add.image(400, 525, 'marco').setVisible(false);
+        this.menu = this.add.sprite(500, 525, "menu").setInteractive();
+        this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
+
+        this.retry = this.add.sprite(300, 525, "retry").setInteractive();
+        this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
+
 
        //Jugadores
        this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value); 
@@ -155,6 +167,30 @@ class Results extends Phaser.Scene {
             this.yes.setVisible(true).setInteractive();
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
+        })
+
+        
+        //retry
+        this.retry.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.marcoRetry.setVisible(true);
+        })
+        this.retry.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerdown", () => {
+            this.retry.setFrame(1);
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerup", () => {
+            this.retry.setFrame(0);
+            document.body.style.cursor = "auto";
+            for(var i = 0; i < playersList.length; i++)
+            {
+                playersList[i].resetScore()
+            }
+            this.scene.start("MainGame");
         })
 
         //yes
