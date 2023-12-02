@@ -250,18 +250,7 @@ class MainGame extends Phaser.Scene {
             //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
         this.contadorPause = false;
-            
-
-        /*
-        function spawnHitbox()
-        {
-            this.hitboxV = hitbox.create(70, 550, 'trans');
-            this.hitboxV.setScale(0.1, 10);
-            this.hitboxH = hitbox.create(70, 450, 'trans');
-            this.hitboxH.setScale(5, 0.1);
-        }*/
         
-        //console.log(this.players);
         ///COLLISIONS///////////////////////////
         
 
@@ -274,28 +263,32 @@ class MainGame extends Phaser.Scene {
             let randomNumY = Phaser.Math.Between(-10, -250);
             bola.setPosition(randomNumX, randomNumY);
 
+            this.player1Paused = true;
             player.setVelocity(0);
-                player.setPosition(0, 500);
-                player.setTint(0xFF0000);
-            
+            player.setPosition(0, 500);
+            player.setTint(0xFF0000);
+            this.stop = this.time.addEvent({
+                delay: 2500, 
+                callbackScope: this,
+                loop: false, 
+                callback: ()=> {
+                    this.player1Paused = false;
+                    player.clearTint();
+                    /*
+                    hitboxV1.destroy();
+                    hitboxH1.destroy();*/
+                },
+            });
+                /*
                 //crear hitbox
                 let hitboxV1 = this.hitbox.create(65, 525, 'trans');
                 hitboxV1.setScale(0.1, 3);
                 hitboxV1.setImmovable(true);
                 let hitboxH1 = this.hitbox.create(30, 485, 'trans');
                 hitboxH1.setScale(3.5, 0.1);
-                hitboxH1.setImmovable(true);
+                hitboxH1.setImmovable(true);*/
 
-                this.stop = this.time.addEvent({
-                    delay: 2500, 
-                    callbackScope: this,
-                    loop: false, 
-                    callback: ()=> {
-                        player.clearTint();
-                        hitboxV1.destroy();
-                        hitboxH1.destroy();
-                    },
-                });
+                
         }, null, this);
 
         //colision fruta-jugador
@@ -315,10 +308,23 @@ class MainGame extends Phaser.Scene {
                 let randomNumY = Phaser.Math.Between(-10, -250);
                 bola.setPosition(randomNumX, randomNumY);
 
-                player.setVelocity(0);
+                this.player2Paused = true;
                 player.setPosition(800, 500);
+                player.setVelocity(0);
                 player.setTint(0xFF0000);
-            
+                this.stop = this.time.addEvent({
+                    delay: 2500, 
+                    callbackScope: this,
+                    loop: false, 
+                    callback: ()=> {
+                        this.player2Paused = false;
+                        player.clearTint();
+                        /*
+                        hitboxV1.destroy();
+                        hitboxH1.destroy();*/
+                    },
+                });
+                /*
                 //crear hitbox
                 let hitboxV2 = this.hitbox.create(750, 525, 'trans');
                 hitboxV2.setScale(0.1, 3);
@@ -336,7 +342,7 @@ class MainGame extends Phaser.Scene {
                         hitboxV2.destroy();
                         hitboxH2.destroy();
                     },
-                });
+                });*/
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
                 player2.updateScore(1);
@@ -415,14 +421,20 @@ class MainGame extends Phaser.Scene {
         
         ////////KEYBOARD INPUT//////////////7
         //1 player:
-        if(playersList.length == 1 && !this.playersPaused){
+        if(playersList.length == 1 && !this.player1Paused){
             this.firstPlayerController(playersList[0].hitbox, 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else if (playersList.length == 2 && !this.playersPaused) {
-            this.firstPlayerController(playersList[0].hitbox, 0);
-            this.secondPlayerController(playersList[1].hitbox, 1);
+        else if(playersList.length == 2) {
+            if(!this.player1Paused)
+            {
+                this.firstPlayerController(playersList[0].hitbox, 0);
+            }
+            if(!this.player2Paused)
+            {
+                this.secondPlayerController(playersList[1].hitbox, 1);
+            }
         }
         
         for(let i = 0; i < 10; i++)
