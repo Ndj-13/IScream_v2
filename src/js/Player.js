@@ -30,9 +30,13 @@ class Player {
         this.charactId = newCharactId;
     }
 
-    Score()
+    showScore()
     {
         return this.hitbox.score;
+    }
+    resetScore()
+    {
+        this.score = 0;
     }
     updateScore(addN)
     {

@@ -3,7 +3,8 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         this.pauseScene = new Pause(this);
-        this.playersPaused = false; 
+        this.player1Paused = false; 
+        this.player2Paused = false; 
     }
 
     preload(){
@@ -49,21 +50,21 @@ class MainGame extends Phaser.Scene {
         
         platforms.create(400, 580, 'ground').refreshBody();
 
-        /*
-        platforms.create(600, 400, 'ground');
-        platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
-        */
+        
+        platforms.create(800, 410, 'ground');
+        platforms.create(-100, 270, 'ground');
+        platforms.create(1000, 220, 'ground');
+        
         //TIMER   
                   
-        var tiempoPartida = 1000; // Duración de la partida en segundos
-        var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+        var tiempoPartida = 10; // Duración de la partida en segundos
+        var timerText = this.add.text(360, 10, 'Timer: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 tiempoPartida--;
-                timerText.setText('Tiempo: ' + tiempoPartida);
+                timerText.setText('Timer: ' + tiempoPartida);
                 
                 if (tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
@@ -71,7 +72,7 @@ class MainGame extends Phaser.Scene {
                     this.scene.start("Results");                    
                 }
                 if (tiempoPartida<=5){
-                    timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
+                    timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
             },
             callbackScope: this,
@@ -191,7 +192,7 @@ class MainGame extends Phaser.Scene {
                 this.rec.flipX = true;
             }
             this.add.image(this.posX, 40, 'charactIcon'+playersList[i].getCharactId());
-            this.score = this.make.text(confJugadores).setText(playersList[i].Score());
+            this.score = this.make.text(confJugadores).setText(playersList[i].showScore());
             this.score.setPosition(this.posXRec+30, 40);
             if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
             this.scoresText.push(this.score);
@@ -210,7 +211,7 @@ class MainGame extends Phaser.Scene {
         });
             
         // PAUSE
-        this.pauseButton = this.add.sprite(400, 40, "pause").setInteractive();
+        this.pauseButton = this.add.sprite(400, 50, "pause").setInteractive();
         this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
@@ -265,12 +266,12 @@ class MainGame extends Phaser.Scene {
                 spawnHitbox();*/
             }, null, this);
         
-            console.log('Playerslist: ' + playersList[j].getName().value);
             //colision fruta-jugador
             this.physics.add.overlap(playersList[j].hitbox, this.fruits, function(player, fruit) {
-                //añadir punto jugador 
-                console.log('Player: ' + player.score);
-                //player.updateScore(1); 
+                //añadir punto jugador  
+                //for(var i = 0; i < playersList.length; i++){
+                playersList[i].updateScore(1)
+                //}
                 fruit.destroy();    
                 //console.log("colisión player-fruit");
             }, null, this);
@@ -294,6 +295,8 @@ class MainGame extends Phaser.Scene {
     }
     
     update(){
+        console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
+        
         //KEYBOARD
         //1 player:
         if(playersList.length == 1 && !this.playersPaused){
@@ -419,26 +422,29 @@ class MainGame extends Phaser.Scene {
         
     pararJuego(){
         this.fruitSpawn.paused = true;
-        //this.bolaSpawn.paused = true;
-        this.fruits.paused = true;
-        //this.bolas.paused = true;
+        //this.fruits.paused = true;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
-        this.playersPaused = true;
+        this.player1Paused = true;
+        this.player2Paused = true;
         this.timer.paused = true;
 
     }
 
     continuarJuego(){
         this.fruitSpawn.paused = false;
-        //this.bolaSpawn.paused = false;
-        this.fruits.paused = false;
-        //this.bolas.paused = false;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
+        });
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
-        this.playersPaused = false;
+        this.player1Paused = false;
+        this.player2Paused = false;
         this.timer.paused = false;
 
     }
