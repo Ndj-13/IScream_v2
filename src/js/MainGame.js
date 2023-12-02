@@ -224,7 +224,7 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
-            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+            //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
         this.contadorPause = false;
             
@@ -293,6 +293,33 @@ class MainGame extends Phaser.Scene {
             console.log("cambiado pos bola: " + bola1);
         }); 
         //}
+
+        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
+        this.pauseButton.on("pointerdown", ()=>{
+            //this.marcoMenu.setVisible(false);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
+        })
+
+        this.pauseButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+            }
+        });
     }
     
     update(){
@@ -309,16 +336,7 @@ class MainGame extends Phaser.Scene {
             this.firstPlayerController(playersList[0].hitbox, 0);
             this.secondPlayerController(playersList[1].hitbox, 1);
         }
-        //Pause
-        if(keyInput.ESC.isDown)
-        {
-            this.contadorPause = true;
-            console.log("LE DA PA PARAR");
-            this.pararJuego();
-            this.pauseScene.create();
-                
-        }
-
+        
         for(let i = 0; i < 10; i++)
         {
             this.animatedBolas[i].anims.play('fireball'+i, true);
@@ -352,6 +370,21 @@ class MainGame extends Phaser.Scene {
             }
         })*/
 
+        /*this.input.keyboard.on('keydown_ESC', (event) => {
+            if (event.repeat) return;
+            if(this.timer.paused == true)
+            {
+                this.continuarJuego();
+                this.pauseScene.destroy();
+            }
+            else 
+            {
+                this.contadorPause = true;
+                this.pararJuego();
+                this.pauseScene.create();
+            }
+        });
+*/
 
         /////////COLLISIONS///////////7
         for(var i = 0; i < playersList.length; i++)
@@ -438,6 +471,8 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = true;
         this.player2Paused = true;
+        this.anims.pauseAll();
+
         this.timer.paused = true;
 
     }
@@ -452,6 +487,8 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = false;
         this.player2Paused = false;
+        this.anims.resumeAll();
+
         this.timer.paused = false;
 
     }
