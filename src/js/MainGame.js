@@ -3,7 +3,8 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         this.pauseScene = new Pause(this);
-        this.playersPaused = false; 
+        this.player1Paused = false; 
+        this.player2Paused = false; 
     }
 
     preload(){
@@ -49,11 +50,11 @@ class MainGame extends Phaser.Scene {
         
         platforms.create(400, 580, 'ground').refreshBody();
 
-        /*
+        
         platforms.create(600, 400, 'ground');
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
-        */
+        
         //TIMER   
                   
         var tiempoPartida = 1000; // Duración de la partida en segundos
@@ -286,14 +287,19 @@ class MainGame extends Phaser.Scene {
     update(){
         //KEYBOARD
         //1 player:
-        if(playersList.length == 1 && !this.playersPaused){
+        if(playersList.length == 1 && !this.player1Paused){
             this.firstPlayerController(this.players[0], 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else if (playersList.length == 2 && !this.playersPaused) {
-            this.firstPlayerController(this.players[0], 0);
-            this.secondPlayerController(this.players[1], 1);
+        else {
+            if(!this.player1Paused){
+                this.firstPlayerController(this.players[0], 0);
+            }
+            if(!this.player2Paused){
+                this.secondPlayerController(this.players[1], 1);
+
+            }
         }
         //Collisions
         for(var i = 0; i < this.players.length; i++)
@@ -416,7 +422,8 @@ class MainGame extends Phaser.Scene {
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
-        this.playersPaused = true;
+        this.player1Paused = true;
+        this.player2Paused = true;
         this.timer.paused = true;
 
     }
@@ -424,12 +431,13 @@ class MainGame extends Phaser.Scene {
     continuarJuego(){
         this.fruitSpawn.paused = false;
         this.fruits.children.iterate(function (fruit) {
-            fruit.body.setVelocity(150); // Detener la velocidad de cada bola
+            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
         });
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
-        this.playersPaused = false;
+        this.player1Paused = false;
+        this.player2Paused = false;
         this.timer.paused = false;
 
     }
