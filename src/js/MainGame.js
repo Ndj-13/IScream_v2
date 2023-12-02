@@ -13,6 +13,9 @@ class MainGame extends Phaser.Scene {
         this.load.image('ground', 'resources/img/scene/suelo.png');
         //interface
         this.load.image('defeat', 'resources/img/interface/pantallaDefeat.png');
+        this.load.image('timerImg', 'resources/img/interface/timer.png');
+        this.load.spritesheet('timer', 'resources/img/interface/timerSpritesheet.png',
+            { frameWidth: 866.67, frameHeight: 600 });
 
 
         //Items
@@ -20,6 +23,8 @@ class MainGame extends Phaser.Scene {
         //this.load.image('rock', 'resources/img/scene/rock.png');
         this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
+        this.load.spritesheet('fireball', 'resources/img/scene/fireball.png',
+            { frameWidth: 65, frameHeight: 100 });
 
         //Players
         for(var i = 0; i < playersList.length; i++)
@@ -55,16 +60,17 @@ class MainGame extends Phaser.Scene {
         platforms.create(-100, 270, 'ground');
         platforms.create(1000, 220, 'ground');
         
-        //TIMER   
-                  
-        var tiempoPartida = 60; // Duración de la partida en segundos
-        var timerText = this.add.text(360, 10, 'Timer: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+        //////////TIMER///////////////////
+        this.add.image(400, 300, 'timerImg');
+        
+        var tiempoPartida = 59; // Duración de la partida en segundos
+        var timerText = this.add.text(365, 20, '00:'+tiempoPartida, { font: '30px estilo', fill: '#000000' });
 
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 tiempoPartida--;
-                timerText.setText('Timer: ' + tiempoPartida);
+                timerText.setText('00:'+tiempoPartida);
                 
                 if (tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
@@ -108,11 +114,20 @@ class MainGame extends Phaser.Scene {
 
          //creacion n bolas
         var yBolaPos = 10;
+        this.animatedBolas = [];
         for(let i = 0; i < 10; i++)
         { 
             let randomNum = Phaser.Math.Between(10, 780);
-            this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
+            //this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
+            this.bola = this.bolas.create(randomNum, yBolaPos, 'fireball');
+            this.anims.create({
+                key: 'fireball'+i,
+                frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
+                frameRate: 15,
+                repeat: -1
+            });
             yBolaPos -= 200;
+            this.animatedBolas.push(this.bola);
             //debug
             //console.log("yBolaPos: " + yBolaPos);
         }
@@ -143,7 +158,7 @@ class MainGame extends Phaser.Scene {
         this.players = [];
         this.scoresText = [];
         this.posX = 50;
-        this.posXRec = 70;
+        this.posXRec = 75;
         for(var i = 0; i < playersList.length; i++)
         {
             
@@ -209,42 +224,10 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
+            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
+        this.contadorPause = false;
             
-        // PAUSE
-        this.pauseButton = this.add.sprite(400, 50, "pause").setInteractive();
-        this.pauseButton.on("pointerover", ()=>{
-            document.body.style.cursor = "pointer";
-            //this.marcoMenu.setVisible(true);
-        })
-        this.pauseButton.on("pointerout", ()=>{
-            document.body.style.cursor = "auto";
-            //this.marcoMenu.setVisible(false);
-        })            
-        this.pauseButton.on("pointerdown", ()=>{
-            //this.marcoMenu.setVisible(false);
-            if(this.pauseButton.frame.name === 0){
-                this.pauseButton.setFrame(1);
-            }else{
-                this.pauseButton.setFrame(0);
-            }
-        })
-
-        this.pauseButton.on("pointerup", ()=>{
-            document.body.style.cursor = "auto";
-            if(this.pauseButton.frame.name === 1){
-                console.log("LE DA PA PARAR");
-                this.pararJuego();
-                this.pauseScene.create()
-            } else {
-                console.log("LE DA PA RESUME");
-                this.continuarJuego();
-                if(this.pauseScene){
-                    console.log("ESCENA DE PAUSA CREADA");
-                }
-                this.pauseScene.destroy();
-            }
-        })
 
         /*
         function spawnHitbox()
@@ -326,6 +309,50 @@ class MainGame extends Phaser.Scene {
             this.firstPlayerController(playersList[0].hitbox, 0);
             this.secondPlayerController(playersList[1].hitbox, 1);
         }
+        //Pause
+        if(keyInput.ESC.isDown)
+        {
+            this.contadorPause = true;
+            console.log("LE DA PA PARAR");
+            this.pararJuego();
+            this.pauseScene.create();
+                
+        }
+
+        for(let i = 0; i < 10; i++)
+        {
+            this.animatedBolas[i].anims.play('fireball'+i, true);
+        }
+
+        ///////TIMER/////////////////
+        //this.timerSprite.anims.play('time', true);
+        /* 
+        this.pauseButton.on("pointerdown", ()=>{
+            //this.marcoMenu.setVisible(false);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
+        })
+
+        this.pauseButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+            }
+        })*/
+
+
         /////////COLLISIONS///////////7
         for(var i = 0; i < playersList.length; i++)
         {
