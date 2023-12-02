@@ -51,20 +51,20 @@ class MainGame extends Phaser.Scene {
         platforms.create(400, 580, 'ground').refreshBody();
 
         
-        platforms.create(600, 400, 'ground');
-        platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
+        platforms.create(800, 410, 'ground');
+        platforms.create(-100, 270, 'ground');
+        platforms.create(1000, 220, 'ground');
         
         //TIMER   
                   
-        var tiempoPartida = 1000; // Duración de la partida en segundos
-        var timerText = this.add.text(370, 10, 'Tiempo: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
+        var tiempoPartida = 10; // Duración de la partida en segundos
+        var timerText = this.add.text(360, 10, 'Timer: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 tiempoPartida--;
-                timerText.setText('Tiempo: ' + tiempoPartida);
+                timerText.setText('Timer: ' + tiempoPartida);
                 
                 if (tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
@@ -72,7 +72,7 @@ class MainGame extends Phaser.Scene {
                     this.scene.start("Results");                    
                 }
                 if (tiempoPartida<=5){
-                    timerText.setStyle({fontSize: '20px',color: '#FF1D1D'});
+                    timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
             },
             callbackScope: this,
@@ -208,7 +208,7 @@ class MainGame extends Phaser.Scene {
         });
             
         // PAUSE
-        this.pauseButton = this.add.sprite(400, 40, "pause").setInteractive();
+        this.pauseButton = this.add.sprite(400, 50, "pause").setInteractive();
         this.pauseButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
@@ -263,6 +263,10 @@ class MainGame extends Phaser.Scene {
         //colision fruta-jugador
         this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
             //añadir punto jugador  
+            for(var i = 0; i < playersList.length; i++)
+            {
+                playersList[i].updateScore(1)
+            }
             fruit.destroy();    
             //console.log("colisión player-fruit");
         }, null, this);
@@ -285,6 +289,8 @@ class MainGame extends Phaser.Scene {
     }
     
     update(){
+        console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
+        
         //KEYBOARD
         //1 player:
         if(playersList.length == 1 && !this.player1Paused){

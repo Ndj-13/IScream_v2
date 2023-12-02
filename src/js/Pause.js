@@ -5,6 +5,7 @@ class Pause{
     }
     preload() {
         this.scene.load.image("fondo1", "resources/img/interface/pauseFondo_chico.png");
+        this.scene.load.image("titulo", "resources/img/interface/PAUSE.png");
 
         //Botones
         this.scene.load.image("marco", "resources/img/interface/recuadroBoton.png");
@@ -12,6 +13,10 @@ class Pause{
         // menu
         this.scene.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
+            { frameWidth: 120, frameHeight: 47 });
+        
+        this.scene.load.spritesheet('retry',
+            'resources/img/interface/botonRepeat.png',
             { frameWidth: 120, frameHeight: 47 });
 
         //Pestaña aviso
@@ -23,7 +28,7 @@ class Pause{
 
     create() {
         //Titulo PAUSA
-        const confTitulo = {
+        /*const confTitulo = {
             origin: 'center',
             x: game.renderer.width / 2,
             y: 150,
@@ -33,7 +38,7 @@ class Pause{
                 fontSize: 30,
                 fontFamily: 'titulo',
             }
-        }        
+        }   */     
         const confTexto = {
             origin: 'right',
             style: {
@@ -42,7 +47,10 @@ class Pause{
                 fontSize: 20,
             }
         }
-        this.titulo = this.scene.make.text(confTitulo);        
+        //this.titulo = this.scene.make.text(confTitulo);  
+        this.titulo = this.scene.add.image(game.renderer.width / 2, 150, 'titulo');
+        this.titulo.setScale(0.8);
+      
         this.fondo1 = this.scene.add.image(400,300,"fondo1");
         this.fondo1.setScale(1.1);
 
@@ -51,7 +59,7 @@ class Pause{
         this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
         this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
 
-        this.retry = this.scene.add.sprite(400, 325, "menu").setInteractive();
+        this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
         this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
 
         //Mensaje abandonar partida
@@ -114,6 +122,10 @@ class Pause{
         this.retry.on("pointerup", () => {
             this.retry.setFrame(0);
             document.body.style.cursor = "auto";
+            for(var i = 0; i < playersList.length; i++)
+            {
+                playersList[i].resetScore()
+            }
             this.scene.scene.start("MainGame");
         })
 

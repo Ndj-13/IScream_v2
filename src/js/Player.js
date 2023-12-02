@@ -32,7 +32,11 @@ class Player {
     {
         return this.score;
     }
-    updateSore(addN)
+    resetScore()
+    {
+        this.score = 0;
+    }
+    updateScore(addN)
     {
         this.score+=addN;
     }
