@@ -164,6 +164,7 @@ class Pause{
         this.yes.destroy();
         this.abandonar.destroy();
         this.menu.destroy();
+        this.retry.destroy();
         this.niebla.destroy();
         this.fondo1.destroy();
         this.marcoMenu.destroy();

@@ -409,9 +409,10 @@ class MainGame extends Phaser.Scene {
         
     pararJuego(){
         this.fruitSpawn.paused = true;
-        //this.bolaSpawn.paused = true;
-        this.fruits.paused = true;
-        //this.bolas.paused = true;
+        //this.fruits.paused = true;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
@@ -422,9 +423,9 @@ class MainGame extends Phaser.Scene {
 
     continuarJuego(){
         this.fruitSpawn.paused = false;
-        //this.bolaSpawn.paused = false;
-        this.fruits.paused = false;
-        //this.bolas.paused = false;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocity(150); // Detener la velocidad de cada bola
+        });
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
