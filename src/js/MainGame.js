@@ -57,7 +57,7 @@ class MainGame extends Phaser.Scene {
         
         //TIMER   
                   
-        var tiempoPartida = 10; // Duración de la partida en segundos
+        var tiempoPartida = 60; // Duración de la partida en segundos
         var timerText = this.add.text(360, 10, 'Timer: ' + tiempoPartida, { font: '16px estilo', fill: '#ffffff' });
 
         this.timer = this.time.addEvent({
@@ -146,6 +146,7 @@ class MainGame extends Phaser.Scene {
         this.posXRec = 70;
         for(var i = 0; i < playersList.length; i++)
         {
+            
             this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
             this.player.setBounce(0.2);
             this.player.setCollideWorldBounds(true);
@@ -256,48 +257,65 @@ class MainGame extends Phaser.Scene {
         
         //console.log(this.players);
         ///COLLISIONS///////////////////////////
-        for(var j = 0; j < playersList.length; j++){
-            //colision bolas-jugador
-            this.physics.add.overlap(playersList[j].hitbox, this.bolas, function(player, bola) {
+        
+
+        //JUGADOR 1
+        var player1 = playersList[0];
+        //colision bolas-jugador
+        this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
+            /*
+            player.setPosition(0, 500);
+            spawnHitbox();*/
+        }, null, this);
+        //colision fruta-jugador
+        this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
+            //console.log('Player 1: '+player1.getName().value);
+            player1.updateScore(1);
+            //console.log('Player 1 Score: '+player1.showScore()); 
+            fruit.destroy();    
+        }, null, this);
+
+        if(playersList.length > 1)
+        {
+            var player2 = playersList[1];
+            this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
                 let randomNum = Phaser.Math.Between(10, 780);
                 bola.setPosition(randomNum, -25);
                 /*
                 player.setPosition(0, 500);
                 spawnHitbox();*/
             }, null, this);
-        
-            //colision fruta-jugador
-            this.physics.add.overlap(playersList[j].hitbox, this.fruits, function(player, fruit) {
-                //añadir punto jugador  
-                //for(var i = 0; i < playersList.length; i++){
-                playersList[i].updateScore(1)
-                //}
+            this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
+                player2.updateScore(1);
+                //console.log('Player 2 score: '+player2.showScore()); 
                 fruit.destroy();    
-                //console.log("colisión player-fruit");
             }, null, this);
-
-            //colision bolas-hitbox
-            this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-            {
-                let randomNum = Phaser.Math.Between(10, 780);
-                bola.setPosition(randomNum, -25);
-
-            }); 
-
-            //colision bola-bola
-            this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
-            {
-                let randomNum = Phaser.Math.Between(10, 780);
-                bola1.setPosition(randomNum, -25);
-                console.log("cambiado pos bola: " + bola1);
-            }); 
         }
+
+        //colision bolas-hitbox
+        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola.setPosition(randomNum, -25);
+
+        }); 
+
+        //colision bola-bola
+        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
+        {
+            let randomNum = Phaser.Math.Between(10, 780);
+            bola1.setPosition(randomNum, -25);
+            console.log("cambiado pos bola: " + bola1);
+        }); 
+        //}
     }
     
     update(){
-        console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
+        //console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
         
-        //KEYBOARD
+        ////////KEYBOARD INPUT//////////////7
         //1 player:
         if(playersList.length == 1 && !this.playersPaused){
             this.firstPlayerController(playersList[0].hitbox, 0);
@@ -308,54 +326,17 @@ class MainGame extends Phaser.Scene {
             this.firstPlayerController(playersList[0].hitbox, 0);
             this.secondPlayerController(playersList[1].hitbox, 1);
         }
-        //Collisions
+        /////////COLLISIONS///////////7
         for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
-            /*   
-            //inputController(this.players[i]);
-            //colision bola-jugador
-            this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
-                //quitar vida jugador   
-                bola.setTint(0x001020);
-            }, null, this);
-
-            
-            //colision fruta-jugador
-            this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
-                //añadir punto jugador  
-                let randomNum = Phaser.Math.Between(10, 780);
-                fruit.setPosition(randomNum, -100);
-                //console.log("colisión player-fruit");
-            }, null, this);
-            
-            
-            this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-            {
-                let randomNum = Phaser.Math.Between(10, 780);
-                bola.setPosition(randomNum, -25);
-                //debug
-                //console.log("bola hitbox");
-            });
-            */
-            //console.log(this.players[i].x+', '+this.players[i].y);
         } 
-        
 
-       
-        
-        /*
-        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+        ////////SCORE////////////
+        for(var i = 0; i < playersList.length; i++)
         {
-            //let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(10, -25);
-            //debug
-            //console.log("bola hitbox");
-        });  */ 
-        //debug
-        //console.log("pos canon1: " + canon1.x, canon1.y);
-        //console.log("pos canon2: " + canon2.x, canon2.y);
-        //console.log("pos bolaC1: " + bolaC1.x, bolaC1.y)*/
+            this.scoresText[i].setText(playersList[i].showScore());
+        }
     }
       
     firstPlayerController(playerController, pIndex)
@@ -393,7 +374,6 @@ class MainGame extends Phaser.Scene {
         //1st Player controlls
         if (cursorInput.left.isDown)
         {
-            console.log('A');
             playerController.setVelocityX(-160);
 
             playerController.anims.play('leftP'+pIndex, true);

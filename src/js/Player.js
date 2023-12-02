@@ -1,13 +1,14 @@
 class Player {
-    constructor(id){
+    constructor(id, posX, scene){
 
+        this.scene = scene;
         this.id = id;
         this.playerName = 'Player1';
         
         this.ready = false;
         this.charactId = 1;
         this.hitbox;
-        this.score;
+        this.score = 0;
     }
     
     getId(){
@@ -32,7 +33,7 @@ class Player {
 
     showScore()
     {
-        return this.hitbox.score;
+        return this.score;
     }
     resetScore()
     {
@@ -40,7 +41,7 @@ class Player {
     }
     updateScore(addN)
     {
-        this.hitbox.score = this.hitbox.score + addN;
+        this.score = this.score + addN;
     }
 
     confirmReady(){
