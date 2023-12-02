@@ -180,7 +180,10 @@ class MainGame extends Phaser.Scene {
             this.name.setPosition(this.posX, this.player.y+45);
             namesText.push(this.name);
 
-            this.players.push(this.player);
+            //this.players.push(this.player);
+            console.log(this.player);
+            playersList[i].hitbox = this.player;
+            //console.log(playersList[i].hitbox);
 
             //Interface
             this.rec = this.add.image(this.posXRec, 40, 'score'+i).setScale(1.4);
@@ -188,7 +191,7 @@ class MainGame extends Phaser.Scene {
                 this.rec.flipX = true;
             }
             this.add.image(this.posX, 40, 'charactIcon'+playersList[i].getCharactId());
-            this.score = this.make.text(confJugadores).setText(playersList[i].showScore());
+            this.score = this.make.text(confJugadores).setText(playersList[i].Score());
             this.score.setPosition(this.posXRec+30, 40);
             if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
             this.scoresText.push(this.score);
@@ -250,55 +253,62 @@ class MainGame extends Phaser.Scene {
             this.hitboxH.setScale(5, 0.1);
         }*/
         
-        //colision bolas-jugador
-        this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
-            /*
-            player.setPosition(0, 500);
-            spawnHitbox();*/
-        }, null, this);
+        //console.log(this.players);
+        ///COLLISIONS///////////////////////////
+        for(var j = 0; j < playersList.length; j++){
+            //colision bolas-jugador
+            this.physics.add.overlap(playersList[j].hitbox, this.bolas, function(player, bola) {
+                let randomNum = Phaser.Math.Between(10, 780);
+                bola.setPosition(randomNum, -25);
+                /*
+                player.setPosition(0, 500);
+                spawnHitbox();*/
+            }, null, this);
         
-        //colision fruta-jugador
-        this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
-            //añadir punto jugador  
-            fruit.destroy();    
-            //console.log("colisión player-fruit");
-        }, null, this);
+            console.log('Playerslist: ' + playersList[j].getName().value);
+            //colision fruta-jugador
+            this.physics.add.overlap(playersList[j].hitbox, this.fruits, function(player, fruit) {
+                //añadir punto jugador 
+                console.log('Player: ' + player.score);
+                //player.updateScore(1); 
+                fruit.destroy();    
+                //console.log("colisión player-fruit");
+            }, null, this);
 
-        //colision bolas-hitbox
-        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-        {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
+            //colision bolas-hitbox
+            this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
+            {
+                let randomNum = Phaser.Math.Between(10, 780);
+                bola.setPosition(randomNum, -25);
 
-        }); 
+            }); 
 
-        //colision bola-bola
-        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
-        {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola1.setPosition(randomNum, -25);
-            console.log("cambiado pos bola: " + bola1);
-        }); 
+            //colision bola-bola
+            this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
+            {
+                let randomNum = Phaser.Math.Between(10, 780);
+                bola1.setPosition(randomNum, -25);
+                console.log("cambiado pos bola: " + bola1);
+            }); 
+        }
     }
     
     update(){
         //KEYBOARD
         //1 player:
         if(playersList.length == 1 && !this.playersPaused){
-            this.firstPlayerController(this.players[0], 0);
+            this.firstPlayerController(playersList[0].hitbox, 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
         else if (playersList.length == 2 && !this.playersPaused) {
-            this.firstPlayerController(this.players[0], 0);
-            this.secondPlayerController(this.players[1], 1);
+            this.firstPlayerController(playersList[0].hitbox, 0);
+            this.secondPlayerController(playersList[1].hitbox, 1);
         }
         //Collisions
-        for(var i = 0; i < this.players.length; i++)
+        for(var i = 0; i < playersList.length; i++)
         {
-            namesText[i].setPosition(this.players[i].x, this.players[i].y-40);
+            namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
             /*   
             //inputController(this.players[i]);
             //colision bola-jugador

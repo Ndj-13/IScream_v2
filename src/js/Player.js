@@ -3,9 +3,11 @@ class Player {
 
         this.id = id;
         this.playerName = 'Player1';
-        this.score = 0;
+        
         this.ready = false;
         this.charactId = 1;
+        this.hitbox;
+        this.score;
     }
     
     getId(){
@@ -28,13 +30,13 @@ class Player {
         this.charactId = newCharactId;
     }
 
-    showScore()
+    Score()
     {
-        return this.score;
+        return this.hitbox.score;
     }
-    updateSore(addN)
+    updateScore(addN)
     {
-        this.score+=addN;
+        this.hitbox.score = this.hitbox.score + addN;
     }
 
     confirmReady(){
