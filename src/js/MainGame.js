@@ -15,8 +15,10 @@ class MainGame extends Phaser.Scene {
         this.load.image('defeat', 'resources/img/interface/pantallaDefeat.png');
         this.load.image('timerImg', 'resources/img/interface/timer.png');
         this.load.spritesheet('timer', 'resources/img/interface/timerSpritesheet.png',
-            { frameWidth: 866.67, frameHeight: 600 });
+            { frameWidth: 800, frameHeight: 600 });
 
+        //Tutorial
+        this.load.image('tutorial', 'resources/img/scene/tutorial.png');
 
         //Items
         this.load.image('red', 'resources/img/scene/red.png');
@@ -59,27 +61,36 @@ class MainGame extends Phaser.Scene {
         platforms.create(800, 410, 'ground');
         platforms.create(-100, 270, 'ground');
         platforms.create(1000, 220, 'ground');
+
         
         //////////TIMER///////////////////
         this.add.image(400, 300, 'timerImg');
-        
-        var tiempoPartida = 59; // Duración de la partida en segundos
-        var timerText = this.add.text(365, 20, '00:'+tiempoPartida, { font: '30px estilo', fill: '#000000' });
+        //this.timerSprite = this.add.sprite(400, 300, 'timer');
+        this.anims.create({
+            key: 'timer',
+            frames: this.anims.generateFrameNumbers('timer', { start: 0, end: 12 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        //this.timerSpriteCount = 1;
+        this.tiempoPartida = 59; // Duración de la partida en segundos
+        var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
 
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
-                tiempoPartida--;
-                timerText.setText('00:'+tiempoPartida);
+                this.tiempoPartida--;
+                timerText.setText('00:'+this.tiempoPartida);
                 
-                if (tiempoPartida === 0) {
+                if (this.tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
                     
                     this.scene.start("Results");                    
                 }
-                if (tiempoPartida<=5){
+                if (this.tiempoPartida<=5){
                     timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
+
             },
             callbackScope: this,
             loop: true // Repetir el evento
@@ -293,6 +304,23 @@ class MainGame extends Phaser.Scene {
             console.log("cambiado pos bola: " + bola1);
         }); 
         //}
+
+        //////TUTORIAL/////////
+        this.tutorial = this.add.image(400, 300, 'tutorial');
+        this.tiempoTutorial = 3; // Duración de la partida en segundos
+        this.pausaTutorial(); 
+        this.timer = this.time.addEvent({
+            delay: 1000, // Ejecutar cada segundo
+            callback: ()=> {
+                this.tiempoTutorial--;
+                if (this.tiempoTutorial === 0) {
+                    this.comenzarJuego();
+                    this.tutorial.setVisible(false);                   
+                }
+            },
+            callbackScope: this,
+            loop: true // Repetir el evento
+        });
     }
     
     update(){
@@ -323,6 +351,14 @@ class MainGame extends Phaser.Scene {
         {
             this.animatedBolas[i].anims.play('fireball'+i, true);
         }
+
+        ///TIMER ANIMATION////
+        /*
+        if(this.tiempoPartida % 10 == 0)
+        {
+            this.timerSprite.setFrame(this.timerSpriteCount);
+            this.timerSpriteCount++;
+        }*/
 
         ///////TIMER/////////////////
         //this.timerSprite.anims.play('time', true);
@@ -452,6 +488,32 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = false;
         this.player2Paused = false;
+        this.timer.paused = false;
+
+    }
+
+    pausaTutorial(){
+        this.fruitSpawn.paused = true;
+        //this.fruits.paused = true;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocity(0); // Detener la velocidad de cada bola
+        });
+        this.timer.paused = true;
+
+    }
+
+    comenzarJuego(){
+        this.fruitSpawn.paused = false;
+        this.fruits.children.iterate(function (fruit) {
+            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
+        });
+        this.bolas.children.iterate(function (bola) {
+            bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
+        });
+
         this.timer.paused = false;
 
     }
