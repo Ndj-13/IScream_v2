@@ -330,6 +330,7 @@ class MainGame extends Phaser.Scene {
                 }
                 this.pauseScene.destroy();
             }
+        });
         //////TUTORIAL/////////
         this.tutorial = this.add.image(400, 300, 'tutorial');
         this.tiempoTutorial = 3; // Duración de la partida en segundos
