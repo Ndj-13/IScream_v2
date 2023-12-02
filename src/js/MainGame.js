@@ -123,16 +123,15 @@ class MainGame extends Phaser.Scene {
             allowGravity: false,
             velocityY: 150,
         });
-        this.bola = this.bolas.create(100, 500);
-        this.bola.setVelocity(0);
 
          //creacion n bolas
-        var yBolaPos = 10;
+        var yBolaPos = -35;
         this.animatedBolas = [];
         for(let i = 0; i < 10; i++)
         { 
-            let randomNum = Phaser.Math.Between(10, 700);
+            let randomNum = Phaser.Math.Between(100, 700);
             this.bola = this.bolas.create(randomNum, yBolaPos, 'fireball');
+            this.bola.setScale(0.5);
             this.anims.create({
                 key: 'fireball'+i,
                 frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
@@ -260,17 +259,39 @@ class MainGame extends Phaser.Scene {
         var player1 = playersList[0];
         //colision bolas-jugador
         this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
-            /*
-            player.setPosition(0, 500);
-            spawnHitbox();*/
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola.setPosition(randomNumX, randomNumY);
+
+            player.setVelocity(0);
+                player.setPosition(0, 500);
+                player.setTint(0xFF0000);
+            
+                //crear hitbox
+                let hitboxV1 = this.hitbox.create(65, 525, 'trans');
+                hitboxV1.setScale(0.1, 3);
+                hitboxV1.setImmovable(true);
+                let hitboxH1 = this.hitbox.create(30, 485, 'trans');
+                hitboxH1.setScale(3.5, 0.1);
+                hitboxH1.setImmovable(true);
+
+                this.stop = this.time.addEvent({
+                    delay: 2500, 
+                    callbackScope: this,
+                    loop: false, 
+                    callback: ()=> {
+                        player.clearTint();
+                        hitboxV1.destroy();
+                        hitboxH1.destroy();
+                    },
+                });
         }, null, this);
+
         //colision fruta-jugador
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
-            //console.log('Player 1: '+player1.getName().value);
             player1.updateScore(1);
             //console.log('Player 1 Score: '+player1.showScore()); 
+            //console.log('Player 1: '+player1.getName().value);
             fruit.destroy();    
         }, null, this);
 
@@ -278,11 +299,32 @@ class MainGame extends Phaser.Scene {
         {
             var player2 = playersList[1];
             this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
-                let randomNum = Phaser.Math.Between(10, 780);
-                bola.setPosition(randomNum, -25);
-                /*
-                player.setPosition(0, 500);
-                spawnHitbox();*/
+                let randomNumX = Phaser.Math.Between(100, 700);
+                let randomNumY = Phaser.Math.Between(-10, -250);
+                bola.setPosition(randomNumX, randomNumY);
+
+                player.setVelocity(0);
+                player.setPosition(800, 500);
+                player.setTint(0xFF0000);
+            
+                //crear hitbox
+                let hitboxV2 = this.hitbox.create(750, 525, 'trans');
+                hitboxV2.setScale(0.1, 3);
+                hitboxV2.setImmovable(true);
+                let hitboxH2 = this.hitbox.create(770, 485, 'trans');
+                hitboxH2.setScale(3.5, 0.1);
+                hitboxH2.setImmovable(true);
+
+                this.stop = this.time.addEvent({
+                    delay: 2500, 
+                    callbackScope: this,
+                    loop: false, 
+                    callback: ()=> {
+                        player.clearTint();
+                        hitboxV2.destroy();
+                        hitboxH2.destroy();
+                    },
+                });
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
                 player2.updateScore(1);
@@ -294,17 +336,19 @@ class MainGame extends Phaser.Scene {
         //colision bolas-hitbox
         this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
         {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
-
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola.setPosition(randomNumX, randomNumY);
         }); 
 
         //colision bola-bola
         this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
         {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola1.setPosition(randomNum, -25);
-            console.log("cambiado pos bola: " + bola1);
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola1.setPosition(randomNumX, randomNumY);
+
+            //console.log("cambiado pos bola: " + bola1);
         }); 
         //}
 
@@ -334,92 +378,7 @@ class MainGame extends Phaser.Scene {
                 this.pauseScene.destroy();
             }
         })
-/* PARTE OSCAR EN PROCESO
-        //colision bolas-jugador
-        this.physics.add.overlap(this.players, this.bolas, function(player, bola) {
-            let randomNum = Phaser.Math.Between(100, 700);
-            bola.setPosition(randomNum, -25);
 
-            //trasladar jugador
-            if(this.player.id == playersList[0].id)
-            {
-                player.setVelocity(0);
-                player.setPosition(0, 500);
-                player.setTint(0xFF0000);
-            
-                //crear hitbox
-                let hitboxV1 = this.hitbox.create(65, 525, 'trans');
-                hitboxV1.setScale(0.1, 3);
-                hitboxV1.setImmovable(true);
-                let hitboxH1 = this.hitbox.create(30, 485, 'trans');
-                hitboxH1.setScale(3.5, 0.1);
-                hitboxH1.setImmovable(true);
-
-                this.stop = this.time.addEvent({
-                    delay: 2500, 
-                    callbackScope: this,
-                    loop: false, 
-                    callback: ()=> {
-                        player.clearTint();
-                        hitboxV1.destroy();
-                        hitboxH1.destroy();
-                    },
-                });
-            }
-
-            else
-            {
-                player.setVelocity(0);
-                player.setPosition(800, 500);
-                player.setTint(0xFF0000);
-            
-                //crear hitbox
-                let hitboxV2 = this.hitbox.create(725, 525, 'trans');
-                hitboxV2.setScale(0.1, 3);
-                hitboxV2.setImmovable(true);
-                let hitboxH2 = this.hitbox.create(770, 485, 'trans');
-                hitboxH2.setScale(3.5, 0.1);
-                hitboxH2.setImmovable(true);
-
-                this.stop = this.time.addEvent({
-                    delay: 2500, 
-                    callbackScope: this,
-                    loop: false, 
-                    callback: ()=> {
-                        player.clearTint();
-                        hitboxV2.destroy();
-                        hitboxH2.destroy();
-                    },
-                });
-            }
-            //debug
-            console.log(playersList[0].id);
-            console.log(player);
-            console.log(player.id);
-        }, null, this);
-        
-        //colision fruta-jugador
-        this.physics.add.overlap(this.players, this.fruits, function(player, fruit) {
-            //añadir punto jugador  
-            fruit.destroy();    
-            //console.log("colisión player-fruit");
-        }, null, this);
-
-        //colision bolas-hitbox
-        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-        {
-            let randomNum = Phaser.Math.Between(100, 700);
-            bola.setPosition(randomNum, -25);
-
-        }); 
-
-        //colision bola-bola
-        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
-        {
-            let randomNum = Phaser.Math.Between(100, 700);
-            bola1.setPosition(randomNum, -25);
-            console.log("cambiado pos bola: " + bola1);
-        }); */
 
         //////TUTORIAL/////////
         this.tutorial = this.add.image(400, 300, 'tutorial');

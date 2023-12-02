@@ -61,11 +61,11 @@
                     default: 'arcade',
                     arcade: {
                         gravity: {y: 980},
-                        debug: true
+                        debug: false
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, HomeScreen, CharacterSelect, MainGame, Pause, Results]
+                scene:[/*LoadScreen, HomeScreen,*/ CharacterSelect, MainGame, Pause, Results]
             };   
             var game = new Phaser.Game(config);       
 
