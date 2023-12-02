@@ -103,7 +103,7 @@ class Pause{
         this.menu.on("pointerup", () => {
             this.menu.setFrame(0);
             document.body.style.cursor = "auto";
-            this.scene.scene.start("CharacterSelect");
+            this.scene.scene.start("HomeScreen");
         })
 
         //retry
@@ -144,7 +144,7 @@ class Pause{
         })
         this.yes.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            this.scene.scene.start("CharacterSelect");
+            this.scene.scene.start("HomeScreen");
         })
         //no
         this.no.on("pointerover", () => {
