@@ -28,6 +28,10 @@ class MainGame extends Phaser.Scene {
         this.load.spritesheet('fireball', 'resources/img/scene/fireball.png',
             { frameWidth: 65, frameHeight: 100 });
 
+        //audio
+        this.load.audio('ouch', 'resources/audio/OuchSound.mp3');
+        this.load.audio('ost', 'resources/audio/ost.mp3');
+
         //Players
         for(var i = 0; i < playersList.length; i++)
         {
@@ -48,6 +52,12 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+        //audio
+        this.hitSound = this.sound.add('ouch');
+        this.ost = this.sound.add('ost');
+
+        this.ost.play();
+
         //this.time.timeScale = 10; para cambiar la velocidad de ejecucións
         //SCENE
         this.add.image(400, 300, 'gameBg');
@@ -259,6 +269,7 @@ class MainGame extends Phaser.Scene {
         var player1 = playersList[0];
         //colision bolas-jugador
         this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
+            this.hitSound.play();
             let randomNumX = Phaser.Math.Between(100, 700);
             let randomNumY = Phaser.Math.Between(-10, -250);
             bola.setPosition(randomNumX, randomNumY);
@@ -299,6 +310,7 @@ class MainGame extends Phaser.Scene {
         {
             var player2 = playersList[1];
             this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
+                this.hitSound.play();
                 let randomNumX = Phaser.Math.Between(100, 700);
                 let randomNumY = Phaser.Math.Between(-10, -250);
                 bola.setPosition(randomNumX, randomNumY);
