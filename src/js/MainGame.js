@@ -184,8 +184,8 @@ class MainGame extends Phaser.Scene {
         //PLAYERS
         this.players = [];
         this.scoresText = [];
-        this.posX = 50;
-        this.posXRec = 75;
+        this.posX = 45;
+        this.posXRec = 80;
         for(var i = 0; i < playersList.length; i++)
         {
             
@@ -232,7 +232,7 @@ class MainGame extends Phaser.Scene {
             //console.log(playersList[i].hitbox);
 
             //Interface
-            this.rec = this.add.image(this.posXRec, 40, 'score'+i).setScale(1.4);
+            this.rec = this.add.image(this.posXRec, 40, 'score'+i);
             if(playersList[i].getId() == 'p2'){
                 this.rec.flipX = true;
             }
@@ -242,8 +242,8 @@ class MainGame extends Phaser.Scene {
             if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
             this.scoresText.push(this.score);
 
-            this.posX = this.posX + 700;  
-            this.posXRec = this.posXRec + 660;
+            this.posX = this.posX + 705;  
+            this.posXRec = this.posXRec + 640;
         }
         
         //CONTROLS
@@ -410,7 +410,7 @@ class MainGame extends Phaser.Scene {
 
 
         //////TUTORIAL/////////
-        this.fondoTut = this.add.image(400, 300, 'fondoTut');
+        //this.fondoTut = this.add.image(400, 300, 'fondoTut');
         this.tutorial = this.add.image(400, 375, 'tutorial');
         this.tiempoTutorial = 3; // Duración de la partida en segundos
         this.pausaTutorial(); 
@@ -420,7 +420,7 @@ class MainGame extends Phaser.Scene {
                 this.tiempoTutorial--;
                 if (this.tiempoTutorial === 0) {
                     this.comenzarJuego();
-                    this.fondoTut.setVisible(false);
+                    //this.fondoTut.setVisible(false);
                     this.tutorial.setVisible(false);                   
                 }
             },
