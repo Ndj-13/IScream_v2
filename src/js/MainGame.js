@@ -273,18 +273,16 @@ class MainGame extends Phaser.Scene {
 
             this.player1Paused = true;
             player.setPosition(0, 500);
+            player.setVelocity(0);
             player.setTint(0xFF0000);
-            //player.anims.play('damageP0', true);
+            player.anims.play('damageP0', true);
             this.stop = this.time.addEvent({
-                delay: 1500, 
+                delay: 2500, 
                 callbackScope: this,
                 loop: false, 
                 callback: ()=> {
                     this.player1Paused = false;
                     player.clearTint();
-                    /*
-                    hitboxV1.destroy();
-                    hitboxH1.destroy();*/
                 },
             });         
         }, null, this);
@@ -293,8 +291,6 @@ class MainGame extends Phaser.Scene {
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
             this.coinSound.play();
             player1.updateScore(1);
-            //console.log('Player 1 Score: '+player1.showScore()); 
-            //console.log('Player 1: '+player1.getName().value);
             fruit.destroy();    
         }, null, this);
 
@@ -311,6 +307,7 @@ class MainGame extends Phaser.Scene {
                 player.setVelocity(0);
                 player.setPosition(800, 500);
                 player.setTint(0xFF0000);
+                player.anims.play('damageP0', true);
                 this.stop = this.time.addEvent({
                     delay: 2500, 
                     callbackScope: this,
@@ -324,7 +321,6 @@ class MainGame extends Phaser.Scene {
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
                 this.coinSound.play();
                 player2.updateScore(1);
-                //console.log('Player 2 score: '+player2.showScore()); 
                 fruit.destroy();    
             }, null, this);
         }
@@ -343,12 +339,10 @@ class MainGame extends Phaser.Scene {
             let randomNumX = Phaser.Math.Between(100, 700);
             let randomNumY = Phaser.Math.Between(-10, -250);
             bola1.setPosition(randomNumX, randomNumY);
-
-            //console.log("cambiado pos bola: " + bola1);
         }); 
         //}
 
-        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        //// PAUSE 
         this.pauseScene.create();
         this.pauseScene.setInvisible();
         
@@ -586,9 +580,6 @@ class MainGame extends Phaser.Scene {
         });
         this.timer.paused = false;
     }
-
-    
-
     
 }
 
