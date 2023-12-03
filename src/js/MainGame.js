@@ -35,6 +35,8 @@ class MainGame extends Phaser.Scene {
 
         //audio
         this.load.audio('ouch', 'resources/audio/OuchSound.mp3');
+        this.load.audio('coin', 'resources/audio/Classic Arcade SFX/coins/Coin_5.wav');
+        this.load.audio('jump', 'resources/audio/Classic Arcade SFX/Jumps/Jump_6.wav');
         this.load.audio('ost', 'resources/audio/ost.mp3');
 
         //Players
@@ -59,21 +61,20 @@ class MainGame extends Phaser.Scene {
     create(){
         //audio
         this.hitSound = this.sound.add('ouch');
+        this.coinSound = this.sound.add('coin', {volume: 0.5});
+        this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-
         this.ost.play();
+        
 
-        //this.time.timeScale = 10; para cambiar la velocidad de ejecucións
+        //this.time.timeScale = 10; para cambiar la velocidad de ejecución
         //SCENE
         this.add.image(400, 300, 'gameBg');
 
         //PLATAFORMAS
-        
         var platforms = this.physics.add.staticGroup();
         
         platforms.create(400, 580, 'ground').refreshBody();
-
-        
         platforms.create(800, 410, 'ground');
         platforms.create(-100, 270, 'ground');
         platforms.create(1000, 220, 'ground');
@@ -89,7 +90,7 @@ class MainGame extends Phaser.Scene {
             repeat: -1
         });
         //this.timerSpriteCount = 1;
-        this.tiempoPartida = 59; // Duración de la partida en segundos
+        this.tiempoPartida = 10; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -183,8 +184,8 @@ class MainGame extends Phaser.Scene {
         //PLAYERS
         this.players = [];
         this.scoresText = [];
-        this.posX = 50;
-        this.posXRec = 75;
+        this.posX = 45;
+        this.posXRec = 80;
         for(var i = 0; i < playersList.length; i++)
         {
             
@@ -231,7 +232,7 @@ class MainGame extends Phaser.Scene {
             //console.log(playersList[i].hitbox);
 
             //Interface
-            this.rec = this.add.image(this.posXRec, 40, 'score'+i).setScale(1.4);
+            this.rec = this.add.image(this.posXRec, 40, 'score'+i);
             if(playersList[i].getId() == 'p2'){
                 this.rec.flipX = true;
             }
@@ -241,8 +242,8 @@ class MainGame extends Phaser.Scene {
             if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
             this.scoresText.push(this.score);
 
-            this.posX = this.posX + 700;  
-            this.posXRec = this.posXRec + 660;
+            this.posX = this.posX + 705;  
+            this.posXRec = this.posXRec + 640;
         }
         
         //CONTROLS
@@ -297,6 +298,7 @@ class MainGame extends Phaser.Scene {
 
         //colision fruta-jugador
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
+            this.coinSound.play();
             player1.updateScore(1);
             //console.log('Player 1 Score: '+player1.showScore()); 
             //console.log('Player 1: '+player1.getName().value);
@@ -313,8 +315,8 @@ class MainGame extends Phaser.Scene {
                 bola.setPosition(randomNumX, randomNumY);
 
                 this.player2Paused = true;
-                player.setPosition(800, 500);
                 player.setVelocity(0);
+                player.setPosition(800, 500);
                 player.setTint(0xFF0000);
                 this.stop = this.time.addEvent({
                     delay: 2500, 
@@ -349,6 +351,7 @@ class MainGame extends Phaser.Scene {
                 });*/
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
+                this.coinSound.play();
                 player2.updateScore(1);
                 //console.log('Player 2 score: '+player2.showScore()); 
                 fruit.destroy();    
@@ -406,7 +409,7 @@ class MainGame extends Phaser.Scene {
 
 
         //////TUTORIAL/////////
-        this.fondoTut = this.add.image(400, 300, 'fondoTut');
+        //this.fondoTut = this.add.image(400, 300, 'fondoTut');
         this.tutorial = this.add.image(400, 375, 'tutorial');
         this.tiempoTutorial = 3; // Duración de la partida en segundos
         this.pausaTutorial(); 
@@ -416,7 +419,7 @@ class MainGame extends Phaser.Scene {
                 this.tiempoTutorial--;
                 if (this.tiempoTutorial === 0) {
                     this.comenzarJuego();
-                    this.fondoTut.setVisible(false);
+                    //this.fondoTut.setVisible(false);
                     this.tutorial.setVisible(false);                   
                 }
             },
@@ -515,6 +518,7 @@ class MainGame extends Phaser.Scene {
         
         if (keyInput.W.isDown && playerController.body.touching.down)
         {
+            this.jumpSound.play();
             playerController.setVelocityY(-630);
         }
 
@@ -543,6 +547,7 @@ class MainGame extends Phaser.Scene {
         
         if (cursorInput.up.isDown && playerController.body.touching.down)
         {
+            this.jumpSound.play();
             playerController.setVelocityY(-630);
         }
 
