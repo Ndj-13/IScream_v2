@@ -374,14 +374,16 @@ class MainGame extends Phaser.Scene {
             if(this.pauseButton.frame.name === 1){
                 console.log("LE DA PA PARAR");
                 this.pararJuego();
-                this.pauseScene.create()
+                //this.pauseScene.create()
+                this.pauseScene.setVisible();
             } else {
                 console.log("LE DA PA RESUME");
                 this.continuarJuego();
                 if(this.pauseScene){
                     console.log("ESCENA DE PAUSA CREADA");
                 }
-                this.pauseScene.destroy();
+                //this.pauseScene.destroy();
+                this.pauseScene.setInvisible();
             }
         })
 
@@ -461,6 +463,7 @@ class MainGame extends Phaser.Scene {
         for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
+            console.log(playersList);
         } 
 
         ////////SCORE////////////
