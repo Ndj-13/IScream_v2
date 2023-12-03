@@ -2,7 +2,7 @@ class Pause{
 
     constructor(scene) {
         this.scene = scene;
-        this.goBack = false;
+        //this.goBack = false;
     }
     preload() {
         this.scene.load.image("fondo1", "resources/img/interface/pauseFondo_chico.png");
@@ -39,7 +39,7 @@ class Pause{
         })        
         
         //warning
-        this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
+        //this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
 
         const confTexto = {
             origin: 'right',
@@ -101,13 +101,12 @@ class Pause{
             this.menu.setFrame(0);
             document.body.style.cursor = "auto";
             playersList.splice(0, playersList.length);
+            //playersList = [];
             namesText.splice(0, namesText.length);
             //animations.splice(0, animations.length);
             //restart = true;
-            restart = true;
             //this.scene.stop('MainGame');
-            
-            //this.scene.scene.remove('MainGame');
+            this.scene.scene.remove('MainGame');
             this.scene.scene.start("HomeScreen");
         })
 
@@ -196,13 +195,13 @@ class Pause{
     /*checkGoBack()
     {
         return this.goBack;
-    }*/
+    }
     
     resetGoBack()
     {
         this.goBack = false;
         this.back.setFrame(0);
-    }
+    }*/
 
     destroy(){
         this.titulo.destroy();

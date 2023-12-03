@@ -13,7 +13,7 @@ class HomeScreen extends Phaser.Scene {
 
         this.load.spritesheet('creditsButton',
             'resources/img/interface/botonCredits.png',
-            { frameWidth: 64, frameHeight: 47 });
+            { frameWidth: 124, frameHeight: 47 });
 
         //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
     }
@@ -23,7 +23,7 @@ class HomeScreen extends Phaser.Scene {
 
 
         this.playButton = this.add.sprite(400, 400, "playButton").setInteractive().setScale(2.5);
-        this.creditsButton = this.add.sprite(400, 475, "creditsButton").setInteractive().setScale(2.5);
+        this.creditsButton = this.add.sprite(400, 460, "creditsButton").setInteractive();
 
         //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
         //this.markbox.setScale(1.2);

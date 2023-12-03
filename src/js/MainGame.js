@@ -2,7 +2,7 @@ class MainGame extends Phaser.Scene {
 
     constructor() {
         super({ key: 'MainGame' });
-        this.reiniciar = false;
+        //this.reiniciar = false;
          
     }
 
@@ -67,10 +67,7 @@ class MainGame extends Phaser.Scene {
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-        //this.ost.play();
         
-
-        //this.time.timeScale = 10; para cambiar la velocidad de ejecución
         /////////SCENE//////////////7
         this.add.image(400, 300, 'gameBg');
 
@@ -228,10 +225,10 @@ class MainGame extends Phaser.Scene {
             this.physics.add.collider(this.player, this.hitbox);
 
             //Name
-            this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
+            /*this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
             this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
             this.name.setPosition(this.posX, this.player.y+45);
-            namesText.push(this.name);
+            namesText.push(this.name);*/
 
             //Agregar jugador creado a lista global jugadores
             playersList[i].hitbox = this.player;
@@ -366,14 +363,12 @@ class MainGame extends Phaser.Scene {
             document.body.style.cursor = "auto";
             if(this.pauseButton.frame.name === 1){
                 this.pararJuego();
-                //this.pauseScene.create()
-                this.pauseScene.setVisible();
+                this.pauseScene.create()
             } else {
                 this.continuarJuego();
                 if(this.pauseScene){
                 }
-                //this.pauseScene.destroy();
-                this.pauseScene.setInvisible();
+                this.pauseScene.destroy();
             }
         })
 
@@ -381,7 +376,7 @@ class MainGame extends Phaser.Scene {
         //////TUTORIAL/////////
         //this.fondoTut = this.add.image(400, 300, 'fondoTut');
         this.tutorial = this.add.image(400, 375, 'tutorial');
-        this.tiempoTutorial = 3; 
+        this.tiempoTutorial = 3;
         this.pausaTutorial(); 
         this.timerTut = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -452,11 +447,12 @@ class MainGame extends Phaser.Scene {
 
 
         /////////NAME///////////
-        for(var i = 0; i < playersList.length; i++)
+        /*for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
             console.log(playersList);
-        } 
+} 
+        } */
 
         ////////SCORE////////////
         for(var i = 0; i < playersList.length; i++)
@@ -465,10 +461,10 @@ class MainGame extends Phaser.Scene {
         }
     }
 
-    shutdown()
+    /*shutdown()
     {
         this.scene.restart();
-    }
+    }*/
       
     firstPlayerController(playerController, pIndex)
     {

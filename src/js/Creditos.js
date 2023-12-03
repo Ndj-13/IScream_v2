@@ -11,7 +11,7 @@ class Creditos extends Phaser.Scene {
         //this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
         this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
 
-        this.load.image("titulo", 'resources/img/interface/CREDITS.png');
+        this.load.image("tituloCredits", 'resources/img/interface/CREDITS.png');
 
         //Menu
         this.load.spritesheet('menu',
@@ -21,7 +21,7 @@ class Creditos extends Phaser.Scene {
     }
     create(){
         this.add.image(400, 300, 'selectScreenBg');
-        this.add.image(400, 150, 'titulo');
+        this.add.image(400, 150, 'tituloCredits');
 
         //Boton menu: volver al menu
         this.menu = this.add.sprite(100, 80, "menu").setInteractive();

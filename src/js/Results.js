@@ -9,7 +9,7 @@ class Results extends Phaser.Scene {
         this.load.image("fondo", "resources/img/interface/pauseFondo1.png");
         this.load.image("fondo2", "resources/img/interface/pauseFondo2.png");
 
-        this.load.image("titulo", "resources/img/interface/RESULTS.png");
+        this.load.image("tituloRes", "resources/img/interface/RESULTS.png");
 
         //Botones
         this.load.image("marco", "resources/img/interface/recuadroBoton.png");
@@ -95,7 +95,7 @@ class Results extends Phaser.Scene {
         this.fondo2.setScale(3.35);
 
         //this.make.text(confTitulo);
-        this.add.image(game.renderer.width / 2, 100, 'titulo');
+        this.add.image(game.renderer.width / 2, 100, 'tituloRes');
 
         //menu
         this.menu = this.add.sprite(500, 525, "menu").setInteractive();

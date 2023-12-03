@@ -176,6 +176,14 @@ class CharacterSelect extends Phaser.Scene {
             }*/
             
             //this.scene.remove('CharacterSelect');
+            var juego = this.scene.get('MainGame');
+            console.log(this.scene.get('MainGame'));
+           // console.log(juego)
+
+            if(juego == null){
+                console.log('JUEGO NO ESTA')
+                this.scene.add('MainGame', MainGame, true)
+            }
             this.scene.start('MainGame');
         }
         
