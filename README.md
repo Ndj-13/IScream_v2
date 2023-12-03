@@ -186,7 +186,7 @@ En esta sección se describe detalladamente cada una de las pantallas que compon
 
 A continuación se muestran las pantallas del Nombre y las transiciones entre ellas. Antes de empezar, se ve una pantalla de carga.
 ![Flujo de pantallas](/resources/img/readmeImgs/Flujo_Pantallas.jpg)
-_Flujo de Pantallas-
+_Flujo de Pantallas_
 ![Pantalla de carga](/resources/img/readmeImgs/Pantalla_Carga.jpg)
 _Pantalla de carga_
 
