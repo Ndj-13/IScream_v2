@@ -185,7 +185,7 @@ En esta sección se describe detalladamente cada una de las pantallas que compon
 ### 4.1. Diagrama de flujo
 
 A continuación se muestran las pantallas del Nombre y las transiciones entre ellas. Antes de empezar, se ve una pantalla de carga.
-![Flujo de pantallas](/resources/img/readmeImgs/Flujo_Pantallas.jpg)
+![Flujo de pantallas](/resources/img/readmeImgs/Flujo_Pantallas.png)
 _Flujo de Pantallas-
 ![Pantalla de carga](/resources/img/readmeImgs/Pantalla_Carga.jpg)
 _Pantalla de carga_
