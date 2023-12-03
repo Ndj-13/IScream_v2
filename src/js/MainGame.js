@@ -374,16 +374,14 @@ class MainGame extends Phaser.Scene {
             if(this.pauseButton.frame.name === 1){
                 console.log("LE DA PA PARAR");
                 this.pararJuego();
-                //this.pauseScene.create()
-                this.pauseScene.setVisible();
+                this.pauseScene.create()
             } else {
                 console.log("LE DA PA RESUME");
                 this.continuarJuego();
                 if(this.pauseScene){
                     console.log("ESCENA DE PAUSA CREADA");
                 }
-                //this.pauseScene.destroy();
-                this.pauseScene.setInvisible();
+                this.pauseScene.destroy();
             }
         })
 

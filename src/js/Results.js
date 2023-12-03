@@ -27,6 +27,7 @@ class Results extends Phaser.Scene {
         //Iconos:
         this.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
         this.load.image('iconoJ2', 'resources/img/players/blueIceHead.png');
+        this.load.image('crown', 'resources/img/interface/corona.png');
 
         //Variables
         //Puntuacion:
@@ -105,7 +106,7 @@ class Results extends Phaser.Scene {
 
 
        //Jugadores
-       this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value); 
+       this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value).setPosition(275,200); 
        this.icon1 = this.add.image(175, 200, 'charactIcon'+playersList[0].getCharactId());
        this.score1 = this.make.text(confVariables).setText('Score').setPosition(180,280);
 
@@ -113,13 +114,25 @@ class Results extends Phaser.Scene {
        this.score1number.setPosition(250, 350);
 
        if (playersList.length > 1) {
-           this.name2 = this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(500, 200);
+           this.name2 = this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 200);
            this.icon2 = this.add.image(440, 200, 'charactIcon'+playersList[1].getCharactId());
            this.score2 = this.make.text(confVariables).setText('Score').setPosition(450, 280);
 
            this.score2number = this.make.text(confScore).setText(playersList[1].showScore());
            this.score2number.setPosition(550, 350);        
        }
+
+        // MOSTRAR GANADOR
+        if(playersList.length > 1){
+            console.log('SE LE PONE LA CORONA')
+            if(playersList[0].score > playersList[1].score){
+                this.add.image(175,160,'crown')
+            }
+            if(playersList[0].score < playersList[1].score){
+                this.add.image(440,160,'crown')
+            }
+        }
+
         
         //Mensaje abandonar partida
         //tapar fondo

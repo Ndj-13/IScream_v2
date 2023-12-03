@@ -10,6 +10,11 @@ class HomeScreen extends Phaser.Scene {
         this.load.spritesheet('playButton',
             'resources/img/interface/playbutton.png',
             { frameWidth: 64, frameHeight: 47 });
+
+        this.load.spritesheet('creditsButton',
+            'resources/img/interface/playbutton.png',
+            { frameWidth: 64, frameHeight: 47 });
+
         //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
     }
     create(){
@@ -18,6 +23,8 @@ class HomeScreen extends Phaser.Scene {
 
 
         this.playButton = this.add.sprite(400, 425, "playButton").setInteractive().setScale(2.5);
+        this.creditsButton = this.add.sprite(400, 475, "creditsButton").setInteractive().setScale(2.5);
+
         //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
         //this.markbox.setScale(1.2);
 
@@ -39,6 +46,26 @@ class HomeScreen extends Phaser.Scene {
         this.playButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             this.scene.start("CharacterSelect");
+        })
+
+        // creditos
+        this.creditsButton.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+            this.creditsButton.setFrame(1);
+        })
+
+        this.creditsButton.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+            this.creditsButton.setFrame(0);
+        })
+
+        this.creditsButton.on("pointerdown", ()=>{
+            this.creditsButton.setFrame(2);
+        })
+
+        this.creditsButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            this.scene.start("Creditos");
         })
     }
 }
