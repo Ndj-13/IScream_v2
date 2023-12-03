@@ -58,19 +58,19 @@ class Pause{
 
 
         //Botones
-        this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
-        this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
+       // this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
+       // this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
 
         //this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
         //this.back.setScale(0.5);
 
-        this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
-        this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
+       // this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
+       // this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
 
         //Mensaje abandonar partida
         //tapar fondo
         
-        this.abandonar = this.scene.make.text(confTexto).setText(
+       /* this.abandonar = this.scene.make.text(confTexto).setText(
             'Are you sure you want to exit?').setPosition(
                 400, 230).setFontSize(25).setVisible(false);
 
@@ -171,7 +171,7 @@ class Pause{
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
-        })
+        })*/
 
         //Go back to game
        /* this.back.on("pointerover", () => {
