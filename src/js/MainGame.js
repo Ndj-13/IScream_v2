@@ -351,6 +351,7 @@ class MainGame extends Phaser.Scene {
                 });*/
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
+                this.coinSound.play();
                 player2.updateScore(1);
                 //console.log('Player 2 score: '+player2.showScore()); 
                 fruit.destroy();    
