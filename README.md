@@ -224,8 +224,10 @@ Lista de los elementos:
 - Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo.
 - Panel con temporizador: muestra el tiempo restante de la partida
 -Botón pausa.
+-Tutorial incluido al inicio del juego, mostrando controles para los jugadores.
   ![Pantalla de juego](/resources/img/readmeImgs/Pantalla_Juego_Principal.jpg)
 _Pantalla de juego_
+
 4.5.2. Pausa
 Lista de los elementos:
 - Botón volver (X): para salir de la pantalla de pausa y seguir jugando.
