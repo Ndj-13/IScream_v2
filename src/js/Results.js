@@ -27,7 +27,7 @@ class Results extends Phaser.Scene {
         //Iconos:
         this.load.image('iconoJ1', 'resources/img/players/purpleIceHead.png');
         this.load.image('iconoJ2', 'resources/img/players/blueIceHead.png');
-        this.load.image('crown', 'resources/img/players/blueIceHead.png');
+        this.load.image('crown', 'resources/img/interface/corona.png');
 
         //Variables
         //Puntuacion:
@@ -114,7 +114,7 @@ class Results extends Phaser.Scene {
        this.score1number.setPosition(250, 350);
 
        if (playersList.length > 1) {
-           this.name2 = this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(500, 200);
+           this.name2 = this.make.text(confJugadores).setText(playersList[1].getName().value).setPosition(540, 200);
            this.icon2 = this.add.image(440, 200, 'charactIcon'+playersList[1].getCharactId());
            this.score2 = this.make.text(confVariables).setText('Score').setPosition(450, 280);
 
@@ -124,11 +124,12 @@ class Results extends Phaser.Scene {
 
         // MOSTRAR GANADOR
         if(playersList.length > 1){
-            if(playerList[0].score > playerList[1].score){
-                this.add.image(165,190,'crown')
+            console.log('SE LE PONE LA CORONA')
+            if(playersList[0].score > playersList[1].score){
+                this.add.image(175,160,'crown')
             }
-            if(playerList[0].score < playerList[1].score){
-                this.add.image(450,190,'crown')
+            if(playersList[0].score < playersList[1].score){
+                this.add.image(440,160,'crown')
             }
         }
 
