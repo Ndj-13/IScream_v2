@@ -114,8 +114,10 @@ class Pause{
             document.body.style.cursor = "auto";
             playersList.splice(0, playersList.length);
             namesText.splice(0, namesText.length);
-            animations.splice(0, animations.length);
-            //restart = true;
+            restart = true;
+            //this.scene.stop('MainGame');
+            
+            //this.scene.scene.remove('MainGame');
             this.scene.scene.start("HomeScreen");
         })
 
@@ -192,13 +194,11 @@ class Pause{
             this.back.setScale(0.5);
         })
         this.back.on("pointerdown", () => {
-            console.log('Exit pulsado');
             this.back.setFrame(1);
             this.goBack = true;
         })
         this.back.on("pointerup", () => {
-            console.log('Volver al juego es TRUE');
-            this.goBack = false;
+            //this.goBack = false;
         })
     }
     update()
@@ -209,6 +209,11 @@ class Pause{
     checkGoBack()
     {
         return this.goBack;
+    }
+    resetGoBack()
+    {
+        this.goBack = false;
+        this.back.setFrame(0);
     }
 
     destroy(){

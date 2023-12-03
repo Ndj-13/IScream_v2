@@ -9,9 +9,11 @@ class SelectPlayer {
         this.playerName = document.getElementById(namebar);
         this.options = 2;
         this.index = 0;
+        console.log('constructor');
     }
 
     preload(){
+        console.log('preload');
         this.scene.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
         this.scene.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
         this.scene.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
@@ -36,6 +38,7 @@ class SelectPlayer {
 
     create()
     {
+        console.log('create');
         //Recuadro personaje 1
         this.scene.add.image(this.posX, 250, "chMarkbox").setScale(3.5);
   
@@ -90,7 +93,6 @@ class SelectPlayer {
             this.charactArray[this.index].setVisible(false);
             this.index++;
             if(this.index >= this.options) this.index = 0;
-            console.log('Character: ' + this.index);
             this.charactArray[this.index].setVisible(true);
         })
         this.rightArrow.on("pointerup", ()=>{       
@@ -106,7 +108,6 @@ class SelectPlayer {
             this.charactArray[this.index].setVisible(false);
             this.index--;
             if(this.index < 0) this.index = this.options-1;
-            console.log('Character: ' + this.index);
             this.charactArray[this.index].setVisible(true);     
         })
         this.leftArrow.on("pointerup", ()=>{       
@@ -130,7 +131,6 @@ class SelectPlayer {
                 if(this.playerName.value == '') this.playerName.value = 'Player1';
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
                 playersList[0].setName(this.playerName);
-                console.log("Player:"+ playersList[0].getName().value);
                 this.playerName.disabled = true;
                 playersList[0].readyToPlay();
                 playersList[0].setCharactId(this.index+1);
@@ -138,7 +138,6 @@ class SelectPlayer {
                 if(this.playerName.value == '') this.playerName.value = "Player2";
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
                 playersList[1].setName(this.playerName);
-                console.log("Player:"+ playersList[1].getName().value);
                 this.playerName.disabled = true;
                 playersList[1].readyToPlay();
                 playersList[1].setCharactId(this.index+1);
