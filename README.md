@@ -61,15 +61,13 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 4.3. Selección de skin y modo de juego	
 
-4.4. Tutorial	
+4.4. Juego	
 
-4.5. Juego	
+  4.4.1. Nivel	
 
-  4.5.1. Nivel	
+  4.4.2. Pausa
 
-  4.5.2. Pausa
-
-4.6. Fin de nivel	
+4.5. Fin de nivel	
 
 ### 5. Arte	
 
@@ -79,11 +77,9 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 5.3. Paleta de Colores	
 
-5.4. Enemigos	
+5.4. Animación	
 
-5.5. Animación	
-
-5.6. Fondos y Escenarios	
+5.5. Fondos y Escenarios	
 
 
 
@@ -186,7 +182,9 @@ En esta sección se describe detalladamente cada una de las pantallas que compon
 
 ### 4.1. Diagrama de flujo
 
-A continuación se muestran las pantallas del Nombre y las transiciones entre ellas.
+A continuación se muestran las pantallas del Nombre y las transiciones entre ellas. Antes de empezar, se ve una pantalla de carga.
+![Pantalla de carga](/resources/img/readmeImgs/Pantalla_Carga.jpg)
+_Pantalla de carga_
 
 ### 4.2. Menú Principal
 
@@ -194,13 +192,16 @@ Lista de los elementos:
 - Logo del juego.
 - Botón PLAY: lleva a la selección de skin de dos jugadores y el modo de juego.
 - Botón Créditos: para apagar o activar la música del juego.
+![Pantalla de inicio](/resources/img/readmeImgs/Pantalla_Inicio.jpg)
+_Pantalla de inicio_
 
 ### 4.2. Créditos
 
 Lista de los elementos:
 - Panel: texto con los roles de cada miembro del equipo 
 - Botón menú: vuelve al menú principal al pulsarse
-
+![Pantalla de créditos](/resources/img/readmeImgs/Pantalla_Creditos.jpg)
+_Pantalla de créditos_
 ### 4.3. Selección de skin y modo de juego
 
 Lista de los elementos:
@@ -211,6 +212,8 @@ Lista de los elementos:
 - Botón Tutorial: Lleva a la pantalla de tutorial.
 - Botón añadir jugador: Añade un nuevo jugador a la escena.
 - Botón de Menú: Lleva al menú principal.
+![Pantalla de selección de personajes](/resources/img/readmeImgs/Pantalla_Seleccion_Personajes.jpg)
+_Pantalla de selección de personajes_
 
 ### 4.4. Juego
 
@@ -218,22 +221,26 @@ Lista de los elementos:
 
 Lista de los elementos:
 - Escenario: donde se desarrolla toda la acción en el nivel
-- Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo. 
+- Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo.
 - Panel con temporizador: muestra el tiempo restante de la partida
 -Botón pausa.
+  ![Pantalla de juego](/resources/img/readmeImgs/Pantalla_Juego_Principal.jpg)
+_Pantalla de juego_
 4.5.2. Pausa
-
 Lista de los elementos:
 - Botón volver (X): para salir de la pantalla de pausa y seguir jugando.
 - Botón menú: para salir al menú principal y dejar la partida. Se pierde todo el progreso.
-- 
+  ![Pantalla de pausa](/resources/img/readmeImgs/Pantalla_Pausa.jpg)
+_Pantalla de pausa_
+
 ### 4.5. Fin de nivel
 
 Lista de los elementos:
 - Botón Menú: Lleva al menú principal
 - Panel que muestra el ganador de la partida. En caso de que sea modo campaña muestra el resultado que han conseguido entre los dos jugadores.
 - Botón RETRY: empieza el nivel de 0.
-
+![Pantalla de fin](/resources/img/readmeImgs/Pantalla_Fin.jpg)
+_Pantalla de fin_
 ## 5. Arte
 
 ### 5.1. Estilo Visual
