@@ -4,14 +4,8 @@ class CharacterSelect extends Phaser.Scene {
         super({ key: 'CharacterSelect' });
         this.playersPanels = [];
         this.playersPanelsCreated = [];
-        this.posX = 225;
-        for(var i = 1; i <= maxPlayers; i++){
-            
-            console.log('Posicion' + this.posX)
-            this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i);
-            this.playersPanels.push(this.playerPanel);
-            this.posX = this.posX + 345;
-        }
+        this.posX;
+        
         /*
         this.player1Panel = new SelectPlayer(this, 225, 'namebar');
         this.player2Panel = new SelectPlayer(this, 570, 'namebar2');
@@ -28,6 +22,14 @@ class CharacterSelect extends Phaser.Scene {
         this.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
+
+        this.posX = 225;
+        for(var i = 1; i <= maxPlayers; i++){
+            console.log('Posicion' + this.posX)
+            this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i);
+            this.playersPanels.push(this.playerPanel);
+            this.posX = this.posX + 345;
+        }
 
         for(var i = 0; i < maxPlayers ; i++) this.playersPanels[i].preload();
         /*
@@ -65,6 +67,7 @@ class CharacterSelect extends Phaser.Scene {
 
         this.player1 = new Player('p1', 50, this);
         playersList.push(this.player1);
+        console.log(playersList);
         //player1 = new Player('p1');
         this.playersPanels[0].create();
         this.playersPanelsCreated.push(this.playersPanels[0]);
@@ -89,12 +92,15 @@ class CharacterSelect extends Phaser.Scene {
         this.newPlayer.on("pointerdown", ()=>{
             this.newPlayer.setVisible(false);
             this.plus.setVisible(false);
+
+            this.player2 = new Player('p2');
+            playersList.push(this.player2);
+            console.log(playersList);
             //this.player2Panel.create();
             this.playersPanels[1].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
             //player2 = new Player('p2');
-            this.player2 = new Player('p2');
-            playersList.push(this.player2);
+            
             this.addPlayer = true
         })
         this.newPlayer.on("pointerup", ()=>{
@@ -117,12 +123,8 @@ class CharacterSelect extends Phaser.Scene {
         })
         this.menu.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-            for(var i = 1; i <= this.playersPanelsCreated.length; i++)
-            {
-                document.getElementById("namebar"+i).value = null; 
-                document.getElementById("namebar"+i).style.visibility = 'hidden';
-                
-            }
+            this.exitScreen();
+            playersList.splice(0, playersList.length);
             console.log("VA A HOME")
             this.scene.start("HomeScreen");
             /*
@@ -158,6 +160,8 @@ class CharacterSelect extends Phaser.Scene {
                 this.scene.start('MainGame');
             }
         }*/
+
+        if(playersList.length == 0) return;
         this.allReady = 0;
         for(var i = 0; i < playersList.length; i++)
         {
@@ -165,10 +169,8 @@ class CharacterSelect extends Phaser.Scene {
         }
         if(this.allReady == playersList.length)
         {
-            for(var i = 1; i <= playersList.length; i++)
-            {
-                document.getElementById("namebar"+i).style.visibility = 'hidden';  
-            }
+            this.exitScreen();
+            //if(resetScene()) this.scene.restart('MainGame');
             this.scene.start('MainGame');
         }
         
@@ -182,5 +184,23 @@ class CharacterSelect extends Phaser.Scene {
             console.log("VA A JUEGO")
             this.scene.start('MainGame');
         }*/
+    }
+
+    exitScreen()
+    {
+        console.log('Lista paneles: '+this.playersPanelsCreated.length);
+        for(var i = 1; i <= this.playersPanelsCreated.length; i++)
+        {
+            //document.getElementById("namebar"+i).value = '';
+            //document.getElementById("namebar"+i).setAttribute('placeholder', 'Enter your name...'); 
+            console.log(i+': '+document.getElementById('namebar'+i).value);
+            document.getElementById("namebar"+i).style.visibility = 'hidden';
+            //Vaciar array jugadores
+                
+            //playersList.splice(0, playersList.length);
+                
+        }
+        this.playersPanels.splice(0, this.playersPanels.length);
+        this.playersPanelsCreated.splice(0, this.playersPanelsCreated.length);
     }
 }

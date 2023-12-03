@@ -2,12 +2,16 @@ class MainGame extends Phaser.Scene {
 
     constructor() {
         super({ key: 'MainGame' });
-        this.pauseScene = new Pause(this);
-        this.player1Paused = false; 
-        this.player2Paused = false; 
+        this.reiniciar = false;
+         
     }
 
     preload(){
+
+        this.pauseScene = new Pause(this);
+        this.player1Paused = false; 
+        this.player2Paused = false;
+
         //Scene
         this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
         this.load.image('ground', 'resources/img/scene/suelo.png');
@@ -18,6 +22,7 @@ class MainGame extends Phaser.Scene {
             { frameWidth: 800, frameHeight: 600 });
 
         //Tutorial
+        this.load.image('fondoTut', 'resources/img/interface/pauseFondo1.png');
         this.load.image('tutorial', 'resources/img/scene/tutorial.png');
 
         //Items
@@ -86,7 +91,6 @@ class MainGame extends Phaser.Scene {
         //this.timerSpriteCount = 1;
         this.tiempoPartida = 59; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
-
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
@@ -216,7 +220,8 @@ class MainGame extends Phaser.Scene {
 
             //Name
             this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
-            this.name.setScale(0.5);
+            this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
+            //this.name.setScale(0.5);
             this.name.setPosition(this.posX, this.player.y+45);
             namesText.push(this.name);
 
@@ -247,9 +252,8 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
-            //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
-        this.contadorPause = false;
         
         ///COLLISIONS///////////////////////////
         
@@ -371,6 +375,9 @@ class MainGame extends Phaser.Scene {
         //}
 
         //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        this.pauseScene.create();
+        this.pauseScene.setInvisible();
+        
         this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
         this.pauseButton.on("pointerdown", ()=>{
             //this.marcoMenu.setVisible(false);
@@ -386,28 +393,32 @@ class MainGame extends Phaser.Scene {
             if(this.pauseButton.frame.name === 1){
                 console.log("LE DA PA PARAR");
                 this.pararJuego();
-                this.pauseScene.create()
+                //this.pauseScene.create()
+                this.pauseScene.setVisible();
             } else {
                 console.log("LE DA PA RESUME");
                 this.continuarJuego();
                 if(this.pauseScene){
                     console.log("ESCENA DE PAUSA CREADA");
                 }
-                this.pauseScene.destroy();
+                //this.pauseScene.destroy();
+                this.pauseScene.setInvisible();
             }
         })
 
 
         //////TUTORIAL/////////
-        this.tutorial = this.add.image(400, 300, 'tutorial');
+        this.fondoTut = this.add.image(400, 300, 'fondoTut');
+        this.tutorial = this.add.image(400, 375, 'tutorial');
         this.tiempoTutorial = 3; // Duración de la partida en segundos
         this.pausaTutorial(); 
-        this.timer = this.time.addEvent({
+        this.timerTut = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
             callback: ()=> {
                 this.tiempoTutorial--;
                 if (this.tiempoTutorial === 0) {
                     this.comenzarJuego();
+                    this.fondoTut.setVisible(false);
                     this.tutorial.setVisible(false);                   
                 }
             },
@@ -452,47 +463,21 @@ class MainGame extends Phaser.Scene {
 
         ///////TIMER/////////////////
         //this.timerSprite.anims.play('time', true);
-        /* 
-        this.pauseButton.on("pointerdown", ()=>{
-            //this.marcoMenu.setVisible(false);
-            if(this.pauseButton.frame.name === 0){
-                this.pauseButton.setFrame(1);
-            }else{
-                this.pauseButton.setFrame(0);
-            }
-        })
 
-        this.pauseButton.on("pointerup", ()=>{
-            document.body.style.cursor = "auto";
-            if(this.pauseButton.frame.name === 1){
-                console.log("LE DA PA PARAR");
-                this.pararJuego();
-                this.pauseScene.create()
-            } else {
-                console.log("LE DA PA RESUME");
-                this.continuarJuego();
-                if(this.pauseScene){
-                    console.log("ESCENA DE PAUSA CREADA");
-                }
-                this.pauseScene.destroy();
-            }
-        })*/
+        if(keyInput.ESC.isDown)
+        {
+            //console.log("LE DA PA PARAR");
+            this.pararJuego();
+            this.pauseScene.setVisible();
+                   
+        }
+        if(this.pauseScene.checkGoBack() == true)
+        {
+            console.log('Check desde main game');
+            this.pauseScene.setInvisible();
+            this.continuarJuego();
+        }
 
-        /*this.input.keyboard.on('keydown_ESC', (event) => {
-            if (event.repeat) return;
-            if(this.timer.paused == true)
-            {
-                this.continuarJuego();
-                this.pauseScene.destroy();
-            }
-            else 
-            {
-                this.contadorPause = true;
-                this.pararJuego();
-                this.pauseScene.create();
-            }
-        });
-*/
 
         /////////COLLISIONS///////////7
         for(var i = 0; i < playersList.length; i++)

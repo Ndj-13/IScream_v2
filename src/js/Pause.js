@@ -2,6 +2,7 @@ class Pause{
 
     constructor(scene) {
         this.scene = scene;
+        this.goBack = false;
     }
     preload() {
         this.scene.load.image("fondo1", "resources/img/interface/pauseFondo_chico.png");
@@ -9,6 +10,9 @@ class Pause{
 
         //Botones
         this.scene.load.image("marco", "resources/img/interface/recuadroBoton.png");
+        this.scene.load.spritesheet('back', 
+            'resources/img/interface/closeButton.png',
+            { frameWidth: 80, frameHeight: 47 });
 
         // menu
         this.scene.load.spritesheet('menu',
@@ -38,7 +42,17 @@ class Pause{
                 fontSize: 30,
                 fontFamily: 'titulo',
             }
-        }   */     
+        }   */  
+        this.niebla = this.scene.add.graphics({
+            fillStyle: {
+                color: 0x828282,
+                alpha: 0.6,
+            }
+        })        
+        
+        //warning
+        this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
+
         const confTexto = {
             origin: 'right',
             style: {
@@ -59,20 +73,15 @@ class Pause{
         this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
         this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
 
+        this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
+        this.back.setScale(0.5);
+
         this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
         this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
 
         //Mensaje abandonar partida
         //tapar fondo
-        this.niebla = this.scene.add.graphics({
-            fillStyle: {
-                color: 0x828282,
-                alpha: 0.6,
-            }
-        })        
         
-        //warning
-        this.niebla.fillRect(0, 0, 800, 600).setVisible(false);
         this.abandonar = this.scene.make.text(confTexto).setText(
             'Are you sure you want to exit?').setPosition(
                 400, 230).setFontSize(25).setVisible(false);
@@ -103,6 +112,10 @@ class Pause{
         this.menu.on("pointerup", () => {
             this.menu.setFrame(0);
             document.body.style.cursor = "auto";
+            playersList.splice(0, playersList.length);
+            namesText.splice(0, namesText.length);
+            animations.splice(0, animations.length);
+            //restart = true;
             this.scene.scene.start("HomeScreen");
         })
 
@@ -168,6 +181,34 @@ class Pause{
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
         })
+
+        //Go back to game
+        this.back.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.back.setScale(0.6);
+        })
+        this.back.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.back.setScale(0.5);
+        })
+        this.back.on("pointerdown", () => {
+            console.log('Exit pulsado');
+            this.back.setFrame(1);
+            this.goBack = true;
+        })
+        this.back.on("pointerup", () => {
+            console.log('Volver al juego es TRUE');
+            this.goBack = false;
+        })
+    }
+    update()
+    {
+
+    }
+
+    checkGoBack()
+    {
+        return this.goBack;
     }
 
     destroy(){
@@ -182,5 +223,24 @@ class Pause{
         this.marcoMenu.destroy();
         this.marcoYes.destroy();
         this.marcoNo.destroy();
+        this.back.destroy();
+    }
+
+    setVisible(){
+        this.titulo.setVisible(true);
+        this.menu.setVisible(true);
+        this.retry.setVisible(true);
+        this.niebla.setVisible(true);
+        this.fondo1.setVisible(true);
+        this.back.setVisible(true);
+    }
+
+    setInvisible(){
+        this.titulo.setVisible(false);
+        this.menu.setVisible(false);
+        this.retry.setVisible(false);
+        this.niebla.setVisible(false);
+        this.fondo1.setVisible(false);
+        this.back.setVisible(false);
     }
 }

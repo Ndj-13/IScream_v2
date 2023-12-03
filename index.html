@@ -43,14 +43,20 @@
         <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">
 
-            var player1;
-            var player2;
+            //var player1;
+            //var player2;
             var playersList = [];
             var namesText = [];
             var maxPlayers = 2;
-            var keys;
+            //var keys;
             var cursorInput;
             var keyInput;
+            var restart = false;
+
+            function resetScene(){
+                console.log('Resetear escena: '+restart);
+                return restart;
+            }
 
             var config = {
                 type: Phaser.AUTO,

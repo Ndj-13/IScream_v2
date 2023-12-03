@@ -66,6 +66,8 @@ class SelectPlayer {
 
         //document.getElementById(this.namebar).style.visibility = "visible"; 
         this.playerName.disabled = false;
+        this.playerName.value = '';
+        this.playerName.setAttribute('placeholder', 'Enter your name...');
         this.playerName.style.visibility = "visible";
         if(this.namebar == 'namebar2') this.playerName.style.marginLeft = '45px';
         //console.log(this.playerName.value);
@@ -125,7 +127,7 @@ class SelectPlayer {
             
             if(this.namebar == 'namebar1')
             {
-                if(this.playerName.value == null) this.playerName.value = 'Player1';
+                if(this.playerName.value == '') this.playerName.value = 'Player1';
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
                 playersList[0].setName(this.playerName);
                 console.log("Player:"+ playersList[0].getName().value);
@@ -133,7 +135,7 @@ class SelectPlayer {
                 playersList[0].readyToPlay();
                 playersList[0].setCharactId(this.index+1);
             } else {
-                if(this.playerName.value == null) this.playerName.value = "Player2";
+                if(this.playerName.value == '') this.playerName.value = "Player2";
                 //player1Panel = new SelectPlayer(this, 225, 'namebar');
                 playersList[1].setName(this.playerName);
                 console.log("Player:"+ playersList[1].getName().value);
