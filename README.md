@@ -99,25 +99,25 @@ Este escrito tiene como objetivo principal plasmar los elementos que debe inclui
 
 ### 2.1.   Concepto del juego
 
- **_I-Scream vol.2_** es un videojuego en el que los jugadores deberán lograr superar las diferentes hordas de enemigos para lograr la victoria.
+ **_I-Scream vol.2_** es un videojuego en el que los jugadores deberán lograr superar los diferentes niveles para lograr la victoria.
  
 ### 2.2.   Características principales
 
 El juego se basa en los siguientes pilares:
 
-- Mecánica sencilla y profunda: se trata de un sistema de juego con normas y reglas sencillas que el jugador reconozca y le permitan adaptarse rápidamente, pero que a la vez ofrece un sinfín de posibilidades de manera que deba demostrar su habilidad y destreza para enfrentarse a los enemigos con éxito.
-- Rejugabilidad: el desarrollo de este juego dicta un aumento del reto que satisface la necesidad de autosuperación del jugador debido a la oportunidad de mejorar eliminando enemigos de forma más rápida y al incremento de la dificultad en cada ronda con un mayor número de objetivos a los que abatir.
-- Ampliación: **_I-Scream vol.2_**, al no tener una narrativa cerrada y contar con un desarrollo de un motor todo lo independiente posible del contenido, podrá ser ampliable a nuevos personajes y escenarios.
+- Mecánica sencilla y profunda: se trata de un sistema de juego con normas y reglas sencillas que el jugador reconozca y le permitan adaptarse rápidamente, pero que a la vez ofrece un sinfín de posibilidades de manera que deba demostrar su habilidad y destreza para enfrentarse a los niveles con éxito.
+- Rejugabilidad: el desarrollo de este juego dicta un aumento del reto que satisface la necesidad de autosuperación del jugador debido a la oportunidad de mejorar consiguiendo mayor número de puntos en menor tiempo de forma más rápida y a la diversidad de la competitividad en cada nivel con presencia de objetos.
+- Ampliación: **_I-Scream vol.2_**, al no tener una narrativa cerrada y contar con un desarrollo de un motor todo lo independiente posible del contenido, podrá ser ampliable añadiendo nuevos personajes, escenarios y objetos.
 
 ### 2.3.   Género
 
- **_I-Scream vol.2_** combina el género de plataformas y con el “hack and slash”, también conocido como mata-mata, de manera que cogiendo la esencia del primero, que se caracteriza por tener que caminar, correr, saltar o escalar sobre una serie de plataformas, y la del segundo, que destaca por sus enfrentamientos de forma continua a enemigos para poder ganar, queda como resultado un videojuego en el que los jugadores deberán desplazarse por un escenario de plataformas para lograr esquivar y eliminar a las hordas de enemigos que tratarán de acabar con ellos en ese limitado espacio, para poder obtener la victoria.
+ **_I-Scream vol.2_** Este juego fusiona elementos de plataformas con mecánicas de sueperar obstáculos y puntuación. Los jugadores se sumergirán en un desafío donde la prioridad es sortear obstáculos y recoger pickUps que aumentan la puntuación. El foco está en la destreza para navegar un entorno lleno de desafíos, esquivando obstáculos y evitando perder contra tu compañero.
  
 ### 2.4.   Propósito y público objetivo
 
- El principal objetivo de **_I-Scream vol.2_** es entretener al usuario con este divertido pero desafiante juego que le permitirá autosuperarse con el fin de derrotar a los enemigos y también disfrutar del modo multijugador para jugar en compañía. Además, su estilo cuidado y detallado pretende lograr una buena inmersión que dé como resultado un lugar en el que el jugador se sienta cómodo y al que quiera regresar.
+ El principal objetivo de **_I-Scream vol.2_** es entretener al usuario con este divertido pero desafiante juego que le permitirá autosuperarse con el fin de ganar a sus amigos disfrutando del modo multijugador para jugar en compañía. Además, su estilo cuidado y detallado pretende lograr una buena inmersión que dé como resultado un lugar en el que el jugador se sienta cómodo y al que quiera regresar.
 
- En cuanto al público, **_I-Scream vol.2_** está dirigido a jugadores de un amplio rango de edades a los que les gusten los desafíos de batalla, y que dispongan de un tiempo limitado, puesto que el sistema de partidas cortas permite poder jugar de forma espontánea.
+ En cuanto al público, **_I-Scream vol.2_** está dirigido a jugadores de un amplio rango de edades a los que les gusten los desafíos competitivos, y que dispongan de un tiempo limitado, puesto que el sistema de partidas cortas permite poder jugar de forma espontánea.
  
 ### 2.5.   Plataformas
 
@@ -125,12 +125,11 @@ El juego se basa en los siguientes pilares:
  
 ### 2.6.   Jugabilidad
 
- **_I-Scream vol.2_** consta de un escenario en el que el jugador se enfrentará a hordas de enemigos con un tiempo limitado, y para combatirlos contará con los siguientes elementos:
+ **_I-Scream vol.2_** consta de un escenario en el que el jugador se enfrentará contra su compañero o en solitario con un tiempo limitado, con el objetivo de conseguir el máximo de puntos posibles. Para ello, este videojuego dispondrá de:
  
-- Movilidad: el jugador controla a un personaje con el que desplazarse por todo el escenario, incluyendo el salto entre plataformas.
-- Selección de personajes: el jugador contará con distintos personajes entre los que elegir para jugar con él.
-- Armas y poderes: dependiendo del personaje que escoja el usuario, este le proporcionará una forma de combatir única, ya sea a distancia con armas de fuego como pistolas o hechizos, o cuerpo a cuerpo con espadas o lanzas.
-- Objetos: a lo largo y ancho del escenario habrá distribuidos objetos que podrán servir de ayuda para cubrirse o incluso atacar a los enemigos.
+- Movilidad: cada jugador controla a un personaje con el que desplazarse por todo el escenario, incluyendo el salto entre plataformas.
+- Selección de personajes: el jugador contará con personajes con distintas skins entre los que elegir para jugar con él.
+- Objetos: a lo largo y ancho del escenario habrá distribuidos objetos que podrán servir de ayuda como bonus de puntuación.
   
 ### 2.7.   Estilo visual
   **_I-Scream vol.2_** tendrá un estilo sencillo pero detallado y cuidado que pueda ser apreciado por los jugadores para que les ayude a sentirse cómodos e inmersos en el juego. Se trata de un estilo de pixel art muy suave y agradable a la vista con colores vivos acordes con la acción que requiere el juego que creen un ambiente de batalla pero acogedor a la vez. En cuanto a la temática, consistirá en un mundo de gominolas y dulces en los que todo está hecho de los más deliciosos manjares, incluyendo a los propios personajes, creando así un juego de supervivencia diferente a los que acostumbramos a ver.
@@ -142,68 +141,44 @@ En esta sección se describen todas las mecánicas implementadas y la jugabilida
 
 ### 3.1. Jugabilidad
 
-El concepto inicial del videojuego está basado en los géneros hack and slash y plataformas. Se trata de un juego de supervivencia cooperativo en el que los jugadores se enfrentarán a hordas de enemigos, utilizando sus poderes, armas u objetos que podrán ir encontrando por el mapa.
+El concepto inicial del videojuego está basado en los géneros de plataformas y arcade/acción. Se trata de un juego competitivo  en el que los jugadores se enfrentarán entre ellos, valiéndose de sus habilidades y destreza, para esquivar la lluvia de obstáculos y obtener la mayor puntuación.
 
 El plano de la cámara será frontal, de forma que se pueda observar todo el escenario. El estilo visual será 2D y todos los personajes serán visibles en pantalla, por lo que no será necesario requerir de una pantalla partida a la hora de jugar multijugador local.
 
-El juego se desarrolla en partidas independientes conformadas por un total de 3 rondas, en la que cada ronda será una horda de enemigos que deberá ser eliminada para poder avanzar y obtener la victoria. 
+El juego se desarrolla en partidas independientes, en la que cada partida termina con un ganador, un perdedor y una puntuación. 
 
 El modo de juego principal se explica a continuación:
 
-Modo Arcade: modo multijugador cooperativo / un jugador. 
-Consiste en oleadas de enemigos que irán incrementando en número y dificultad en cada ronda, se deberá sobrevivir el mayor número de rondas posibles y los jugadores cooperan para sobrevivir, y a su vez, compiten para obtener el mayor número de bajas posibles.
-
+Modo principal: puede ser de uno o dos jugadores. La partida comienza y que gane el mejor.
 ### 3.2. Flujo de juego
-
-En el menú de selección de personaje, antes de iniciar la partida, el jugador podrá escoger el personaje con el que quiere jugar, ponerle nombre y comenzar a jugar.
-
-Flujo de Modo Arcade. En el modo arcade, dos jugadores, cooperan para superar y sobrevivir oleadas de enemigos que irán progresando en dificultad conforme avancen las oleadas. A su vez, los jugadores también compiten entre sí para tener la mejor puntuación de bajas de enemigos.
+El juego comienza en la pantalla de inicio, en la cual se presenta la portada del juego; conformada por el título y la imagen principal.
+Luego, al pulsar PLAY, se mostrará la pantalla de selección de personaje. Esta pantalla está formada por una animación de personaje, un recuadro para escribir el nombre del jugador, y unas flechas para elegir las skins deseadas para jugar. Además aquí se muestra la posibilidad de jugar en solitario o en compañía; posibilidad representada con un botó de añadir jugador, el cual mostrará un segundo campo de selección para el jugador 2. En otras palabras, en el menú de selección de personaje, antes de iniciar la partida, el jugador podrá escoger el personaje con el que quiere jugar, ponerle nombre y comenzar a jugar.
+Al jugar, los jugadores se encontrarán el el juego principal, donde (aparte de jugar) se podrá pausar el juego (menú de pausa) y se terminará la partida surgiendo la pantalla de resultados; donde se mostrarán los resultados de los jugadores en esa partida. 
+En todas las pantallas se podrá volver hacia atrás; dicho de otra forma todas las pantallas están conectadas.
 
 ### 3.3. Personajes
 
-Los personajes seleccionables tendrán una serie de características que podrán ir mejorando a medida que suban de nivel. Cada personaje tendrá una serie de habilidades y funciones  únicas que podrán complementarse con armas y objetos que se vayan recogiendo. 
-
-La lista de atributos que podrán ir mejorando será: 
-
-- Vida. Aumenta la vida máxima del personaje.
-- Resistencia. Controla el número de evasiones que podemos realizar antes de quedarnos sin estamina.
-- Fuerza. Atributo que mejora el daño que se realiza con las armas.
-- Magia. Atributo que mejora el daño realizado con las habilidades de daño mágico.
-- Precisión. Disminuye la dispersión de las armas a distancia y aumenta la probabilidad de daño crítico.
-- Manejo. Controla la destreza del personaje para portar distintas armas.
+Los personajes seleccionables se corresponden con las distintas skins que se podrán usar; que en nuestro caso son dos helados. También se cambiará de skin al recoger un objeto pikable de bonus, lo que mostrará qué jugador tiene la ventaja de la partida.
   
 ### 3.4. Objetos
 
-Habrá una cantidad diversa de objetos de dos categorías distintas: consumibles y armas. Las armas pueden tener distintas características, distintos tipos de ataque y requerir de ciertos atributos para poder usarse.
-Los consumibles pueden incluir pociones para curarse, armas arrojadizas, etc.
-
+Hay dos tipos de "objetos":
+-Obstáculos: durante toda la partida irán cayendo bolas de fuego en posiciones aleatorias, las cuales los jugadores tendrán que evitar a toda costa, pues te devuelve a la posición inicial y te retiene durante unos segundos, en los cuales no podrás obtener cerezas para aumentar la puntuación ni moverte. Estos objetos funcionan como obstáculos en la finalidad de obtener la mayor puntuación y ganar la partida.
+-Pickeables: durante la partida caerán de manera menos frecuente y colisionan con el suelo, para poder ser recogidos por los jugadores.
 ### 3.5. Movimiento y físicas
 
 3.5.1. Interacción entre elementos
   
-Personajes principales - Enemigos. Colisiones entre enemigos y PJs para ataques.
-
-Personaje - Personaje. Colisiones entre PJs para ataques.
-
-Personaje - Objetos. Colisiones para recoger objetos. 
-
-Proyectiles - Enemigos. Colisiones para recibir daños.
-
-Proyectiles - Personajes. Colisiones para recibir daños.
-
-Personajes - NPCs - Mundo virtual. Colisiones para saber cual es el terreno caminable.
+Personaje - Objetos. Colisiones para recoger objetos. En nuestro caso cerezas, bolas de fuego y bonus.
+Objetos - Mundo Virtual. Colisiones entre cerezas y suelo.
+Personajes - Mundo virtual. Colisiones para el terreno caminable.
 
 3.5.2. Controles
   
 - Moverse
 - Esquivar
-- Ataque físico
-- Ataques especiales
-- Usar objeto
-- Arrojar objeto
+- Saltar
 - Recoger objeto
-- Abrir inventario
-- Recargar armas / magia
 
 ## 4. Interfaz
 
@@ -216,12 +191,9 @@ A continuación se muestran las pantallas del Nombre y las transiciones entre el
 ### 4.2. Menú Principal
 
 Lista de los elementos:
-- Logo del juego
-- Botón Partida Local: lleva a la selección de skin de un jugador
-- Botón Partida Multijugador: lleva a la selección de skin de dos jugadores y el modo de juego
-- Botón: Tutorial: Lleva a la pantalla del tutorial
-- Botón Salir: para salir del juego
-- Botón Música: para apagar o activar la música del juego
+- Logo del juego.
+- Botón PLAY: lleva a la selección de skin de dos jugadores y el modo de juego.
+- Botón Créditos: para apagar o activar la música del juego.
 
 ### 4.2. Créditos
 
@@ -233,47 +205,34 @@ Lista de los elementos:
 
 Lista de los elementos:
 
-- Listas de skins disponibles, pulsando izquierda o derecha se cambia de uno a otro. Si un jugador tiene seleccionado un skin, el otro no podrá elegir el mismo.
+- Listas de skins disponibles, pulsando izquierda o derecha se cambia de uno a otro.
 - Textos Player 1 y 2: distinguen los jugadores que tienen cada skin.
-- Botones Aceptar: Selecciona el skin en el centro de la lista
-- Textos Modo de Juego: para distinguir que en la parte de abajo se selecciona la manera en la que se va a jugar
-- Botones Campaña, Versus: Se selecciona uno de los tres como modo de juego
-- Botón Tutorial: Lleva a la pantalla de tutorial
-- Botón de Menú: Lleva al menú principal
+- Botones Aceptar: Selecciona el skin en el centro de la lista.
+- Botón Tutorial: Lleva a la pantalla de tutorial.
+- Botón añadir jugador: Añade un nuevo jugador a la escena.
+- Botón de Menú: Lleva al menú principal.
 
-### 4.4. Tutorial
+### 4.4. Juego
 
-Lista de los elementos:
-- Panel Reglas: donde se explican los controles y las reglas del juego
-- Botón Aceptar: vuelve a la pantalla anterior
-
-### 4.5. Juego
-
-4.5.1.  Nivel
+4.4.1.  Nivel
 
 Lista de los elementos:
 - Escenario: donde se desarrolla toda la acción en el nivel
-- Zona izquierda y derecha diferencian entre el jugador 1 y el 2, respectivamente. Para cada uno se dispone de los mismos botones e iconos, por lo que se explicarán los elemento solo del jugador 1 (izquierda) y se asumirá lo mismo para el 2.
-- Imagen inferior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo. 
-- Botón Más (...) : para ver con más detalle las habilidades de los jugadores, como van progresando, y sus estadísticas. Cuando se clique sobre este, lleva a un menú de pausa a ambos jugadores, por lo que deberán de estar de acuerdo en seleccionarlo.
+- Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo. 
 - Panel con temporizador: muestra el tiempo restante de la partida
-
+-Botón pausa.
 4.5.2. Pausa
 
 Lista de los elementos:
-- Dos zonas diferenciadas con los mismos componentes. La izquierda para el jugador 1, y la derecha para el jugador 2.
-- Icono de la skin seleccionada por el jugador, junto con su nombre al lado. Diferencia la zona de la del otro jugador.
-- Puntuación en función del rendimiento durante la partida.
 - Botón volver (X): para salir de la pantalla de pausa y seguir jugando.
 - Botón menú: para salir al menú principal y dejar la partida. Se pierde todo el progreso.
-- Botón tutorial: Lleva a la pantalla de tutorial.
-
-### 4.6. Fin de nivel
+- 
+### 4.5. Fin de nivel
 
 Lista de los elementos:
 - Botón Menú: Lleva al menú principal
-- Panel que muestra el ganador de la partida. En caso de que sea modo campaña muestra el resultado que han conseguido entre los dos jugadores
-- Botón Salir: Sale del juego.
+- Panel que muestra el ganador de la partida. En caso de que sea modo campaña muestra el resultado que han conseguido entre los dos jugadores.
+- Botón RETRY: empieza el nivel de 0.
 
 ## 5. Arte
 
@@ -301,19 +260,14 @@ _Paleta de colores 1_
 ![Paleta de colores 2](/resources/img/readmeImgs/paletaJeR_II.jpg)
 _Paleta de colores 2_
 
-### 5.4. Enemigos
 
- Los enemigos del juego son criaturas y obstáculos ingeniosos que representan amenazas para los helados protagonistas. Cada enemigo tiene un diseño único que combina lo adorable con lo desafiante, lo que añade un elemento estratégico a la jugabilidad. La variedad de enemigos desafía a los jugadores a adaptar sus estrategias y habilidades según el tipo de enemigo que enfrenten.
-
-Primeros diseños de uno de los enemigos:
-
-### 5.5. Animación
+### 5.4. Animación
 
  El juego incorpora animaciones fluidas y detalladas para los personajes y enemigos, lo que da vida al mundo del juego. Cada personaje tiene animaciones de caminar, correr, saltar y atacar que reflejan sus características y personalidad, mientras que los enemigos se mueven de manera única y reaccionan de forma distintiva a los ataques de los jugadores. Las animaciones se integran perfectamente con la jugabilidad para ofrecer una experiencia inmersiva.
 
 Primeras animaciones del personaje:
 
-### 5.6. Fondos y Escenarios
+### 5.5. Fondos y Escenarios
 
 Los fondos y escenarios de **_I-Scream vol.2_** son una parte crucial de la experiencia de juego. Cada nivel está cuidadosamente diseñado para ofrecer una variedad de entornos que incluyen paisajes de postres, áreas heladas y escenarios temáticos relacionados con los sabores de los personajes. Los fondos están llenos de detalles y elementos interactivos que contribuyen a la inmersión del jugador.
 
