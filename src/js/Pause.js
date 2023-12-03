@@ -31,18 +31,6 @@ class Pause{
     }
 
     create() {
-        //Titulo PAUSA
-        /*const confTitulo = {
-            origin: 'center',
-            x: game.renderer.width / 2,
-            y: 150,
-            text: 'PAUSE',
-            style: {
-                color: '#FFFFFF',
-                fontSize: 30,
-                fontFamily: 'titulo',
-            }
-        }   */  
         this.niebla = this.scene.add.graphics({
             fillStyle: {
                 color: 0x828282,
@@ -73,8 +61,8 @@ class Pause{
         this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
         this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
 
-        this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
-        this.back.setScale(0.5);
+        //this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
+        //this.back.setScale(0.5);
 
         this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
         this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
@@ -114,7 +102,7 @@ class Pause{
             document.body.style.cursor = "auto";
             playersList.splice(0, playersList.length);
             namesText.splice(0, namesText.length);
-            animations.splice(0, animations.length);
+            //animations.splice(0, animations.length);
             //restart = true;
             this.scene.scene.start("HomeScreen");
         })
@@ -183,7 +171,7 @@ class Pause{
         })
 
         //Go back to game
-        this.back.on("pointerover", () => {
+       /* this.back.on("pointerover", () => {
             document.body.style.cursor = "pointer";
             this.back.setScale(0.6);
         })
@@ -199,17 +187,13 @@ class Pause{
         this.back.on("pointerup", () => {
             console.log('Volver al juego es TRUE');
             this.goBack = false;
-        })
-    }
-    update()
-    {
-
+        })*/
     }
 
-    checkGoBack()
+    /*checkGoBack()
     {
         return this.goBack;
-    }
+    }*/
 
     destroy(){
         this.titulo.destroy();
@@ -223,10 +207,10 @@ class Pause{
         this.marcoMenu.destroy();
         this.marcoYes.destroy();
         this.marcoNo.destroy();
-        this.back.destroy();
+        //this.back.destroy();
     }
 
-    setVisible(){
+    /*setVisible(){
         this.titulo.setVisible(true);
         this.menu.setVisible(true);
         this.retry.setVisible(true);
@@ -242,5 +226,5 @@ class Pause{
         this.niebla.setVisible(false);
         this.fondo1.setVisible(false);
         this.back.setVisible(false);
-    }
+    }*/
 }
