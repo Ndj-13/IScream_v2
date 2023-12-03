@@ -35,6 +35,8 @@ class MainGame extends Phaser.Scene {
 
         //audio
         this.load.audio('ouch', 'resources/audio/OuchSound.mp3');
+        this.load.audio('coin', 'resources/audio/Classic Arcade SFX/coins/Coin_5.wav');
+        this.load.audio('jump', 'resources/audio/Classic Arcade SFX/Jumps/Jump_6.wav');
         this.load.audio('ost', 'resources/audio/ost.mp3');
 
         //Players
@@ -59,21 +61,20 @@ class MainGame extends Phaser.Scene {
     create(){
         //audio
         this.hitSound = this.sound.add('ouch');
+        this.coinSound = this.sound.add('coin', {volume: 0.5});
+        this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-
         this.ost.play();
+        
 
-        //this.time.timeScale = 10; para cambiar la velocidad de ejecucións
+        //this.time.timeScale = 10; para cambiar la velocidad de ejecución
         //SCENE
         this.add.image(400, 300, 'gameBg');
 
         //PLATAFORMAS
-        
         var platforms = this.physics.add.staticGroup();
         
         platforms.create(400, 580, 'ground').refreshBody();
-
-        
         platforms.create(800, 410, 'ground');
         platforms.create(-100, 270, 'ground');
         platforms.create(1000, 220, 'ground');
@@ -89,7 +90,7 @@ class MainGame extends Phaser.Scene {
             repeat: -1
         });
         //this.timerSpriteCount = 1;
-        this.tiempoPartida = 59; // Duración de la partida en segundos
+        this.tiempoPartida = 10; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -103,7 +104,7 @@ class MainGame extends Phaser.Scene {
                     this.scene.start("Results");                    
                 }
                 if (this.tiempoPartida<=5){
-                    timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
+                    //timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
 
             },
@@ -297,6 +298,7 @@ class MainGame extends Phaser.Scene {
 
         //colision fruta-jugador
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
+            this.coinSound.play();
             player1.updateScore(1);
             //console.log('Player 1 Score: '+player1.showScore()); 
             //console.log('Player 1: '+player1.getName().value);
@@ -313,8 +315,8 @@ class MainGame extends Phaser.Scene {
                 bola.setPosition(randomNumX, randomNumY);
 
                 this.player2Paused = true;
-                player.setPosition(800, 500);
                 player.setVelocity(0);
+                player.setPosition(800, 500);
                 player.setTint(0xFF0000);
                 this.stop = this.time.addEvent({
                     delay: 2500, 
@@ -517,6 +519,7 @@ class MainGame extends Phaser.Scene {
         
         if (keyInput.W.isDown && playerController.body.touching.down)
         {
+            this.jumpSound.play();
             playerController.setVelocityY(-630);
         }
 
@@ -545,6 +548,7 @@ class MainGame extends Phaser.Scene {
         
         if (cursorInput.up.isDown && playerController.body.touching.down)
         {
+            this.jumpSound.play();
             playerController.setVelocityY(-630);
         }
 
