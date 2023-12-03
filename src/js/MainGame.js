@@ -258,7 +258,7 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
-            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+            //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
         
         ///COLLISIONS///////////////////////////
@@ -342,9 +342,15 @@ class MainGame extends Phaser.Scene {
         }); 
         //}
 
+
         //// PAUSE 
         this.pauseScene.create();
         this.pauseScene.setInvisible();
+
+        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        //this.pauseScene.create();
+        //this.pauseScene.setInvisible();
+        
         
         this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
         this.pauseButton.on("pointerdown", ()=>{
@@ -428,7 +434,7 @@ class MainGame extends Phaser.Scene {
         ///////TIMER/////////////////
         //this.timerSprite.anims.play('time', true);
 
-        if(keyInput.ESC.isDown)
+        /*if(keyInput.ESC.isDown)
         {
             //console.log("LE DA PA PARAR");
             this.pararJuego();
@@ -442,7 +448,7 @@ class MainGame extends Phaser.Scene {
             this.continuarJuego();
             this.pauseScene.resetGoBack();
             this.pauseButton.setFrame(0);
-        }
+        }*/
 
 
         /////////NAME///////////
