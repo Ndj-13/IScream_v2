@@ -57,17 +57,17 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 4.2. Menú Principal	
 
-4.2. Créditos
+4.3. Créditos
 
-4.3. Selección de skin y modo de juego	
+4.4. Selección de skin y modo de juego	
 
-4.4. Juego	
+4.5. Juego	
 
-  4.4.1. Nivel	
+  4.5.1. Nivel	
 
-  4.4.2. Pausa
+  4.5.2. Pausa
 
-4.5. Fin de nivel	
+4.6. Fin de nivel	
 
 ### 5. Arte	
 
@@ -86,6 +86,8 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 ## 1.   Cambios
 
 En este apartado se irán introduciendo los cambios que se vayan efectuando en las siguientes fases. 
+3/12/23: Se ha cambiado la naturaleza del juego, de juego tipo hack and slash a juego de acción/arcade. Esto significa que no hay hordas de enemigos y sooperación entre jugadores, si no que es competitivo y de recolección y evasión de obstáculos.
+Por ello, se ha reducido la cantidad de pantallas, niveles y mecánicas para adaptarlo al nuevo juego.
 
 ## 2.   Introducción
 
@@ -183,6 +185,8 @@ En esta sección se describe detalladamente cada una de las pantallas que compon
 ### 4.1. Diagrama de flujo
 
 A continuación se muestran las pantallas del Nombre y las transiciones entre ellas. Antes de empezar, se ve una pantalla de carga.
+![Flujo de pantallas](/resources/img/readmeImgs/Flujo_Pantallas.jpg)
+_Flujo de Pantallas-
 ![Pantalla de carga](/resources/img/readmeImgs/Pantalla_Carga.jpg)
 _Pantalla de carga_
 
@@ -195,14 +199,14 @@ Lista de los elementos:
 ![Pantalla de inicio](/resources/img/readmeImgs/Pantalla_Inicio.jpg)
 _Pantalla de inicio_
 
-### 4.2. Créditos
+### 4.3. Créditos
 
 Lista de los elementos:
 - Panel: texto con los roles de cada miembro del equipo 
 - Botón menú: vuelve al menú principal al pulsarse
 ![Pantalla de créditos](/resources/img/readmeImgs/Pantalla_Creditos.jpg)
 _Pantalla de créditos_
-### 4.3. Selección de skin y modo de juego
+### 4.4. Selección de skin y modo de juego
 
 Lista de los elementos:
 
@@ -215,9 +219,9 @@ Lista de los elementos:
 ![Pantalla de selección de personajes](/resources/img/readmeImgs/Pantalla_Seleccion_Personajes.jpg)
 _Pantalla de selección de personajes_
 
-### 4.4. Juego
+### 4.5. Juego
 
-4.4.1.  Nivel
+4.5.1.  Nivel
 
 Lista de los elementos:
 - Escenario: donde se desarrolla toda la acción en el nivel
@@ -235,7 +239,7 @@ Lista de los elementos:
   ![Pantalla de pausa](/resources/img/readmeImgs/Pantalla_Pausa.jpg)
 _Pantalla de pausa_
 
-### 4.5. Fin de nivel
+### 4.6. Fin de nivel
 
 Lista de los elementos:
 - Botón Menú: Lleva al menú principal
