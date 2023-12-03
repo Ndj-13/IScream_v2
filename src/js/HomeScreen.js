@@ -48,6 +48,8 @@ class HomeScreen extends Phaser.Scene {
             
             this.scene.start("CharacterSelect");
             
+            
+            
         })
 
         // creditos

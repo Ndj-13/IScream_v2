@@ -19,6 +19,7 @@
            }
         </style>
         <script src="src/js/LoadScreen.js"></script>
+        <script src="src/js/GameLoader.js"></script>
         <script src="src/js/HomeScreen.js"></script>
         <script src="src/js/CharacterSelect.js"></script>
         <script src="src/js/MainGame.js"></script>
@@ -47,12 +48,13 @@
             //var player1;
             //var player2;
             var playersList = [];
-            var namesText = [];
+            //var namesText = [];
             var maxPlayers = 2;
             //var keys;
             var cursorInput;
             var keyInput;
-            //var restart = false;
+            var restart = false;
+            var retry = false;
 
             var config = {
                 type: Phaser.AUTO,
@@ -67,7 +69,7 @@
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, HomeScreen, Creditos, CharacterSelect, MainGame, Pause, Results]
+                scene:[LoadScreen, HomeScreen, Creditos, CharacterSelect, GameLoader, MainGame, Pause, Results]
             };   
             var game = new Phaser.Game(config);       
 

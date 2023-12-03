@@ -169,12 +169,8 @@ class CharacterSelect extends Phaser.Scene {
         {
             this.exitScreen();
             for(var i = 0; i < playersList.length; i++) console.log('Player '+i+': '+playersList[i].getName().value);
+        
             /*
-            if(restart == true)
-            {
-                this.scene.add('MainGame', MainGame, true);
-            }*/
-            
             //this.scene.remove('CharacterSelect');
             var juego = this.scene.get('MainGame');
             console.log(this.scene.get('MainGame'));
@@ -183,8 +179,8 @@ class CharacterSelect extends Phaser.Scene {
             if(juego == null){
                 console.log('JUEGO NO ESTA')
                 this.scene.add('MainGame', MainGame, true)
-            }
-            this.scene.start('MainGame');
+            }*/
+            this.scene.start('GameLoader');
         }
         
         //Animacion personajes en pausa
@@ -201,7 +197,7 @@ class CharacterSelect extends Phaser.Scene {
 
     shutdown()
     {
-        this.scene.restart();
+        //this.scene.restart('CharacterSelect');
     }
 
     exitScreen()

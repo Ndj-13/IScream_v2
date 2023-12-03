@@ -2,7 +2,8 @@ class Pause{
 
     constructor(scene) {
         this.scene = scene;
-        //this.goBack = false;
+        this.retry = false;
+        this.goBack = false;
     }
     preload() {
         this.scene.load.image("fondo1", "resources/img/interface/pauseFondo_chico.png");
@@ -24,7 +25,6 @@ class Pause{
             { frameWidth: 120, frameHeight: 47 });
 
         //Pestaña aviso
-        this.scene.load.image('aviso', 'resources/img/interface/Warning.png');
         this.scene.load.spritesheet('yes', 'resources/img/interface/confirmButton.png', { frameWidth: 120, frameHeight: 47 });
         this.scene.load.spritesheet('no', 'resources/img/interface/cancelButton.png', { frameWidth: 120, frameHeight: 47 });
 
@@ -58,14 +58,14 @@ class Pause{
 
 
         //Botones
-       // this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
-       // this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
+        this.menu = this.scene.add.sprite(400, 250, "menu").setInteractive();
+        this.marcoMenu = this.scene.add.image(400, 250, 'marco').setVisible(false);
 
-        //this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
-        //this.back.setScale(0.5);
+        this.back = this.scene.add.sprite(460, 200, 'back').setInteractive();
+        this.back.setScale(0.5);
 
-       // this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
-       // this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
+        this.retry = this.scene.add.sprite(400, 325, "retry").setInteractive();
+        this.marcoRetry = this.scene.add.image(400, 325, 'marco').setVisible(false);
 
         //Mensaje abandonar partida
         //tapar fondo
@@ -81,7 +81,7 @@ class Pause{
 
         this.no = this.scene.add.sprite(500, 350, 'no').setVisible(false);
         this.marcoNo = this.scene.add.image(500, 350, 'marco').setVisible(false);
-        this.marcoNo.scale = 1.2;
+        this.marcoNo.scale = 1.2;*/
 
         //FUNCIONALIDADES
         //menu
@@ -102,11 +102,11 @@ class Pause{
             document.body.style.cursor = "auto";
             playersList.splice(0, playersList.length);
             //playersList = [];
-            namesText.splice(0, namesText.length);
+            //namesText.splice(0, namesText.length);
             //animations.splice(0, animations.length);
-            //restart = true;
+            restart = true;
             //this.scene.stop('MainGame');
-            this.scene.scene.remove('MainGame');
+            //this.scene.scene.remove('MainGame');
             this.scene.scene.start("HomeScreen");
         })
 
@@ -130,9 +130,9 @@ class Pause{
             {
                 playersList[i].resetScore()
             }
-            this.scene.scene.start("MainGame");
+            this.retryActivated();
         })
-
+        /*
         //yes
         this.yes.on("pointerover", () => {
             document.body.style.cursor = "pointer";
@@ -174,7 +174,7 @@ class Pause{
         })*/
 
         //Go back to game
-       /* this.back.on("pointerover", () => {
+        this.back.on("pointerover", () => {
             document.body.style.cursor = "pointer";
             this.back.setScale(0.6);
         })
@@ -187,12 +187,10 @@ class Pause{
             this.goBack = true;
         })
         this.back.on("pointerup", () => {
-            console.log('Volver al juego es TRUE');
-            this.goBack = false;
-        })*/
+        })
     }
 
-    /*checkGoBack()
+    checkGoBack()
     {
         return this.goBack;
     }
@@ -201,7 +199,7 @@ class Pause{
     {
         this.goBack = false;
         this.back.setFrame(0);
-    }*/
+    }
 
     destroy(){
         this.titulo.destroy();
@@ -218,7 +216,7 @@ class Pause{
         //this.back.destroy();
     }
 
-    /*setVisible(){
+    setVisible(){
         this.titulo.setVisible(true);
         this.menu.setVisible(true);
         this.retry.setVisible(true);
@@ -234,5 +232,17 @@ class Pause{
         this.niebla.setVisible(false);
         this.fondo1.setVisible(false);
         this.back.setVisible(false);
-    }*/
+    }
+
+    retryActivated(){
+        this.retry = true;
+    }
+    retryGame()
+    {
+        return this.retry;
+    }
+    resetRetry()
+    {
+        this.rety = false;
+    }
 }
