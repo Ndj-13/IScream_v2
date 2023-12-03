@@ -388,14 +388,12 @@ class MainGame extends Phaser.Scene {
             document.body.style.cursor = "auto";
             if(this.pauseButton.frame.name === 1){
                 this.pararJuego();
-                //this.pauseScene.create()
-                this.pauseScene.setVisible();
+                this.pauseScene.create()
             } else {
                 this.continuarJuego();
                 if(this.pauseScene){
                 }
-                //this.pauseScene.destroy();
-                this.pauseScene.setInvisible();
+                this.pauseScene.destroy();
             }
         })
 
