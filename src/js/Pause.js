@@ -205,16 +205,16 @@ class Pause{
 
     destroy(){
         this.titulo.destroy();
-        this.no.destroy();
-        this.yes.destroy();
-        this.abandonar.destroy();
-        this.menu.destroy();
-        this.retry.destroy();
+        //this.no.destroy();
+        //this.yes.destroy();
+        //this.abandonar.destroy();
+        //this.menu.destroy();
+        //this.retry.destroy();
         this.niebla.destroy();
         this.fondo1.destroy();
-        this.marcoMenu.destroy();
-        this.marcoYes.destroy();
-        this.marcoNo.destroy();
+        //this.marcoMenu.destroy();
+        //this.marcoYes.destroy();
+        //this.marcoNo.destroy();
         //this.back.destroy();
     }
 

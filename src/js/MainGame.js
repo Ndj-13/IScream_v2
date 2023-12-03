@@ -67,9 +67,8 @@ class MainGame extends Phaser.Scene {
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-        /*
         this.ost.play();
-        this.ost.setLoop(true);*/
+        this.ost.setLoop(true); 
         
         /////////SCENE//////////////7
         this.add.image(400, 300, 'gameBg');
@@ -342,10 +341,6 @@ class MainGame extends Phaser.Scene {
         }); 
         //}
 
-
-        //// PAUSE 
-        this.pauseScene.create();
-        this.pauseScene.setInvisible();
 
         //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
         //this.pauseScene.create();

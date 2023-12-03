@@ -98,11 +98,11 @@ class Results extends Phaser.Scene {
         this.add.image(game.renderer.width / 2, 100, 'tituloRes');
 
         //menu
-        this.menu = this.add.sprite(500, 525, "menu").setInteractive();
-        this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
+        //this.menu = this.add.sprite(500, 525, "menu").setInteractive();
+        //this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
 
-        this.retry = this.add.sprite(300, 525, "retry").setInteractive();
-        this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
+        //this.retry = this.add.sprite(300, 525, "retry").setInteractive();
+        //this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
 
 
        //Jugadores
@@ -160,7 +160,7 @@ class Results extends Phaser.Scene {
 
         //FUNCIONALIDADES
         //menu
-        this.menu.on("pointerover", () => {
+        /*this.menu.on("pointerover", () => {
             document.body.style.cursor = "pointer";
             this.marcoMenu.setVisible(true);
         })
@@ -245,6 +245,6 @@ class Results extends Phaser.Scene {
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
         })
-
+*/
     }
 }
