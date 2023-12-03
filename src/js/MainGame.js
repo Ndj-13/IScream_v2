@@ -67,7 +67,9 @@ class MainGame extends Phaser.Scene {
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-        //this.ost.play();
+        /*
+        this.ost.play();
+        this.ost.setLoop(true);*/
         
 
         //this.time.timeScale = 10; para cambiar la velocidad de ejecución
@@ -350,7 +352,7 @@ class MainGame extends Phaser.Scene {
         //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
         //this.pauseScene.create();
         //this.pauseScene.setInvisible();
-        
+
         
         this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
         this.pauseButton.on("pointerdown", ()=>{
