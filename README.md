@@ -221,7 +221,7 @@ _Pantalla de selección de personajes_
 
 Lista de los elementos:
 - Escenario: donde se desarrolla toda la acción en el nivel
-- Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo. 
+- Imagen superior con la cabeza del skin seleccionado por el jugador y barra superior con un número que representa la puntuación del jugador. Señala a qué jugador pertenece esa parte del interfaz y la puntuación que va consiguiendo.
 - Panel con temporizador: muestra el tiempo restante de la partida
 -Botón pausa.
   ![Pantalla de juego](/resources/img/readmeImgs/Pantalla_Juego_Principal.jpg)
