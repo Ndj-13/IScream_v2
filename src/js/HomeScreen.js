@@ -38,7 +38,9 @@ class HomeScreen extends Phaser.Scene {
 
         this.playButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
+            
             this.scene.start("CharacterSelect");
+            
         })
     }
 }

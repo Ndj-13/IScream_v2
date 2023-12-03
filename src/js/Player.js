@@ -9,6 +9,7 @@ class Player {
         this.charactId = 1;
         this.hitbox;
         this.score = 0;
+        this.hurt = false;
     }
     
     getId(){

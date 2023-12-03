@@ -25,7 +25,6 @@ class CharacterSelect extends Phaser.Scene {
 
         this.posX = 225;
         for(var i = 1; i <= maxPlayers; i++){
-            console.log('Posicion' + this.posX)
             this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i);
             this.playersPanels.push(this.playerPanel);
             this.posX = this.posX + 345;
@@ -67,7 +66,6 @@ class CharacterSelect extends Phaser.Scene {
 
         this.player1 = new Player('p1', 50, this);
         playersList.push(this.player1);
-        console.log(playersList);
         //player1 = new Player('p1');
         this.playersPanels[0].create();
         this.playersPanelsCreated.push(this.playersPanels[0]);
@@ -99,6 +97,7 @@ class CharacterSelect extends Phaser.Scene {
             //this.player2Panel.create();
             this.playersPanels[1].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
+            console.log('Panel 2 creado');
             //player2 = new Player('p2');
             
             this.addPlayer = true
@@ -125,7 +124,6 @@ class CharacterSelect extends Phaser.Scene {
             document.body.style.cursor = "auto";
             this.exitScreen();
             playersList.splice(0, playersList.length);
-            console.log("VA A HOME")
             this.scene.start("HomeScreen");
             /*
             this.player1Panel.desactivarInput();
@@ -170,7 +168,14 @@ class CharacterSelect extends Phaser.Scene {
         if(this.allReady == playersList.length)
         {
             this.exitScreen();
-            //if(resetScene()) this.scene.restart('MainGame');
+            for(var i = 0; i < playersList.length; i++) console.log('Player '+i+': '+playersList[i].getName().value);
+            /*
+            if(restart == true)
+            {
+                this.scene.add('MainGame', MainGame, true);
+            }*/
+            
+            //this.scene.remove('CharacterSelect');
             this.scene.start('MainGame');
         }
         
@@ -186,14 +191,17 @@ class CharacterSelect extends Phaser.Scene {
         }*/
     }
 
+    shutdown()
+    {
+        this.scene.restart();
+    }
+
     exitScreen()
     {
-        console.log('Lista paneles: '+this.playersPanelsCreated.length);
         for(var i = 1; i <= this.playersPanelsCreated.length; i++)
         {
             //document.getElementById("namebar"+i).value = '';
             //document.getElementById("namebar"+i).setAttribute('placeholder', 'Enter your name...'); 
-            console.log(i+': '+document.getElementById('namebar'+i).value);
             document.getElementById("namebar"+i).style.visibility = 'hidden';
             //Vaciar array jugadores
                 
