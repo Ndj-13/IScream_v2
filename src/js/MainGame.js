@@ -227,10 +227,10 @@ class MainGame extends Phaser.Scene {
             this.physics.add.collider(this.player, this.hitbox);
 
             //Name
-            /*this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
+            this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
             this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
             this.name.setPosition(this.posX, this.player.y+45);
-            namesText.push(this.name);*/
+            namesText.push(this.name);
 
             //Agregar jugador creado a lista global jugadores
             playersList[i].hitbox = this.player;
@@ -445,12 +445,12 @@ class MainGame extends Phaser.Scene {
 
 
         /////////NAME///////////
-        /*for(var i = 0; i < playersList.length; i++)
+        for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
-            console.log(playersList);
-} 
-        } */
+            //console.log(playersList);
+        } 
+        
 
         ////////SCORE////////////
         for(var i = 0; i < playersList.length; i++)
