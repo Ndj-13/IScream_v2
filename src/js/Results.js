@@ -186,6 +186,10 @@ class Results extends Phaser.Scene {
         this.retry.on("pointerup", () => {
             this.retry.setFrame(0);
             document.body.style.cursor = "auto";
+            for(var i = 0; i < playersList.length; i++)
+            {
+                playersList[i].resetScore()
+            }
             this.scene.start("MainGame");
         })
 

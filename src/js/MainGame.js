@@ -28,6 +28,10 @@ class MainGame extends Phaser.Scene {
         this.load.spritesheet('fireball', 'resources/img/scene/fireball.png',
             { frameWidth: 65, frameHeight: 100 });
 
+        //audio
+        this.load.audio('ouch', 'resources/audio/OuchSound.mp3');
+        this.load.audio('ost', 'resources/audio/ost.mp3');
+
         //Players
         for(var i = 0; i < playersList.length; i++)
         {
@@ -48,11 +52,18 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+        //audio
+        this.hitSound = this.sound.add('ouch');
+        this.ost = this.sound.add('ost');
+
+        this.ost.play();
+
         //this.time.timeScale = 10; para cambiar la velocidad de ejecucións
         //SCENE
         this.add.image(400, 300, 'gameBg');
 
         //PLATAFORMAS
+        
         var platforms = this.physics.add.staticGroup();
         
         platforms.create(400, 580, 'ground').refreshBody();
@@ -124,13 +135,13 @@ class MainGame extends Phaser.Scene {
         });
 
          //creacion n bolas
-        var yBolaPos = 10;
+        var yBolaPos = -35;
         this.animatedBolas = [];
         for(let i = 0; i < 10; i++)
         { 
-            let randomNum = Phaser.Math.Between(10, 780);
-            //this.bola = this.bolas.create(randomNum, yBolaPos, 'rock');
+            let randomNum = Phaser.Math.Between(100, 700);
             this.bola = this.bolas.create(randomNum, yBolaPos, 'fireball');
+            this.bola.setScale(0.5);
             this.anims.create({
                 key: 'fireball'+i,
                 frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
@@ -201,6 +212,7 @@ class MainGame extends Phaser.Scene {
             this.physics.add.collider(this.player, platforms);
             //this.physics.add.collider(bolas, platforms);
             this.physics.add.collider(this.fruits, platforms);
+            this.physics.add.collider(this.player, this.hitbox);
 
             //Name
             this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
@@ -235,21 +247,10 @@ class MainGame extends Phaser.Scene {
             'A': Phaser.Input.Keyboard.KeyCodes.A,
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
-            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+            //'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
         this.contadorPause = false;
-            
-
-        /*
-        function spawnHitbox()
-        {
-            this.hitboxV = hitbox.create(70, 550, 'trans');
-            this.hitboxV.setScale(0.1, 10);
-            this.hitboxH = hitbox.create(70, 450, 'trans');
-            this.hitboxH.setScale(5, 0.1);
-        }*/
         
-        //console.log(this.players);
         ///COLLISIONS///////////////////////////
         
 
@@ -257,17 +258,44 @@ class MainGame extends Phaser.Scene {
         var player1 = playersList[0];
         //colision bolas-jugador
         this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
-            /*
+            this.hitSound.play();
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola.setPosition(randomNumX, randomNumY);
+
+            this.player1Paused = true;
+            player.setVelocity(0);
             player.setPosition(0, 500);
-            spawnHitbox();*/
+            player.setTint(0xFF0000);
+            this.stop = this.time.addEvent({
+                delay: 2500, 
+                callbackScope: this,
+                loop: false, 
+                callback: ()=> {
+                    this.player1Paused = false;
+                    player.clearTint();
+                    /*
+                    hitboxV1.destroy();
+                    hitboxH1.destroy();*/
+                },
+            });
+                /*
+                //crear hitbox
+                let hitboxV1 = this.hitbox.create(65, 525, 'trans');
+                hitboxV1.setScale(0.1, 3);
+                hitboxV1.setImmovable(true);
+                let hitboxH1 = this.hitbox.create(30, 485, 'trans');
+                hitboxH1.setScale(3.5, 0.1);
+                hitboxH1.setImmovable(true);*/
+
+                
         }, null, this);
+
         //colision fruta-jugador
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
-            //console.log('Player 1: '+player1.getName().value);
             player1.updateScore(1);
             //console.log('Player 1 Score: '+player1.showScore()); 
+            //console.log('Player 1: '+player1.getName().value);
             fruit.destroy();    
         }, null, this);
 
@@ -275,11 +303,46 @@ class MainGame extends Phaser.Scene {
         {
             var player2 = playersList[1];
             this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
-                let randomNum = Phaser.Math.Between(10, 780);
-                bola.setPosition(randomNum, -25);
+                this.hitSound.play();
+                let randomNumX = Phaser.Math.Between(100, 700);
+                let randomNumY = Phaser.Math.Between(-10, -250);
+                bola.setPosition(randomNumX, randomNumY);
+
+                this.player2Paused = true;
+                player.setPosition(800, 500);
+                player.setVelocity(0);
+                player.setTint(0xFF0000);
+                this.stop = this.time.addEvent({
+                    delay: 2500, 
+                    callbackScope: this,
+                    loop: false, 
+                    callback: ()=> {
+                        this.player2Paused = false;
+                        player.clearTint();
+                        /*
+                        hitboxV1.destroy();
+                        hitboxH1.destroy();*/
+                    },
+                });
                 /*
-                player.setPosition(0, 500);
-                spawnHitbox();*/
+                //crear hitbox
+                let hitboxV2 = this.hitbox.create(750, 525, 'trans');
+                hitboxV2.setScale(0.1, 3);
+                hitboxV2.setImmovable(true);
+                let hitboxH2 = this.hitbox.create(770, 485, 'trans');
+                hitboxH2.setScale(3.5, 0.1);
+                hitboxH2.setImmovable(true);
+
+                this.stop = this.time.addEvent({
+                    delay: 2500, 
+                    callbackScope: this,
+                    loop: false, 
+                    callback: ()=> {
+                        player.clearTint();
+                        hitboxV2.destroy();
+                        hitboxH2.destroy();
+                    },
+                });*/
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
                 player2.updateScore(1);
@@ -291,19 +354,49 @@ class MainGame extends Phaser.Scene {
         //colision bolas-hitbox
         this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
         {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola.setPosition(randomNum, -25);
-
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola.setPosition(randomNumX, randomNumY);
         }); 
 
         //colision bola-bola
         this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
         {
-            let randomNum = Phaser.Math.Between(10, 780);
-            bola1.setPosition(randomNum, -25);
-            console.log("cambiado pos bola: " + bola1);
+            let randomNumX = Phaser.Math.Between(100, 700);
+            let randomNumY = Phaser.Math.Between(-10, -250);
+            bola1.setPosition(randomNumX, randomNumY);
+
+            //console.log("cambiado pos bola: " + bola1);
         }); 
         //}
+
+        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
+        this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
+        this.pauseButton.on("pointerdown", ()=>{
+            //this.marcoMenu.setVisible(false);
+            if(this.pauseButton.frame.name === 0){
+                this.pauseButton.setFrame(1);
+            }else{
+                this.pauseButton.setFrame(0);
+            }
+        })
+
+        this.pauseButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            if(this.pauseButton.frame.name === 1){
+                console.log("LE DA PA PARAR");
+                this.pararJuego();
+                this.pauseScene.create()
+            } else {
+                console.log("LE DA PA RESUME");
+                this.continuarJuego();
+                if(this.pauseScene){
+                    console.log("ESCENA DE PAUSA CREADA");
+                }
+                this.pauseScene.destroy();
+            }
+        })
+
 
         //////TUTORIAL/////////
         this.tutorial = this.add.image(400, 300, 'tutorial');
@@ -328,25 +421,22 @@ class MainGame extends Phaser.Scene {
         
         ////////KEYBOARD INPUT//////////////7
         //1 player:
-        if(playersList.length == 1 && !this.playersPaused){
+        if(playersList.length == 1 && !this.player1Paused){
             this.firstPlayerController(playersList[0].hitbox, 0);
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
-        else if (playersList.length == 2 && !this.playersPaused) {
-            this.firstPlayerController(playersList[0].hitbox, 0);
-            this.secondPlayerController(playersList[1].hitbox, 1);
+        else if(playersList.length == 2) {
+            if(!this.player1Paused)
+            {
+                this.firstPlayerController(playersList[0].hitbox, 0);
+            }
+            if(!this.player2Paused)
+            {
+                this.secondPlayerController(playersList[1].hitbox, 1);
+            }
         }
-        //Pause
-        if(keyInput.ESC.isDown)
-        {
-            this.contadorPause = true;
-            console.log("LE DA PA PARAR");
-            this.pararJuego();
-            this.pauseScene.create();
-                
-        }
-
+        
         for(let i = 0; i < 10; i++)
         {
             this.animatedBolas[i].anims.play('fireball'+i, true);
@@ -388,6 +478,21 @@ class MainGame extends Phaser.Scene {
             }
         })*/
 
+        /*this.input.keyboard.on('keydown_ESC', (event) => {
+            if (event.repeat) return;
+            if(this.timer.paused == true)
+            {
+                this.continuarJuego();
+                this.pauseScene.destroy();
+            }
+            else 
+            {
+                this.contadorPause = true;
+                this.pararJuego();
+                this.pauseScene.create();
+            }
+        });
+*/
 
         /////////COLLISIONS///////////7
         for(var i = 0; i < playersList.length; i++)
@@ -434,7 +539,7 @@ class MainGame extends Phaser.Scene {
 
     secondPlayerController(playerController, pIndex)
     {
-        //1st Player controlls
+        //2nd Player controlls
         if (cursorInput.left.isDown)
         {
             playerController.setVelocityX(-160);
@@ -447,11 +552,9 @@ class MainGame extends Phaser.Scene {
 
             playerController.anims.play('rightP'+pIndex, true);
         }
-        
         else
         {
             playerController.setVelocityX(0);
-
             playerController.anims.play('stoppedP'+pIndex);
         }
         
@@ -474,6 +577,8 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = true;
         this.player2Paused = true;
+        this.anims.pauseAll();
+
         this.timer.paused = true;
 
     }
@@ -488,6 +593,8 @@ class MainGame extends Phaser.Scene {
         });
         this.player1Paused = false;
         this.player2Paused = false;
+        this.anims.resumeAll();
+
         this.timer.paused = false;
 
     }
