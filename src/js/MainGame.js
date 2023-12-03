@@ -64,7 +64,7 @@ class MainGame extends Phaser.Scene {
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
         this.ost = this.sound.add('ost');
-        this.ost.play();
+        //this.ost.play();
         
 
         //this.time.timeScale = 10; para cambiar la velocidad de ejecución
@@ -325,30 +325,8 @@ class MainGame extends Phaser.Scene {
                     callback: ()=> {
                         this.player2Paused = false;
                         player.clearTint();
-                        /*
-                        hitboxV1.destroy();
-                        hitboxH1.destroy();*/
                     },
                 });
-                /*
-                //crear hitbox
-                let hitboxV2 = this.hitbox.create(750, 525, 'trans');
-                hitboxV2.setScale(0.1, 3);
-                hitboxV2.setImmovable(true);
-                let hitboxH2 = this.hitbox.create(770, 485, 'trans');
-                hitboxH2.setScale(3.5, 0.1);
-                hitboxH2.setImmovable(true);
-
-                this.stop = this.time.addEvent({
-                    delay: 2500, 
-                    callbackScope: this,
-                    loop: false, 
-                    callback: ()=> {
-                        player.clearTint();
-                        hitboxV2.destroy();
-                        hitboxH2.destroy();
-                    },
-                });*/
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
                 this.coinSound.play();
@@ -413,7 +391,7 @@ class MainGame extends Phaser.Scene {
         //////TUTORIAL/////////
         //this.fondoTut = this.add.image(400, 300, 'fondoTut');
         this.tutorial = this.add.image(400, 375, 'tutorial');
-        this.tiempoTutorial = 3; // Duración de la partida en segundos
+        this.tiempoTutorial = 3; 
         this.pausaTutorial(); 
         this.timerTut = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -481,8 +459,7 @@ class MainGame extends Phaser.Scene {
             this.continuarJuego();
         }
 
-
-        /////////COLLISIONS///////////7
+        //nameplates
         for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
@@ -599,7 +576,6 @@ class MainGame extends Phaser.Scene {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
         this.timer.paused = true;
-
     }
 
     comenzarJuego(){
@@ -610,11 +586,7 @@ class MainGame extends Phaser.Scene {
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
-
         this.timer.paused = false;
-
     }
-
-    
 }
 
