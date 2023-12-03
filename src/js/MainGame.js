@@ -42,9 +42,12 @@ class MainGame extends Phaser.Scene {
         //Players
         for(var i = 0; i < playersList.length; i++)
         {
-            console.log('Character del Player 1: ' + playersList[i].getCharactId())
             this.load.spritesheet('character'+playersList[i].getCharactId(),
             'resources/img/players/SpritesheetP'+playersList[i].getCharactId()+'(Andar).png',
+            { frameWidth: 64, frameHeight: 64 });
+            //Damage
+            this.load.spritesheet('damageP'+playersList[i].getCharactId(),
+            'resources/img/players/DamageP'+playersList[i].getCharactId()+'.png',
             { frameWidth: 64, frameHeight: 64 });
 
             //Character interface
@@ -59,7 +62,7 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
-        //audio
+        //////////AUDIO///////////////////
         this.hitSound = this.sound.add('ouch');
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
@@ -68,12 +71,11 @@ class MainGame extends Phaser.Scene {
         
 
         //this.time.timeScale = 10; para cambiar la velocidad de ejecución
-        //SCENE
+        /////////SCENE//////////////7
         this.add.image(400, 300, 'gameBg');
 
         //PLATAFORMAS
         var platforms = this.physics.add.staticGroup();
-        
         platforms.create(400, 580, 'ground').refreshBody();
         platforms.create(800, 410, 'ground');
         platforms.create(-100, 270, 'ground');
@@ -90,7 +92,7 @@ class MainGame extends Phaser.Scene {
             repeat: -1
         });
         //this.timerSpriteCount = 1;
-        this.tiempoPartida = 10; // Duración de la partida en segundos
+        this.tiempoPartida = 59; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -103,7 +105,9 @@ class MainGame extends Phaser.Scene {
                     
                     this.scene.start("Results");                    
                 }
-                if (this.tiempoPartida<=5){
+                if (this.tiempoPartida < 10){
+                    timerText.setText('00:0'+this.tiempoPartida);
+                    timerText.style.color = '#FF1D1D';
                     //timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
 
@@ -113,7 +117,8 @@ class MainGame extends Phaser.Scene {
         });
         
         
-        //FRUTAS
+        /////////ITEMS//////////////
+        //Frutas
         this.fruits = this.physics.add.group({
             allowGravity: false,
             velocityY: 150
@@ -131,14 +136,11 @@ class MainGame extends Phaser.Scene {
             //debug
             //console.log("fruta");
         }
-
-        //BOLAS
-            //grupo bolas
+        //Fireballs
         this.bolas = this.physics.add.group({
             allowGravity: false,
             velocityY: 150,
         });
-
          //creacion n bolas
         var yBolaPos = -35;
         this.animatedBolas = [];
@@ -157,16 +159,15 @@ class MainGame extends Phaser.Scene {
             this.animatedBolas.push(this.bola);
             //debug
             //console.log("yBolaPos: " + yBolaPos);
-        }
-        
-        //HITBOXES
+        }   
+        //Hitboxes
         this.hitbox = this.physics.add.group({
             allowGravity: false
         });
         this.hitboxOOB = this.hitbox.create(400, 850, 'trans');
-        this.hitboxOOB.setScale(35, 1);
+        this.hitboxOOB.setScale(30, 0.5);
 
-        //Configuration text
+        ////////CONFIG TEXT////////////
         const confJugadores = {
             origin: 'center',
             x: 240,
@@ -181,7 +182,7 @@ class MainGame extends Phaser.Scene {
             }
         }
 
-        //PLAYERS
+        //////////////EACH PLAYER/////////////////////
         this.players = [];
         this.scoresText = [];
         this.posX = 45;
@@ -213,6 +214,13 @@ class MainGame extends Phaser.Scene {
                 repeat: -1
             });
 
+            this.anims.create({
+                key: 'damageP'+i,
+                frames: this.anims.generateFrameNumbers('damageP'+playersList[i].getCharactId(), { start: 36, end: 44 }),
+                frameRate: 10,
+                repeat: 0
+            });
+
             //COLLISIONS
             this.physics.add.collider(this.player, platforms);
             //this.physics.add.collider(bolas, platforms);
@@ -222,14 +230,11 @@ class MainGame extends Phaser.Scene {
             //Name
             this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
             this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
-            //this.name.setScale(0.5);
             this.name.setPosition(this.posX, this.player.y+45);
             namesText.push(this.name);
 
-            //this.players.push(this.player);
-            console.log(this.player);
+            //Agregar jugador creado a lista global jugadores
             playersList[i].hitbox = this.player;
-            //console.log(playersList[i].hitbox);
 
             //Interface
             this.rec = this.add.image(this.posXRec, 40, 'score'+i);
@@ -246,7 +251,7 @@ class MainGame extends Phaser.Scene {
             this.posXRec = this.posXRec + 640;
         }
         
-        //CONTROLS
+        /////////KEYBOARD INPUT//////////////
         cursorInput = this.input.keyboard.createCursorKeys();
         keyInput = this.input.keyboard.addKeys(
         {
@@ -257,8 +262,6 @@ class MainGame extends Phaser.Scene {
         });
         
         ///COLLISIONS///////////////////////////
-        
-
         //JUGADOR 1
         var player1 = playersList[0];
         //colision bolas-jugador
@@ -269,11 +272,11 @@ class MainGame extends Phaser.Scene {
             bola.setPosition(randomNumX, randomNumY);
 
             this.player1Paused = true;
-            player.setVelocity(0);
             player.setPosition(0, 500);
             player.setTint(0xFF0000);
+            //player.anims.play('damageP0', true);
             this.stop = this.time.addEvent({
-                delay: 2500, 
+                delay: 1500, 
                 callbackScope: this,
                 loop: false, 
                 callback: ()=> {
@@ -283,17 +286,7 @@ class MainGame extends Phaser.Scene {
                     hitboxV1.destroy();
                     hitboxH1.destroy();*/
                 },
-            });
-                /*
-                //crear hitbox
-                let hitboxV1 = this.hitbox.create(65, 525, 'trans');
-                hitboxV1.setScale(0.1, 3);
-                hitboxV1.setImmovable(true);
-                let hitboxH1 = this.hitbox.create(30, 485, 'trans');
-                hitboxH1.setScale(3.5, 0.1);
-                hitboxH1.setImmovable(true);*/
-
-                
+            });         
         }, null, this);
 
         //colision fruta-jugador
@@ -394,15 +387,12 @@ class MainGame extends Phaser.Scene {
         this.pauseButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             if(this.pauseButton.frame.name === 1){
-                console.log("LE DA PA PARAR");
                 this.pararJuego();
                 this.pauseScene.create()
             } else {
-                console.log("LE DA PA RESUME");
                 this.continuarJuego();
-                /*if(this.pauseScene){
-                    console.log("ESCENA DE PAUSA CREADA");
-                }*/
+                if(this.pauseScene){
+                }
                 this.pauseScene.destroy();
             }
         })
@@ -430,7 +420,6 @@ class MainGame extends Phaser.Scene {
     
     update(){
         //console.log('PUNTUACION JUGADOR 1:' + playersList[0].score);
-        
         ////////KEYBOARD INPUT//////////////7
         //1 player:
         if(playersList.length == 1 && !this.player1Paused){
@@ -470,17 +459,19 @@ class MainGame extends Phaser.Scene {
             //console.log("LE DA PA PARAR");
             this.pararJuego();
             this.pauseScene.setVisible();
+            this.pauseButton.setFrame(1);
                    
         }
         if(this.pauseScene.checkGoBack() == true)
         {
-            console.log('Check desde main game');
             this.pauseScene.setInvisible();
             this.continuarJuego();
+            this.pauseScene.resetGoBack();
+            this.pauseButton.setFrame(0);
         }*/
 
 
-        /////////COLLISIONS///////////7
+        /////////NAME///////////
         for(var i = 0; i < playersList.length; i++)
         {
             namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
@@ -491,6 +482,11 @@ class MainGame extends Phaser.Scene {
         {
             this.scoresText[i].setText(playersList[i].showScore());
         }
+    }
+
+    shutdown()
+    {
+        this.scene.restart();
     }
       
     firstPlayerController(playerController, pIndex)
@@ -612,5 +608,9 @@ class MainGame extends Phaser.Scene {
         this.timer.paused = false;
 
     }
+
+    
+
+    
 }
 
