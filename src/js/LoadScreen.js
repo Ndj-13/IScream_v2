@@ -12,7 +12,7 @@ class LoadScreen extends Phaser.Scene {
                 color: 0xde72ca
             }
         })
-        this.load.image('loading', 'resources/img/interface/cabezaMorada.png');
+        this.load.image('loading', 'resources/img/interface/charactIcon1.png');
 
         //Barra de carga
         this.load.on("progress", (percent)=>{

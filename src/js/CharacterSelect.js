@@ -113,19 +113,23 @@ class CharacterSelect extends Phaser.Scene {
         this.menu.on("pointerdown", ()=>{
             //this.marcoMenu.setVisible(false);
             this.menu.setFrame(1);
+            
         })
         this.menu.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-            for(var i = 1; i <= playersPanelsCreated.length; i++)
+            for(var i = 1; i <= this.playersPanelsCreated.length; i++)
             {
-                document.getElementById("namebar"+i).style.visibility = 'hidden';  
+                document.getElementById("namebar"+i).value = null; 
+                document.getElementById("namebar"+i).style.visibility = 'hidden';
+                
             }
+            console.log("VA A HOME")
+            this.scene.start("HomeScreen");
             /*
             this.player1Panel.desactivarInput();
             this.player2Panel.desactivarInput();
             */
-            console.log("VA A HOME")
-            this.scene.start("HomeScreen");
+            
         })
         
 

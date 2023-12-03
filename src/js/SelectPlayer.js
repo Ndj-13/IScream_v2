@@ -65,9 +65,10 @@ class SelectPlayer {
         this.leftArrow.flipX = true;
 
         //document.getElementById(this.namebar).style.visibility = "visible"; 
+        this.playerName.disabled = false;
         this.playerName.style.visibility = "visible";
         if(this.namebar == 'namebar2') this.playerName.style.marginLeft = '45px';
-        console.log(this.playerName.value);
+        //console.log(this.playerName.value);
 
 
         this.ok1 = this.scene.add.sprite(this.posX, 450, "ok").setInteractive(); 
