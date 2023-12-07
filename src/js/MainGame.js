@@ -63,6 +63,7 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+
         //////////AUDIO///////////////////
         this.hitSound = this.sound.add('ouch');
         this.coinSound = this.sound.add('coin', {volume: 0.5});
@@ -93,7 +94,7 @@ class MainGame extends Phaser.Scene {
             repeat: -1
         });
         //this.timerSpriteCount = 1;
-        this.tiempoPartida = 59; // Duración de la partida en segundos
+        this.tiempoPartida = 10; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo
@@ -264,6 +265,7 @@ class MainGame extends Phaser.Scene {
             'W': Phaser.Input.Keyboard.KeyCodes.W,
             'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
         });
+
         
         ///COLLISIONS///////////////////////////
         //JUGADOR 1
@@ -276,17 +278,18 @@ class MainGame extends Phaser.Scene {
             bola.setPosition(randomNumX, randomNumY);
 
             this.player1Paused = true;
-            //player.setPosition(0, 500);
+            player.setPosition(0, 500);
             player.setVelocity(0);
             player.setTint(0xFF0000);
             player.anims.play('damageP0', true);
             this.stop = this.time.addEvent({
-                delay: 2500, 
+                delay: 2000, 
                 callbackScope: this,
                 loop: false, 
                 callback: ()=> {
                     this.player1Paused = false;
                     player.clearTint();
+                    
                 },
             });         
         }, null, this);
@@ -309,16 +312,16 @@ class MainGame extends Phaser.Scene {
 
                 this.player2Paused = true;
                 player.setVelocity(0);
-                //player.setPosition(800, 500);
                 player.setTint(0xFF0000);
                 player.anims.play('damageP0', true);
                 this.stop = this.time.addEvent({
-                    delay: 2500, 
+                    delay: 2000, 
                     callbackScope: this,
                     loop: false, 
                     callback: ()=> {
                         this.player2Paused = false;
                         player.clearTint();
+                        player.setPosition(800, 500);
                     },
                 });
             }, null, this);
@@ -382,17 +385,18 @@ class MainGame extends Phaser.Scene {
         this.tiempoTutorial = 3;
         this.pausaTutorial(); 
         this.timerTut = this.time.addEvent({
-            delay: 1000, // Ejecutar cada segundo
+            delay: 3000, // Ejecutar cada segundo
             callback: ()=> {
-                this.tiempoTutorial--;
-                if (this.tiempoTutorial === 0) {
-                    this.comenzarJuego();
-                    //this.fondoTut.setVisible(false);
-                    this.tutorial.setVisible(false);                   
-                }
+                //this.tiempoTutorial--;
+                //if (this.tiempoTutorial === 0) {
+                this.comenzarJuego();
+                //this.fondoTut.setVisible(false);
+                this.tutorial.setVisible(false);                   
+                //}
+                console.log("llamada timerTut");
             },
             callbackScope: this,
-            loop: true // Repetir el evento
+            loop: false // Repetir el evento
         });
     }
     

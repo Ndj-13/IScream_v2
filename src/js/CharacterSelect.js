@@ -58,6 +58,7 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     create(){
+        playersList = [];
         this.add.image(400, 300, 'selectScreenBg');
 
         //Boton menu: volver al menu

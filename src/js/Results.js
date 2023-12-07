@@ -98,8 +98,8 @@ class Results extends Phaser.Scene {
         this.add.image(game.renderer.width / 2, 100, 'tituloRes');
 
         //menu
-        //this.menu = this.add.sprite(500, 525, "menu").setInteractive();
-        //this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
+        this.menu = this.add.sprite(500, 525, "menu").setInteractive();
+        this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
 
         //this.retry = this.add.sprite(300, 525, "retry").setInteractive();
         //this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
@@ -124,7 +124,7 @@ class Results extends Phaser.Scene {
 
         // MOSTRAR GANADOR
         if(playersList.length > 1){
-            console.log('SE LE PONE LA CORONA')
+            //console.log('SE LE PONE LA CORONA')
             if(playersList[0].score > playersList[1].score){
                 this.add.image(175,160,'crown')
             }
@@ -157,10 +157,10 @@ class Results extends Phaser.Scene {
         this.no = this.add.sprite(500, 350, 'no').setVisible(false);
         this.marcoNo = this.add.image(500, 350, 'marco').setVisible(false);
         this.marcoNo.scale = 1.2;
-
+        
         //FUNCIONALIDADES
         //menu
-        /*this.menu.on("pointerover", () => {
+        this.menu.on("pointerover", () => {
             document.body.style.cursor = "pointer";
             this.marcoMenu.setVisible(true);
         })
@@ -181,6 +181,8 @@ class Results extends Phaser.Scene {
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
         })
+
+        /*
 
         
         //retry
@@ -205,6 +207,7 @@ class Results extends Phaser.Scene {
             }
             this.scene.start("MainGame");
         })
+        */
 
         //yes
         this.yes.on("pointerover", () => {
@@ -221,8 +224,11 @@ class Results extends Phaser.Scene {
         })
         this.yes.on("pointerup", () => {
             document.body.style.cursor = "auto";
+            //scene.remove("SelectPlayer");
+            //this.scene.remove("HomeScreen");
             this.scene.start("HomeScreen");
         })
+
         //no
         this.no.on("pointerover", () => {
             document.body.style.cursor = "pointer";
@@ -245,6 +251,6 @@ class Results extends Phaser.Scene {
             this.no.setVisible(false).disableInteractive();
             this.menu.setInteractive();
         })
-*/
+
     }
 }
