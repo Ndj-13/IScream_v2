@@ -4,7 +4,8 @@
         <meta charset="UTF-8">
         <!--meta http-equiv="X-UA-Compatible" content="IE=edge"-->
         <title>IScream vol.2</title>
-        <script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
         <style type="text/css">
             body{
                 margin: 0;
@@ -55,9 +56,45 @@
             var keyInput;
             var restart = false;
             var retry = false;
+            ////////Full screen con javascript///////
+            //Devuelve el elemento que esté full screen. Si está full screen devuelve null.
+            function getFullScreenElement(){
+                return document.fullscreenElement
+                || document.webkitFullscreenElement
+                || document.mozFullscreenElement
+                || document.msFullscreenElement;
+            }
+            function toggleFullScreen(){
+                if(getFullScreenElement()){
+                    document.exitFullscreen();
+                }else{
+                    document.documentElement.requestFullscreen().catch(console.log);//recoge el posible error y lo muestra por pantalla.
+                }
+            }
+            //Se puede dar doble click en todo el doc.
+            document.addEventListener("dblclick",()=>{
+                toggleFullScreen();
+            })
+            //FullScreen con Phaser. Funciona por escenas, pero ha dado error al usarlo. No se usa actualmente.
+            function FullScreen (scene){
+                if (scene.scale.isFullScreen){
+                    scene.scale.stopFullscreen();
+                }
+                else{
+                    scene.scale.startFullscreen();
+
+                }
+            }
 
             var config = {
                 type: Phaser.AUTO,
+                /*scale: {
+                    mode: Phaser.Scale.FIT,
+                    parent: 'phaser-example',
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    width: 800,
+                    height: 600
+                },*/
                 width: 800,
                 height: 600,
                 pixelArt: true,
@@ -65,7 +102,7 @@
                     default: 'arcade',
                     arcade: {
                         gravity: {y: 980},
-                        debug: false
+                        debug: true
                     }
                 },
                 backgroundColor: '#5B2970',

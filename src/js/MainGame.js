@@ -3,7 +3,7 @@ class MainGame extends Phaser.Scene {
     constructor() {
         super({ key: 'MainGame' });
         //this.reiniciar = false;
-         
+        //this.mydocument = document.documentElement;
     }
 
     preload(){
@@ -40,6 +40,13 @@ class MainGame extends Phaser.Scene {
         this.load.audio('ost', 'resources/audio/ost.mp3');
 
         //Players
+        this.load.spritesheet('characterTransformed',
+            'resources/img/players/Spritesheet(Andar)Transformed.png',
+            { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('damageT',
+        'resources/img/players/DamageP1.png',
+        { frameWidth: 64, frameHeight: 64 });
+        
         /*
         for(var i = 0; i < playersList.length; i++)
         {
@@ -75,6 +82,10 @@ class MainGame extends Phaser.Scene {
         
         /////////SCENE//////////////7
         this.add.image(400, 300, 'gameBg');
+        ///////////FULLSCREEN////////////////
+
+        //this.scale.scaleMode = Phaser.Scale.FIT;
+        //var mydocument= document.documentElement;
 
         //PLATAFORMAS
         var platforms = this.physics.add.staticGroup();
@@ -117,7 +128,6 @@ class MainGame extends Phaser.Scene {
             callbackScope: this,
             loop: true // Repetir el evento
         });
-        
         
         /////////ITEMS//////////////
         //Frutas
@@ -224,7 +234,33 @@ class MainGame extends Phaser.Scene {
                 frameRate: 10,
                 repeat: 0
             });*/
-
+            //SPRITE TRANSFORMATION
+            this.anims.create({
+                key: 'leftT',
+                frames: this.anims.generateFrameNumbers('characterTransformed', { start: 28, end: 32 }),
+                frameRate: 15,
+                repeat: -1
+            });
+    
+            this.anims.create({
+                key: 'stoppedT',
+                frames: [ { key: 'characterTransformed', frame: 0 } ],
+                frameRate: 20
+            });
+    
+            this.anims.create({
+                key: 'rightT',
+                frames: this.anims.generateFrameNumbers('characterTransformed', { start: 21, end: 25 }),
+                frameRate: 15,
+                repeat: -1
+            });
+    
+            /*this.scene.anims.create({
+                key: 'damageT',
+                frames: this.scene.anims.generateFrameNumbers('damageT', { start: 36, end: 44 }),
+                frameRate: 10,
+                repeat: 0
+            });*/
             //COLLISIONS
             this.physics.add.collider(this.player, platforms);
             //this.physics.add.collider(bolas, platforms);
@@ -264,6 +300,7 @@ class MainGame extends Phaser.Scene {
             'D': Phaser.Input.Keyboard.KeyCodes.D,
             'W': Phaser.Input.Keyboard.KeyCodes.W,
             'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+            //'F':Phaser.Input.Keyboard.KeyCodes.F
         });
 
         
@@ -398,24 +435,37 @@ class MainGame extends Phaser.Scene {
             callbackScope: this,
             loop: false // Repetir el evento
         });
+            /////////COMBO///////////
+            var combo = this.input.keyboard.createCombo('ABCD');
+            var comboP2= this.input.keyboard.createCombo('7890');
+            this.input.keyboard.on('keycombomatch', function (event) {
+                if (event.keyCodes.toString() === combo.keyCodes.toString()) {
+                    playersList[0].setPicked(true);
+                    console.log('Key Combo 1 matched!');
+                } else if (event.keyCodes.toString() === comboP2.keyCodes.toString()) {
+                    playersList[1].setPicked(true);
+                    console.log('Key Combo 2 matched!');
+                }
+            });
+            
     }
     
     update(){
         
         //1 player:
         if(playersList.length == 1 && !this.player1Paused){
-            this.firstPlayerController(playersList[0].hitbox, 0);
+            this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
             //this.secondPlayerController(this.players[0], 0);
         }
         //2 players:
         else if(playersList.length == 2) {
             if(!this.player1Paused)
             {
-                this.firstPlayerController(playersList[0].hitbox, 0);
+                this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
             }
             if(!this.player2Paused)
             {
-                this.secondPlayerController(playersList[1].hitbox, 1);
+                this.secondPlayerController(playersList[1].hitbox, 1, playersList[1].isPicked());
             }
         }
         
@@ -443,6 +493,25 @@ class MainGame extends Phaser.Scene {
             this.pauseButton.setFrame(1);
                    
         }
+        //FullScreen
+        //const FKey = this.input.keyboard.addKey('F');
+        /*if (keyInput.F.isDown)
+            {
+                toggleFullScreen();
+                /*console.log("Me detecta pero no me hace puto caso");
+                if (this.mydocument.requestFullscreen/*this.scene.scale.isFullscreen)
+                {
+                    //FullScreen(this);
+                    console.log("Problema del mydocument");
+                    this.mydocument.requestFullscreen();
+                }
+                else if(this.mydocument.exitFullscreen)
+                {
+                    //FullScreen(this);
+                    console.log("problema del document");
+                    this.mydocument.exitFullscreen();
+                }  */
+            //}
         if(this.pauseScene.checkGoBack() == true)
         {
             this.pauseScene.setInvisible();
@@ -480,40 +549,76 @@ class MainGame extends Phaser.Scene {
         this.scene.restart();
     }*/
       
-    firstPlayerController(playerController, pIndex)
+    firstPlayerController(playerController, pIndex, picked)
     {
         //1st Player controlls
-        if (keyInput.A.isDown)
-        {
-            playerController.setVelocityX(-160);
-
-            playerController.anims.play('leftP'+pIndex, true);
+        //1st Player controlls
+        if (picked){
+            this.TransformPlayerController(playerController, pIndex);
         }
-        else if (keyInput.D.isDown)
-        {
-            playerController.setVelocityX(160);
+        else{
+            if (keyInput.A.isDown)
+            {
+                playerController.setVelocityX(-160);
 
-            playerController.anims.play('rightP'+pIndex, true);
-        }
-        
-        else
-        {
-            playerController.setVelocityX(0);
+                playerController.anims.play('leftP'+pIndex, true);
+            }
+            else if (keyInput.D.isDown)
+            {
+                playerController.setVelocityX(160);
 
-            playerController.anims.play('stoppedP'+pIndex);
-        }
-        
-        if (keyInput.W.isDown && playerController.body.touching.down)
-        {
-            this.jumpSound.play();
-            playerController.setVelocityY(-630);
-        }
+                playerController.anims.play('rightP'+pIndex, true);
+            }
+            
+            else
+            {
+                playerController.setVelocityX(0);
 
+                playerController.anims.play('stoppedP'+pIndex);
+            }
+            
+            if (keyInput.W.isDown && playerController.body.touching.down)
+            {
+                playerController.setVelocityY(-630);
+            }
+        }
     }
 
-    secondPlayerController(playerController, pIndex)
+       
+    secondPlayerController(playerController, pIndex, picked)
     {
         //2nd Player controlls
+        if (picked){
+            this.TransformPlayerController2(playerController, pIndex);
+        }
+        else{
+            //2nd player's controls
+            if (cursorInput.left.isDown)
+            {
+                playerController.setVelocityX(-160);
+
+                playerController.anims.play('leftP'+pIndex, true);
+            }
+            else if (cursorInput.right.isDown)
+            {
+                playerController.setVelocityX(160);
+
+                playerController.anims.play('rightP'+pIndex, true);
+            }
+            
+            else
+            {
+                playerController.setVelocityX(0);
+
+                playerController.anims.play('stoppedP'+pIndex);
+            }
+            
+            if (cursorInput.up.isDown && playerController.body.touching.down)
+            {
+                playerController.setVelocityY(-630);
+            }
+        }
+        /*
         if (cursorInput.left.isDown)
         {
             playerController.setVelocityX(-160);
@@ -535,6 +640,63 @@ class MainGame extends Phaser.Scene {
         if (cursorInput.up.isDown && playerController.body.touching.down)
         {
             this.jumpSound.play();
+            playerController.setVelocityY(-630);
+        }*/
+    }
+    //Activar el sprite
+    TransformPlayerController(playerController, pIndex)
+    {
+        //1st Player controlls
+        if (keyInput.A.isDown)
+        {
+            playerController.setVelocityX(-160);
+
+            playerController.anims.play('leftT', true);
+        }
+        else if (keyInput.D.isDown)
+        {
+            playerController.setVelocityX(160);
+
+            playerController.anims.play('rightT', true);
+        }
+        
+        else
+        {
+            playerController.setVelocityX(0);
+
+            playerController.anims.play('stoppedT');
+        }
+        
+        if (keyInput.W.isDown && playerController.body.touching.down)
+        {
+            playerController.setVelocityY(-630);
+        }
+    }
+    TransformPlayerController2(playerController, pIndex)
+    {
+        //1st Player controlls
+        if (cursorInput.left.isDown)
+        {
+            playerController.setVelocityX(-160);
+
+            playerController.anims.play('leftT', true);
+        }
+        else if (cursorInput.right.isDown)
+        {
+            playerController.setVelocityX(160);
+
+            playerController.anims.play('rightT', true);
+        }
+        
+        else
+        {
+            playerController.setVelocityX(0);
+
+            playerController.anims.play('stoppedT');
+        }
+        
+        if (cursorInput.up.isDown && playerController.body.touching.down)
+        {
             playerController.setVelocityY(-630);
         }
 
