@@ -104,9 +104,7 @@ class Pause{
             //playersList = [];
             //namesText.splice(0, namesText.length);
             //animations.splice(0, animations.length);
-            restart = true;
-            //this.scene.stop('MainGame');
-            //this.scene.scene.remove('MainGame');
+            //restart = true;
             this.scene.scene.start("HomeScreen");
         })
 
@@ -130,7 +128,8 @@ class Pause{
             {
                 playersList[i].resetScore()
             }
-            this.retryActivated();
+            //this.retryActivated();
+            this.scene.scene.start();
         })
         /*
         //yes
@@ -233,7 +232,7 @@ class Pause{
         this.fondo1.setVisible(false);
         this.back.setVisible(false);
     }
-
+/*
     retryActivated(){
         this.retry = true;
     }
@@ -245,4 +244,5 @@ class Pause{
     {
         this.rety = false;
     }
+    */
 }

@@ -101,8 +101,8 @@ class Results extends Phaser.Scene {
         this.menu = this.add.sprite(500, 525, "menu").setInteractive();
         this.marcoMenu = this.add.image(500, 525, 'marco').setVisible(false);
 
-        //this.retry = this.add.sprite(300, 525, "retry").setInteractive();
-        //this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
+        this.retry = this.add.sprite(300, 525, "retry").setInteractive();
+        this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
 
 
        //Jugadores
@@ -182,9 +182,31 @@ class Results extends Phaser.Scene {
             this.menu.disableInteractive();
         })
 
-        /*
+       //retry
+        this.retry.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.marcoRetry.setVisible(true);
+        })
+        this.retry.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerdown", () => {
+            this.retry.setFrame(1);
+            this.marcoRetry.setVisible(false);
+        })
+        this.retry.on("pointerup", () => {
+            this.retry.setFrame(0);
+            document.body.style.cursor = "auto";
+            for(var i = 0; i < playersList.length; i++)
+            {
+                playersList[i].resetScore()
+            }
+            //this.retryActivated();
+            this.scene.start("MainGame");
+        })
 
-        
+        /*
         //retry
         this.retry.on("pointerover", () => {
             document.body.style.cursor = "pointer";

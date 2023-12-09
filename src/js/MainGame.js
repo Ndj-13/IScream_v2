@@ -70,6 +70,10 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+        //limpiar
+        /*
+        let allSprites = this.children.list.filter(x => x instanceof Phaser.GameObjects.Sprite);
+        allSprites.forEach(x => x.destroy());*/
 
         //////////AUDIO///////////////////
         this.hitSound = this.sound.add('ouch');
@@ -155,7 +159,8 @@ class MainGame extends Phaser.Scene {
         });
          //creacion n bolas
         var yBolaPos = -35;
-        this.animatedBolas = [];
+        //this.animatedBolas = [];
+        var animatedBolas = [];
         for(let i = 0; i < 10; i++)
         { 
             let randomNum = Phaser.Math.Between(100, 700);
@@ -168,10 +173,22 @@ class MainGame extends Phaser.Scene {
                 repeat: -1
             });
             yBolaPos -= 200;
-            this.animatedBolas.push(this.bola);
+            //this.animatedBolas.push(this.bola);
+            animatedBolas.push(this.bola);
             //debug
             //console.log("yBolaPos: " + yBolaPos);
         }   
+        this.animarBolas = this.time.addEvent({
+            delay: 3000, 
+            callback: () => {
+                for(let i = 0; i < 10; i++)
+                {
+                    animatedBolas[i].anims.play('fireball'+i, true);
+                }
+            }, 
+            callbackScope: this, 
+            loop: true 
+        });
         //Hitboxes
         this.hitbox = this.physics.add.group({
             allowGravity: false
@@ -415,7 +432,6 @@ class MainGame extends Phaser.Scene {
             }
         })
 
-
         //////TUTORIAL/////////
         //this.fondoTut = this.add.image(400, 300, 'fondoTut');
         this.tutorial = this.add.image(400, 375, 'tutorial');
@@ -426,7 +442,8 @@ class MainGame extends Phaser.Scene {
             callback: ()=> {
                 //this.tiempoTutorial--;
                 //if (this.tiempoTutorial === 0) {
-                this.comenzarJuego();
+                //this.comenzarJuego();
+                this.continuarJuego();
                 //this.fondoTut.setVisible(false);
                 this.tutorial.setVisible(false);                   
                 //}
@@ -469,10 +486,11 @@ class MainGame extends Phaser.Scene {
             }
         }
         
+        /*
         for(let i = 0; i < 10; i++)
         {
             this.animatedBolas[i].anims.play('fireball'+i, true);
-        }
+        }*/
 
         ///TIMER ANIMATION////
         /*
@@ -535,13 +553,14 @@ class MainGame extends Phaser.Scene {
         }
 
         ////////////RETRY//////////////
+        /*
         if(this.pauseScene.retryGame() == true)
         {
             //splice(0, this.playersPanels.length);
             for(var i = 0; i < playersList.lenth; i++) playersList[i].hitbox.anims.play('stoppedP'+i);
             this.pauseScene.resetRetry();
             this.scene.restart();
-        }
+        }*/
     }
 
     /*shutdown()
@@ -718,6 +737,8 @@ class MainGame extends Phaser.Scene {
 
         this.timer.paused = true;
 
+        console.log("pararJuego");
+
     }
 
     continuarJuego(){
@@ -734,6 +755,8 @@ class MainGame extends Phaser.Scene {
 
         this.timer.paused = false;
 
+        console.log("continuarJuego");
+
     }
 
     pausaTutorial(){
@@ -746,6 +769,8 @@ class MainGame extends Phaser.Scene {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
         this.timer.paused = true;
+
+        console.log("pausaTutorial");
     }
 
     comenzarJuego(){
@@ -757,6 +782,8 @@ class MainGame extends Phaser.Scene {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
         this.timer.paused = false;
+
+        console.log("comenzarJuego");
     }
     
 }
