@@ -43,7 +43,15 @@ class GameLoader extends Phaser.Scene {
     }
 
     create()
-    {
+    {   
+        this.stopMusic = this.time.addEvent({
+            delay: 1000, // Ejecutar cada segundo
+            callback: ()=> {
+                this.sound.stopAll();
+            },
+            callbackScope: this,
+            loop: false // Repetir el evento
+        });
         //this.add.image(400, 300, 'gameBg');
         const confTexto = {
             origin: 'center',

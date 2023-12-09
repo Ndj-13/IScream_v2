@@ -16,8 +16,21 @@ class HomeScreen extends Phaser.Scene {
             { frameWidth: 124, frameHeight: 47 });
 
         //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
+
+        //audio
+        this.load.audio('menuOst', 'resources/audio/menuOst.mp3');
     }
     create(){
+        //audio
+        if(menuMusic == false)
+        {
+            this.menuOst = this.sound.add('menuOst', {volume:0.4});
+            this.menuOst.play();
+            this.menuOst.setLoop(true);
+            menuMusic = true;
+        }
+
+
         this.add.image(400, 300, 'background');
         this.add.image(game.renderer.width/2, 200, 'title');
 

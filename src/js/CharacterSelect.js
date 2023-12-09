@@ -181,6 +181,7 @@ class CharacterSelect extends Phaser.Scene {
                 console.log('JUEGO NO ESTA')
                 this.scene.add('MainGame', MainGame, true)
             }*/
+            menuMusic == false;
             this.scene.start('GameLoader');
         }
         

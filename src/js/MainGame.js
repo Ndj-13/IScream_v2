@@ -70,21 +70,17 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
-        //limpiar
-        /*
-        let allSprites = this.children.list.filter(x => x instanceof Phaser.GameObjects.Sprite);
-        allSprites.forEach(x => x.destroy());*/
-
         //////////AUDIO///////////////////
+        this.sound.stopAll();
         this.hitSound = this.sound.add('ouch');
         this.coinSound = this.sound.add('coin', {volume: 0.5});
         this.jumpSound = this.sound.add('jump', {volume: 0.6});
-        /*
+        
         this.ost = this.sound.add('ost');
         this.ost.play();
-        this.ost.setLoop(true); */
+        this.ost.setLoop(true); 
         
-        /////////SCENE//////////////7
+        /////////SCENE//////////////
         this.add.image(400, 300, 'gameBg');
         ///////////FULLSCREEN////////////////
 

@@ -105,6 +105,8 @@ class Pause{
             //namesText.splice(0, namesText.length);
             //animations.splice(0, animations.length);
             //restart = true;
+            this.scene.sound.stopAll();
+            menuMusic = false;
             this.scene.scene.start("HomeScreen");
         })
 

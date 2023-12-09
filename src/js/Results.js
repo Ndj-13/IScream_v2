@@ -248,6 +248,8 @@ class Results extends Phaser.Scene {
             document.body.style.cursor = "auto";
             //scene.remove("SelectPlayer");
             //this.scene.remove("HomeScreen");
+            this.sound.stopAll();
+            menuMusic = false;
             this.scene.start("HomeScreen");
         })
 

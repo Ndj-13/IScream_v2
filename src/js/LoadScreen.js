@@ -36,6 +36,7 @@ class LoadScreen extends Phaser.Scene {
 
     create()
     {
+        this.sound.stopAll();
         this.add.image(400, 300, 'logo');
         this.helado = this.add.image(100, 370, 'loading');
         this.helado.setScale(1.3);
