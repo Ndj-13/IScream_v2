@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang ="es">
+    <head>
+        <meta charset="UTF-8">
+        <!--meta http-equiv="X-UA-Compatible" content="IE=edge"-->
+        <title>IScream vol.2</title>
+        <!--Versión de phaser antigua (3.11). No permitía fullscreen. Si da problemas la nueva podéis descomentarla-->
+        <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+        <style type="text/css">
+            body{
+                margin: 0;
+            }
+            @font-face{
+               font-family: 'estilo';
+               src: url('assets/fonts/serif_pixel-7.ttf');
+           }
+            @font-face{
+               font-family: 'titulo';
+               src: url('assets/fonts/04B_30__.TTF');
+           }
+        </style>
+        <script src="js/LoadScreen.js"></script>
+        <script src="js/GameLoader.js"></script>
+        <script src="js/HomeScreen.js"></script>
+        <script src="js/CharacterSelect.js"></script>
+        <script src="js/MainGame.js"></script>
+        <script src="js/Results.js"></script>
+        <script src="js/Creditos.js"></script>
+
+        <script src="js/SelectPlayer.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/Pause.js"></script>
+
+        <link rel="stylesheet" media="all" href="css/stylesheet.css">
+        
+    </head>
+
+    <body style="text-align: center">
+
+        <div id="introTextoP1">
+            <input id="namebar1" name="player1T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
+            <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
+            <span class="nk-namebar-indicator"></span>
+        </div>
+        
+        <!--script type="text/javascript" src="src/js/game.js"></script-->
+        <script type="text/javascript">
+
+            //var player1;
+            //var player2;
+            var playersList = [];
+            //var namesText = [];
+            var maxPlayers = 2;
+            //var keys;
+            var cursorInput;
+            var keyInput;
+            //var restart = false;
+            //var retry = false;
+            var menuMusic = false;
+
+
+            ////////Full screen con javascript///////
+            //Devuelve el elemento que esté full screen. Si está full screen devuelve null.
+            function getFullScreenElement(){
+                return document.fullscreenElement
+                || document.webkitFullscreenElement
+                || document.mozFullscreenElement
+                || document.msFullscreenElement;
+            }
+            function toggleFullScreen(){
+                if(getFullScreenElement()){
+                    document.exitFullscreen();
+                }else{
+                    document.documentElement.requestFullscreen().catch(console.log);//recoge el posible error y lo muestra por pantalla.
+                }
+            }
+            //Se puede dar doble click en todo el doc.
+            document.addEventListener("dblclick",()=>{
+                toggleFullScreen();
+            })
+            //FullScreen con Phaser. Funciona por escenas, pero ha dado error al usarlo. No se usa actualmente.
+            function FullScreen (scene){
+                if (scene.scale.isFullScreen){
+                    scene.scale.stopFullscreen();
+                }
+                else{
+                    scene.scale.startFullscreen();
+
+                }
+            }
+
+            var config = {
+                type: Phaser.AUTO,
+                /*scale: {
+                    mode: Phaser.Scale.FIT,
+                    parent: 'phaser-example',
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    width: 800,
+                    height: 600
+                },*/
+                width: 800,
+                height: 600,
+                pixelArt: true,
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: {y: 980},
+                        debug: true
+                    }
+                },
+                backgroundColor: '#5B2970',
+                scene:[LoadScreen, HomeScreen, Creditos, CharacterSelect, GameLoader, MainGame, Pause, Results]
+            };   
+            var game = new Phaser.Game(config);       
+
+        </script>        
+    </body>
+</html>
