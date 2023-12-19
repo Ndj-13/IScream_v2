@@ -37,7 +37,7 @@ class HighScores extends Phaser.Scene {
     {        
         this.add.image(400, 300, "highscoreBg");
 
-        this.goBack = this.add.sprite(100, 550, "goBack").setInteractive();
+        this.goBack = this.add.sprite(80, 570, "goBack").setInteractive();
         
 
         //BOTONES CUTRES HTML PARA RESTAPI 
