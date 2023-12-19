@@ -71,7 +71,6 @@ class MainGame extends Phaser.Scene {
     
     create(){
         //////////AUDIO///////////////////
-        /*LO HE COMENTADO PARA NO QUEDARME SORDA
         this.sound.stopAll();
         this.hitSound = this.sound.add('ouch');
         this.coinSound = this.sound.add('coin', {volume: 0.5});
@@ -79,7 +78,7 @@ class MainGame extends Phaser.Scene {
         
         this.ost = this.sound.add('ost');
         this.ost.play();
-        this.ost.setLoop(true);*/
+        this.ost.setLoop(true);
         
         /////////SCENE//////////////
         this.add.image(400, 300, 'gameBg');
@@ -333,7 +332,6 @@ class MainGame extends Phaser.Scene {
             bola.setPosition(randomNumX, randomNumY);
 
             this.player1Paused = true;
-            player.setPosition(0, 500);
             player.setVelocity(0);
             player.setTint(0xFF0000);
             player.anims.play('damageP0', true);
@@ -344,6 +342,7 @@ class MainGame extends Phaser.Scene {
                 callback: ()=> {
                     this.player1Paused = false;
                     player.clearTint();
+                    player.setPosition(0, 500);
                     
                 },
             });         
