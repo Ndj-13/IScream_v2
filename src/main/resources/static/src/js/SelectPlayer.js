@@ -146,7 +146,7 @@ class SelectPlayer {
                 
                 sendDataToServer("#namebar1", "#password1", "#error1", (response) => {
                     console.log(response);
-                    if (response === "Password correct.") {
+                    if (response === "Password correct." || response === "User created successfully.") {
                         console.log("Entra al if oki111:");
                         playersList[0].setName(this.playerName);
                         this.playerName.disabled = true;
@@ -223,6 +223,7 @@ class SelectPlayer {
 
         this.modifyButton.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
+            this.playerError.style.visibility = "hidden"; // Oculta el campo de contraseña
             this.scene.scene.start("ModifyUser");
         })
 

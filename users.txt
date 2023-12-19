@@ -1,7 +1,6 @@
 ne,bbb
 pe,aaa
 Jorges,Sanz
-jorge,jorge
 Player1,h
 ipfunciona,plis
 ipfunciona2,plis
@@ -13,3 +12,6 @@ ana,ano
 NDJ13,omegalul
 dontblameme,drugismybaby
 meee,uuuu
+Jorgito,j
+Adri,adri
+Jorge,Jorge
