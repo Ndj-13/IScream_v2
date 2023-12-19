@@ -23,7 +23,7 @@ class CharacterSelect extends Phaser.Scene {
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
 
-        this.posX = 225;
+        this.posX = 400;
         for(var i = 1; i <= maxPlayers; i++){
             console.log('password'+i);
             this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i, 'password'+i, 'error'+i);
@@ -48,7 +48,7 @@ class CharacterSelect extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         */
         //Multiplayer
-        this.load.image("plus", "resources/img/interface/plus.png");
+        //this.load.image("plus", "resources/img/interface/plus.png");
 
         /*
         this.load.spritesheet('player2',
@@ -73,7 +73,7 @@ class CharacterSelect extends Phaser.Scene {
         this.playersPanelsCreated.push(this.playersPanels[0]);
         console.log('Panel 1 creado');
         //this.player1Panel.create();
-        
+        /*
         this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
         this.plus = this.add.image(570, 250, "plus").setScale(0.1);
 
@@ -106,7 +106,7 @@ class CharacterSelect extends Phaser.Scene {
         })
         this.newPlayer.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-        })
+        })*/
 
         //menu:
         this.menu.on("pointerover", ()=>{

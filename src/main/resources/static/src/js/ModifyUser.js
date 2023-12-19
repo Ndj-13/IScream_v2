@@ -8,15 +8,20 @@ class ModifyUser extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('background', 'resources/img/interface/pantallaInicio.png');
-        this.load.image('title', 'resources/img/interface/LogoI-ScreamFondoBlanco.png');
-        this.load.spritesheet('modifyButton',
-            'resources/img/interface/playbutton.png',
-            { frameWidth: 64, frameHeight: 47 });
+        this.load.image('selectScreenBg', 'resources/img/interface/pantallaSeleccion.png');
+        this.load.image('AccountTitle', 'resources/img/interface/ACCOUNT.png');
 
-        this.load.spritesheet('deleteButton',
-            'resources/img/interface/botonCredits.png',
+        this.load.spritesheet('modifyBt',
+            'resources/img/interface/botonModify.png',
             { frameWidth: 124, frameHeight: 47 });
+
+        this.load.spritesheet('deleteBt',
+            'resources/img/interface/botonDelete.png',
+            { frameWidth: 124, frameHeight: 47 });
+
+        this.load.spritesheet('menu',
+            'resources/img/interface/botonMenu.png',
+            { frameWidth: 120, frameHeight: 47 });
 
         //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
 
@@ -33,13 +38,11 @@ class ModifyUser extends Phaser.Scene {
             menuMusic = true;
         }
 
+        this.add.image(400, 300, 'selectScreenBg');
+        this.add.image(400, 200, 'AccountTitle');
 
-        this.add.image(400, 300, 'background');
-        this.add.image(game.renderer.width/2, 200, 'title');
-
-
-        this.modifyButton = this.add.sprite(400, 400, "modifyButton").setInteractive().setScale(2.5);
-        this.deleteButton = this.add.sprite(400, 460, "deleteButton").setInteractive();
+        this.modifyButton = this.add.sprite(475, 460, "modifyBt").setInteractive();
+        this.deleteButton = this.add.sprite(325, 460, "deleteBt").setInteractive();
 
         //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
         //this.markbox.setScale(1.2);
@@ -47,12 +50,12 @@ class ModifyUser extends Phaser.Scene {
         //Iniciar los inputs
         this.playerName.disabled = false;
         this.playerName.value = '';
-        this.playerName.setAttribute('placeholder', 'Enter your name...');
+        //this.playerName.setAttribute('placeholder', 'Enter your name...');
         this.playerName.style.visibility = "visible";
 
         this.playerPassword.disabled = false;
         this.playerPassword.value = '';
-        this.playerPassword.setAttribute('placeholder', 'Enter your password...');
+        //this.playerPassword.setAttribute('placeholder', 'Enter your password...');
         this.playerPassword.style.visibility = "visible";
 
         //Interaccion botones
@@ -135,6 +138,24 @@ class ModifyUser extends Phaser.Scene {
                 }
             });
             
+        })
+
+        this.menu = this.add.sprite(100, 80, "menu").setInteractive();
+
+        this.menu.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+        })
+        this.menu.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+        })
+        this.menu.on("pointerdown", ()=>{
+            this.menu.setFrame(1);
+            
+        })
+        this.menu.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            playersList.splice(0, playersList.length);
+            this.scene.start("CharacterSelect");
         })
     }
 }

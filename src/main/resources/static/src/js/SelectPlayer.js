@@ -36,19 +36,22 @@ class SelectPlayer {
             'resources/img/players/SpritesheetP'+i+'(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
         }
+        this.scene.load.spritesheet('modifyButton',
+        'resources/img/interface/botonModify.png',
+        { frameWidth: 124, frameHeight: 47 });
     }
 
     create()
     {
         console.log('create');
         //Recuadro personaje 1
-        this.scene.add.image(this.posX, 250, "chMarkbox").setScale(3.5);
+        this.scene.add.image(this.posX, 200, "chMarkbox").setScale(3.5);
   
         //Personajes disponibles
         this.charactArray = [];
         for(var i = 1; i <= this.options; i++)
         {
-            this.character = this.scene.add.sprite(this.posX, 235, 'character'+i).setInteractive();
+            this.character = this.scene.add.sprite(this.posX, 185, 'character'+i).setInteractive();
             this.character.setFrame(3);
             this.character.setScale(3);
 
@@ -65,8 +68,8 @@ class SelectPlayer {
             if( i != 1) this.character.setVisible(false);
         }
 
-        this.rightArrow = this.scene.add.image(this.posX+100, 250, "arrow").setInteractive();
-        this.leftArrow = this.scene.add.image(this.posX-100, 250, "arrow").setInteractive();
+        this.rightArrow = this.scene.add.image(this.posX+100, 200, "arrow").setInteractive();
+        this.leftArrow = this.scene.add.image(this.posX-100, 200, "arrow").setInteractive();
         this.leftArrow.flipX = true;
 
         //document.getElementById(this.namebar).style.visibility = "visible"; 
@@ -86,10 +89,10 @@ class SelectPlayer {
         //console.log(this.playerName.value);
 
 
-        this.ok1 = this.scene.add.sprite(this.posX, 500, "ok").setInteractive(); 
+        this.ok1 = this.scene.add.sprite(this.posX, 450, "ok").setInteractive(); 
         //CAMBIARIA EL OK POR UN READY Y CUANDO ESTEN TODOS READY QUE PASE A LA ESCENA DE JUGAR 
 
-        this.markbox1 = this.scene.add.image(this.posX, 500, 'markbox').setVisible(false);
+        this.markbox1 = this.scene.add.image(this.posX, 450, 'markbox').setVisible(false);
         this.markbox1.setScale(1.2);
 
         this.rightArrow.on("pointerover", ()=>{
@@ -201,6 +204,28 @@ class SelectPlayer {
             //this.playerName.style.visibility = "hidden";
             
         })
+
+        this.modifyButton = this.scene.add.sprite(this.posX, 520, "modifyButton").setInteractive();
+        //Modificar usuario
+        this.modifyButton.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+            this.modifyButton.setFrame(1);
+        })
+
+        this.modifyButton.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+            this.modifyButton.setFrame(0);
+        })
+
+        this.modifyButton.on("pointerdown", ()=>{
+            this.modifyButton.setFrame(2);
+        })
+
+        this.modifyButton.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            this.scene.scene.start("ModifyUser");
+        })
+
 
 
     }

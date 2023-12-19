@@ -8,11 +8,11 @@ class HomeScreen extends Phaser.Scene {
         this.load.image('background', 'resources/img/interface/pantallaInicio.png');
         this.load.image('title', 'resources/img/interface/LogoI-ScreamFondoBlanco.png');
         this.load.spritesheet('playButton',
-            'resources/img/interface/playbutton.png',
+            'resources/img/interface/botonLocal.png',
             { frameWidth: 64, frameHeight: 47 });
-        this.load.spritesheet('modifyButton',
-        'resources/img/interface/playbutton.png',
-        { frameWidth: 64, frameHeight: 47 });
+        this.load.spritesheet('onlineBt',
+        'resources/img/interface/botonOnline.png',
+        { frameWidth: 124, frameHeight: 47 });
 
         this.load.spritesheet('creditsButton',
             'resources/img/interface/botonCredits.png',
@@ -38,15 +38,15 @@ class HomeScreen extends Phaser.Scene {
         this.add.image(game.renderer.width/2, 200, 'title');
 
 
-        this.playButton = this.add.sprite(400, 400, "playButton").setInteractive().setScale(2.5);
-        this.modifyButton = this.add.sprite(400, 520, "modifyButton").setInteractive().setScale(2.5);
+        //this.playButton = this.add.sprite(400, 400, "playButton").setInteractive().setScale(2.5);
+        this.onlineBt = this.add.sprite(400, 400, "onlineBt").setInteractive()
         this.creditsButton = this.add.sprite(400, 460, "creditsButton").setInteractive();
 
         //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
         //this.markbox.setScale(1.2);
 
         //Interaccion botones
-        this.playButton.on("pointerover", ()=>{
+        /*this.playButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             this.playButton.setFrame(1);
         })
@@ -68,27 +68,27 @@ class HomeScreen extends Phaser.Scene {
             //window.location.href = "/signUp.html";
             
             
-        })
+        })*/
         
         //Modificar usuario
-        this.modifyButton.on("pointerover", ()=>{
+        this.onlineBt.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
-            this.modifyButton.setFrame(1);
+            this.onlineBt.setFrame(1);
         })
 
-        this.modifyButton.on("pointerout", ()=>{
+        this.onlineBt.on("pointerout", ()=>{
             document.body.style.cursor = "auto";
-            this.modifyButton.setFrame(0);
+            this.onlineBt.setFrame(0);
         })
 
-        this.modifyButton.on("pointerdown", ()=>{
-            this.modifyButton.setFrame(2);
+        this.onlineBt.on("pointerdown", ()=>{
+            this.onlineBt.setFrame(2);
         })
 
-        this.modifyButton.on("pointerup", ()=>{
+        this.onlineBt.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             
-            this.scene.start("ModifyUser");
+            this.scene.start("CharacterSelect");
             //window.open("/signUp.html");
             //window.location.href = "/signUp.html";
             
