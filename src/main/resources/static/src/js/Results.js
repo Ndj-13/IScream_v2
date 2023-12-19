@@ -152,7 +152,7 @@ class Results extends Phaser.Scene {
         this.retry = this.add.sprite(300, 525, "retry").setInteractive();
         this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
 
-        this.highScores = this.add.sprite(750, 570, "highScores").setInteractive();
+        this.highScores = this.add.sprite(720, 550, "highScores").setInteractive();
 
        //Jugadores
        this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value).setPosition(275,200); 
