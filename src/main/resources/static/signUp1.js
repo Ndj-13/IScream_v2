@@ -18,7 +18,14 @@ function sendDataToServer(namebar, password, errorSpan, callback) {
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus + " " + jqXHR.status);
             // Mostrar mensaje de error en rojo debajo del input de contraseña
-            $(errorSpan).text("Password doesn't match or user doesn't exist.").css("color", "red").css("visibility", "visible");
+            $(errorSpan).text("Password doesn't match or user doesn't exist.").css({
+                "color": "red", // Cambia el color a azul
+                "visibility": "visible",
+                "position": "absolute", // Cambia la posición a absoluta
+                "left": "950px", // Ajusta la posición horizontal
+                "top": "700px", // Ajusta la posición horizontal
+                "font-family": "estilo"
+            });
         }
     });
 }/*function sendDataToServer(namebar, password, errorSpan) {

@@ -9,6 +9,13 @@
             "name": "ISrceamVol2Application",
             "request": "launch",
             "mainClass": "com.example.demo.ISrceamVol2Application",
+            "projectName": "iscreamv2"
+        },
+        {
+            "type": "java",
+            "name": "ISrceamVol2Application",
+            "request": "launch",
+            "mainClass": "com.example.demo.ISrceamVol2Application",
             "projectName": "IScreamv2"
         },
         {
