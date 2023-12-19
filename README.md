@@ -198,7 +198,7 @@ Lista de los elementos:
 - Logo del juego.
 - Botón ONLINE: lleva a la selección de skin de dos jugadores y el modo de juego.
 - Botón Créditos: para apagar o activar la música del juego.
-![Pantalla de inicio](/resources/img/readmeImgs/Pantalla_Inicio.jpg)
+![Pantalla de inicio](scr/main/resources/static/resources/img/readmeImgs/Pantalla_Inicio.jpg)
 _Pantalla de inicio_
 
 ### 4.3. Créditos
