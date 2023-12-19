@@ -9,6 +9,7 @@
         <!--Importación de CDNs-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
         <style type="text/css">
             body{
                 background-image: url("resources/img/fondoHTML.png");
@@ -23,6 +24,9 @@
                src: url('./resources/04B_30__.TTF');
            }
         </style>
+    
+        <script src="ConnectedUsers.js"></script>
+
         <script src="signUp1.js?1"></script>
         
         <script src="src/js/LoadScreen.js"></script>
@@ -40,6 +44,7 @@
         <script src="src/js/Pause.js"></script>
 
         <link rel="stylesheet" media="all" href="src/css/stylesheet.css?version=3.0">
+
         
     </head>
 
@@ -61,6 +66,8 @@
             <span class="nk-namebar-indicator"></span>
             <span class="nk-password-indicator"></span>
         </div>
+
+        <div id="connectedUsersCount">Usuarios conectados: </div>
         
         <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">

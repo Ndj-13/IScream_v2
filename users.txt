@@ -8,3 +8,5 @@ ipfunciona,plis
 ipfunciona2,plis
 Movil,m
 Nereas,nerea
+a,123
+xzc,123
