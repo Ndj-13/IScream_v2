@@ -2,8 +2,52 @@ class Results extends Phaser.Scene {
 
     constructor() {
         super({ key: 'Results' });
+        /*
+        this.buttonBorrar = false;
+        this.buttonPUT = false;
+        this.buttonGET = false;
+        this.buttonPUT2 = false;
+        */
     }
+
+    
     preload() {
+        /*
+        //BOTONES CUTRES HTML PARA RESTAPI 
+        //DELETE
+        if (!this.buttonBorrar) {
+            const button1 = document.createElement("button");
+            button1.innerHTML = "Borrar Puntuaciones";
+            button1.onclick = borrarAllScore;
+            document.body.appendChild(button1);
+            this.buttonBorrar = true;
+        }
+        //PUT
+        if (!this.buttonPUT) {
+            const button2 = document.createElement("button");
+            button2.innerHTML = "Actualizar Puntuacion J1";
+            button2.onclick = actualizarScoreP1;
+            document.body.appendChild(button2);
+            this.buttonPUT = true;
+        }
+        //PUT
+        if (!this.buttonPUT2) {
+            const button4= document.createElement("button");
+            button4.innerHTML = "Actualizar Puntuacion J2";
+            button4.onclick = actualizarScoreP2;
+            document.body.appendChild(button4);
+            this.buttonPUT2 = true;
+        }
+        //GET
+        if (!this.buttonGET) {
+            const button3 = document.createElement("button");
+            button3.innerHTML = "Obtener Puntuaciones";
+            button3.onclick = obtenerAllScore;
+            document.body.appendChild(button3);
+            this.buttonGET = true;
+        }*/
+
+
         //Background:
         this.load.image("stop", "resources/img/scene/fondoNivel1.png");
         this.load.image("fondo", "resources/img/interface/pauseFondo1.png");
@@ -22,6 +66,9 @@ class Results extends Phaser.Scene {
         this.load.spritesheet('retry',
             'resources/img/interface/botonRepeat.png',
             { frameWidth: 120, frameHeight: 47 });
+        this.load.spritesheet('highScores',
+            'resources/img/interface/botonHighScores.png',
+            { frameWidth: 120, frameHeight: 47 });
 
 
         //Iconos:
@@ -37,6 +84,7 @@ class Results extends Phaser.Scene {
 
         this.load.spritesheet('yes', 'resources/img/interface/confirmButton.png', { frameWidth: 120, frameHeight: 47 });
         this.load.spritesheet('no', 'resources/img/interface/cancelButton.png', { frameWidth: 120, frameHeight: 47 });
+        //this.load.spritesheet('ok', 'resources/img/interface/cancelButton.png', { frameWidth: 120, frameHeight: 47 });
 
     }
 
@@ -104,6 +152,7 @@ class Results extends Phaser.Scene {
         this.retry = this.add.sprite(300, 525, "retry").setInteractive();
         this.marcoRetry = this.add.image(300, 525, 'marco').setVisible(false);
 
+        this.highScores = this.add.sprite(750, 570, "highScores").setInteractive();
 
        //Jugadores
        this.name1 = this.make.text(confJugadores).setText(playersList[0].getName().value).setPosition(275,200); 
@@ -121,6 +170,7 @@ class Results extends Phaser.Scene {
            this.score2number = this.make.text(confScore).setText(playersList[1].showScore());
            this.score2number.setPosition(550, 350);        
        }
+
 
         // MOSTRAR GANADOR
         if(playersList.length > 1){
@@ -180,7 +230,6 @@ class Results extends Phaser.Scene {
             this.yes.setVisible(true).setInteractive();
             this.no.setVisible(true).setInteractive();
             this.menu.disableInteractive();
-            this.input.keyboard.removeKeys();
         })
 
        //retry
@@ -277,5 +326,22 @@ class Results extends Phaser.Scene {
             this.menu.setInteractive();
         })
 
+        this.highScores.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+        })
+        this.highScores.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+        })
+        this.highScores.on("pointerdown", () => {
+            this.highScores.setFrame(1);
+            this.scene.start("HighScores");
+        })
+        this.highScores.on("pointerup", () => {
+            this.highScores.setFrame(0);
+        })
     }
+
+    
 }
+
+

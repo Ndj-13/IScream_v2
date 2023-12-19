@@ -25,13 +25,14 @@ class HomeScreen extends Phaser.Scene {
     }
     create(){
         //audio
+        /*lo he comentado para no quedarme sorda
         if(menuMusic == false)
         {
             this.menuOst = this.sound.add('menuOst', {volume:0.4});
             this.menuOst.play();
             this.menuOst.setLoop(true);
             menuMusic = true;
-        }
+        }*/
 
 
         this.add.image(400, 300, 'background');

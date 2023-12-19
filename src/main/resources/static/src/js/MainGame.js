@@ -71,6 +71,7 @@ class MainGame extends Phaser.Scene {
     
     create(){
         //////////AUDIO///////////////////
+        /*LO HE COMENTADO PARA NO QUEDARME SORDA
         this.sound.stopAll();
         this.hitSound = this.sound.add('ouch');
         this.coinSound = this.sound.add('coin', {volume: 0.5});
@@ -78,7 +79,7 @@ class MainGame extends Phaser.Scene {
         
         this.ost = this.sound.add('ost');
         this.ost.play();
-        this.ost.setLoop(true); 
+        this.ost.setLoop(true);*/
         
         /////////SCENE//////////////
         this.add.image(400, 300, 'gameBg');
@@ -326,7 +327,7 @@ class MainGame extends Phaser.Scene {
         var player1 = playersList[0];
         //colision bolas-jugador
         this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
-            this.hitSound.play();
+            //this.hitSound.play();
             let randomNumX = Phaser.Math.Between(100, 700);
             let randomNumY = Phaser.Math.Between(-10, -250);
             bola.setPosition(randomNumX, randomNumY);
@@ -350,7 +351,7 @@ class MainGame extends Phaser.Scene {
 
         //colision fruta-jugador
         this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
-            this.coinSound.play();
+            //this.coinSound.play();
             player1.updateScore(1);
             fruit.destroy();    
         }, null, this);
@@ -380,7 +381,7 @@ class MainGame extends Phaser.Scene {
                 });
             }, null, this);
             this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
-                this.coinSound.play();
+                //this.coinSound.play();
                 player2.updateScore(1);
                 fruit.destroy();    
             }, null, this);
