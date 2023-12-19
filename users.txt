@@ -1,0 +1,10 @@
+Adri,j
+ne,aaa
+pe,aaa
+Jorges,Sanz
+jorge,jorge
+Player1,h
+ipfunciona,plis
+ipfunciona2,plis
+Movil,m
+Nereas,nerea

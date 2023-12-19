@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ISrceamVol2Application",
+            "request": "launch",
+            "mainClass": "com.example.demo.ISrceamVol2Application",
+            "projectName": "ISrceam_Vol2"
+        },
+        {
+            "type": "java",
             "name": "Application",
             "request": "launch",
             "mainClass": "com.example.iscreamv2.Application",
