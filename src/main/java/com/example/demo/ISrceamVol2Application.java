@@ -9,5 +9,4 @@ public class ISrceamVol2Application {
 	public static void main(String[] args) {
 		SpringApplication.run(ISrceamVol2Application.class, args);
 	}
-
 }

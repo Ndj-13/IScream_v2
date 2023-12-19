@@ -1,7 +1,6 @@
 ne,bbb
 pe,aaa
 Jorges,Sanz
-jorge,jorge
 Player1,h
 ipfunciona,plis
 ipfunciona2,plis
@@ -10,3 +9,6 @@ Nereas,nerea
 a,123
 xzc,123
 ana,ano
+Jorgito,j
+Adri,adri
+Jorge,Jorge

@@ -155,7 +155,19 @@ class ModifyUser extends Phaser.Scene {
         this.menu.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             playersList.splice(0, playersList.length);
+            this.playerName.disabled = true;
+            this.playerName.value = '';
+            this.playerName.style.visibility = "hidden"; // Oculta el campo de nombre
+        
+            this.playerPassword.disabled = true;
+            this.playerPassword.value = '';
+            this.playerPassword.style.visibility = "hidden"; // Oculta el campo de contraseña
+
+            
+            this.playerError.style.visibility = "hidden"; // Oculta el campo de contraseña
+        
             this.scene.start("CharacterSelect");
         })
+        
     }
 }
