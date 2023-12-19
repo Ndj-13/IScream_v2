@@ -205,7 +205,7 @@ class SelectPlayer {
             
         })
 
-        this.modifyButton = this.scene.add.sprite(this.posX, 520, "modifyButton").setInteractive();
+        this.modifyButton = this.scene.add.sprite(this.posX, 510, "modifyButton").setInteractive();
         //Modificar usuario
         this.modifyButton.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";

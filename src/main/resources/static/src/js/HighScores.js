@@ -27,7 +27,7 @@ class HighScores extends Phaser.Scene {
             { frameWidth: 122.3, frameHeight: 70 });
 
         this.load.spritesheet('goBack',
-            'resources/img/interface/botonDelete.png',
+            'resources/img/interface/botonBack.png',
             { frameWidth: 122.3, frameHeight: 47 });
 
         
