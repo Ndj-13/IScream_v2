@@ -38,6 +38,7 @@
         <script src="src/js/MainGame.js?j"></script>
         <script src="src/js/Results.js?s"></script>
         <script src="src/js/Creditos.js"></script>
+        <script src="src/js/HighScores.js"></script>
 
         <script src="src/js/SelectPlayer.js?l"></script>
         <script src="src/js/Player.js"></script>
@@ -68,6 +69,8 @@
         </div>
 
         <div id="connectedUsersCount">Usuarios conectados: </div>
+        <div id="textContainer"></div>
+        <div id="jsonContainer"></div>
         
         <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">
@@ -85,6 +88,9 @@
             //var restart = false;
             //var retry = false;
             var menuMusic = false;
+
+            var scoreScene;
+            var scoresText;
 
 
             ////////Full screen con javascript///////
@@ -139,7 +145,7 @@
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, HomeScreen, Creditos, ModifyUser, CharacterSelect, GameLoader, MainGame, Pause, Results]
+                scene:[LoadScreen, HomeScreen, Creditos, ModifyUser, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
             };   
             var game = new Phaser.Game(config);       
 
