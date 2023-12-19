@@ -81,6 +81,8 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 5.5. Fondos y Escenarios	
 
+### 6. Instrucciones para ejecutar la aplicación
+
 
 
 ## 1.   Cambios
@@ -287,4 +289,9 @@ Los fondos y escenarios de **_I-Scream vol.2_** son una parte crucial de la expe
 Imágenes de referencia para los escenarios:
 
 En resumen, el arte de **_I-Scream vol.2_** combina elementos nostálgicos del píxel art con diseños creativos que representan la temática de helados de una manera única. Tanto los personajes como los enemigos están diseñados con atención al detalle, y la paleta de colores y animaciones contribuyen a la creación de un mundo visualmente atractivo y cautivador que complementa la jugabilidad del juego.
+
+
+### 6. Instrucciones para ejecutar la aplicación
+
+Para ejecutar la aplicación deberá lanzarse SpringBoot para crear el servidor. Por defecto se lanzará el la IP de la máquina desde la que se lance y en el puerto 8080. Una vez el servidor esté ejecutando se podrá acceder a la aplicación desde el navegador insertando en la url del buscador IPdelamáquina:8080.
  
