@@ -109,7 +109,7 @@ class MainGame extends Phaser.Scene {
             repeat: -1
         });
         //this.timerSpriteCount = 1;
-        this.tiempoPartida = 59; // Duración de la partida en segundos
+        this.tiempoPartida = 60; // Duración de la partida en segundos
         var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
             delay: 1000, // Ejecutar cada segundo

@@ -88,8 +88,8 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 ## 1.   Cambios
 
 En este apartado se irán introduciendo los cambios que se vayan efectuando en las siguientes fases. 
-3/12/23: Se ha cambiado la naturaleza del juego, de juego tipo hack and slash a juego de acción/arcade. Esto significa que no hay hordas de enemigos y sooperación entre jugadores, si no que es competitivo y de recolección y evasión de obstáculos.
-Por ello, se ha reducido la cantidad de pantallas, niveles y mecánicas para adaptarlo al nuevo juego.
+3/12/23: Se ha cambiado la naturaleza del juego, de juego tipo hack and slash a juego de acción/arcade. Esto significa que no hay hordas de enemigos y sooperación entre jugadores, si no que es competitivo y de recolección y evasión de obstáculos.Por ello, se ha reducido la cantidad de pantallas, niveles y mecánicas para adaptarlo al nuevo juego.
+19/12/23: Se ha cambiado el número de jugadore en local a 1. Hay cambios en el flujo de interfaces, se ha añadido una interfaz para modificar la cuenta llamada Account. Se ha implementado un sistema de Log in con usuario y contraseña, un sistema de reconocimiento de usuarios conectados y un sistema de records. Además se ha implementado un combo que cambia de skin al jugador. También se ha implementado un sistema de FullScreen.
 
 ## 2.   Introducción
 
@@ -196,16 +196,16 @@ _Pantalla de carga_
 
 Lista de los elementos:
 - Logo del juego.
-- Botón PLAY: lleva a la selección de skin de dos jugadores y el modo de juego.
+- Botón ONLINE: lleva a la selección de skin de dos jugadores y el modo de juego.
 - Botón Créditos: para apagar o activar la música del juego.
-![Pantalla de inicio](/resources/img/readmeImgs/Pantalla_Inicio.jpg)
+![Pantalla de inicio](scr/main/resources/static/resources/img/readmeImgs/Pantalla_Inicio.jpg)
 _Pantalla de inicio_
 
 ### 4.3. Créditos
 
 Lista de los elementos:
-- Panel: texto con los roles de cada miembro del equipo 
-- Botón menú: vuelve al menú principal al pulsarse
+- Panel: texto con los roles de cada miembro del equipo.
+- Botón menú: vuelve al menú principal al pulsarse.
 ![Pantalla de créditos](/resources/img/readmeImgs/Pantalla_Creditos.jpg)
 _Pantalla de créditos_
 ### 4.4. Selección de skin y modo de juego
@@ -213,10 +213,10 @@ _Pantalla de créditos_
 Lista de los elementos:
 
 - Listas de skins disponibles, pulsando izquierda o derecha se cambia de uno a otro.
-- Textos Player 1 y 2: distinguen los jugadores que tienen cada skin.
-- Botones Aceptar: Selecciona el skin en el centro de la lista.
-- Botón Tutorial: Lleva a la pantalla de tutorial.
-- Botón añadir jugador: Añade un nuevo jugador a la escena.
+- Input usuario: campo de texto donde meter el nombre de usuario.
+- Input contraseña: campo de texto donde meter el nombre de contraseña.
+- Boton OK: Selecciona el skin en el centro de la lista.
+- Botón de Modify: Lleva a la pantalla Account.
 - Botón de Menú: Lleva al menú principal.
 ![Pantalla de selección de personajes](/resources/img/readmeImgs/Pantalla_Seleccion_Personajes.jpg)
 _Pantalla de selección de personajes_
@@ -249,6 +249,17 @@ Lista de los elementos:
 - Botón RETRY: empieza el nivel de 0.
 ![Pantalla de fin](/resources/img/readmeImgs/Pantalla_Fin.jpg)
 _Pantalla de fin_
+
+### 4.7. Account
+
+Lista de los elementos:
+- Input usuario: campo de texto donde meter el nombre de usuario.
+- Input contraseña: campo de texto donde meter el nombre de contraseña.
+- Botón Delete: borra el usuario.
+- Botón Modify: modifica la contraseña del usuario.
+![Pantalla de Account](/resources/img/readmeImgs/Pantalla_HighScore.jpg)
+_Pantalla de fin_
+
 ## 5. Arte
 
 ### 5.1. Estilo Visual
