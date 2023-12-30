@@ -2,8 +2,8 @@ class CharacterSelect extends Phaser.Scene {
 
     constructor() {
         super({ key: 'CharacterSelect' });
-        this.playersPanels = [];
-        this.playersPanelsCreated = [];
+        //this.playersPanels = [];
+        //this.playersPanelsCreated = [];
         this.posX;
         
         /*
@@ -68,16 +68,8 @@ class CharacterSelect extends Phaser.Scene {
 
         this.player1 = new Player('p1', 50, this);
         playersList.push(this.player1);
-        //player1 = new Player('p1');
-        this.playersPanels[0].create();
-        this.playersPanelsCreated.push(this.playersPanels[0]);
-        console.log('Panel 1 creado');
-        //this.player1Panel.create();
-        /*
-        this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
-        this.plus = this.add.image(570, 250, "plus").setScale(0.1);
 
-
+        
         //-New player
         this.newPlayer.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -106,7 +98,7 @@ class CharacterSelect extends Phaser.Scene {
         })
         this.newPlayer.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-        })*/
+        })
 
         //menu:
         this.menu.on("pointerover", ()=>{

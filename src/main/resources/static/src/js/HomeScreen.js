@@ -88,7 +88,7 @@ class HomeScreen extends Phaser.Scene {
         this.onlineBt.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             
-            this.scene.start("CharacterSelect");
+            this.scene.start("CharacterSelectMultiplayer");
             //window.open("/signUp.html");
             //window.location.href = "/signUp.html";
             

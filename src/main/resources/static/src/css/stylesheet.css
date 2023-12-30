@@ -44,7 +44,7 @@ body{
 
   position: absolute;
   top: 550px;
-  margin-left: -130px;
+  margin-left: -300px;
 
   align-items: inherit;
   visibility: hidden;
@@ -64,7 +64,7 @@ body{
   /* Modificar estos valores para ajustar la posición */
   position: absolute;
   top: 590px; /* Ajusta la posición vertical */
-  margin-left: -130px; /* Ajusta la posición horizontal */
+  margin-left: -300px; /* Ajusta la posición horizontal */
 
   /* Estilos adicionales si es necesario */
   /* align-items: inherit;
