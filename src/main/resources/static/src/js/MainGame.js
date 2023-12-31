@@ -285,7 +285,7 @@ class MainGame extends Phaser.Scene {
             this.physics.add.collider(this.player, this.hitbox);
 
             //Name
-            this.name = this.make.text(confJugadores).setText(playersList[i].getName().value);
+            this.name = this.make.text(confJugadores).setText(playersList[i].getName());
             this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
             this.name.setPosition(this.posX, this.player.y+45);
 

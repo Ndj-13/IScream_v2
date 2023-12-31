@@ -1,21 +1,14 @@
-class CharacterSelect extends Phaser.Scene {
+class CharacterSelectMultiplayer extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'CharacterSelect' });
-        //this.playersPanels = [];
-        //this.playersPanelsCreated = [];
+        super({ key: 'CharacterSelectMultiplayer' });
+        this.playersPanels = [];
+        this.playersPanelsCreated = [];
         this.posX;
-        
-        /*
-        this.player1Panel = new SelectPlayer(this, 225, 'namebar');
-        this.player2Panel = new SelectPlayer(this, 570, 'namebar2');
-        */
     }
 
     preload(){
         this.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
-        
-        //this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
         this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
 
         //Menu
@@ -25,17 +18,13 @@ class CharacterSelect extends Phaser.Scene {
 
         this.posX = 225;
         for(var i = 1; i <= maxPlayers; i++){
-            console.log('password'+i);
-            this.playerPanel = new SelectPlayer(this, this.posX, 'namebar'+i, 'password'+i, 'error'+i);
+            //console.log(playersList[i].getName());
+            this.playerPanel = new SelectPlayerMultiplayer(this, this.posX, i/*playersList[i-1].getId()*/);
             this.playersPanels.push(this.playerPanel);
             this.posX = this.posX + 345;
         }
 
         for(var i = 0; i < maxPlayers ; i++) this.playersPanels[i].preload();
-        /*
-        this.player1Panel.preload();
-        this.player2Panel.preload();
-        */
         /*
         //Aceptar
         this.load.spritesheet('ok',
@@ -48,7 +37,7 @@ class CharacterSelect extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         */
         //Multiplayer
-        //this.load.image("plus", "resources/img/interface/plus.png");
+        this.load.image("plus", "resources/img/interface/plus.png");
 
         /*
         this.load.spritesheet('player2',
@@ -59,16 +48,27 @@ class CharacterSelect extends Phaser.Scene {
     }
 
     create(){
-        playersList = [];
+        //playersList = [];
         this.add.image(400, 300, 'selectScreenBg');
 
         //Boton menu: volver al menu
         this.menu = this.add.sprite(100, 80, "menu").setInteractive();
         this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
 
-        this.player1 = new Player('p1', 50, this);
-        playersList.push(this.player1);
+        //this.player1 = new Player('p1', 50, this);
+        //playersList.push(this.player1);
+        this.playersPanels[0].create();
+        this.playersPanelsCreated.push(this.playersPanels[0]);
+        console.log('Panel 1 creado');
 
+        if(playersList.length > 1){
+            this.playersPanels[1].create();
+            this.playersPanelsCreated.push(this.playersPanels[1]);
+            console.log('Panel 2 creado');
+        }
+
+       /* this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
+        this.plus = this.add.image(570, 250, "plus").setScale(0.1);
         
         //-New player
         this.newPlayer.on("pointerover", ()=>{
@@ -99,7 +99,7 @@ class CharacterSelect extends Phaser.Scene {
         this.newPlayer.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
         })
-
+*/
         //menu:
         this.menu.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -119,17 +119,16 @@ class CharacterSelect extends Phaser.Scene {
             this.exitScreen();
             playersList.splice(0, playersList.length);
             this.scene.start("HomeScreen");
-            /*
-            this.player1Panel.desactivarInput();
-            this.player2Panel.desactivarInput();
-            */
-            
         })
-        
-
     }
 
     update(){
+
+        if(playersList.length > 1 && this.playersPanels.length < 2){
+            this.playersPanels[1].create();
+            this.playersPanelsCreated.push(this.playersPanels[1]);
+            console.log('Panel 2 creado');
+        }
         for(var i = 0; i < this.playersPanelsCreated.length; i++) this.playersPanelsCreated[i].update();
         /*
         this.player1Panel.update();
@@ -165,7 +164,7 @@ class CharacterSelect extends Phaser.Scene {
             for(var i = 0; i < playersList.length; i++) console.log('Player '+i+': '+playersList[i].getName().value);
         
             /*
-            //this.scene.remove('CharacterSelect');
+            //this.scene.remove('CharacterSelectMultiplayer');
             var juego = this.scene.get('MainGame');
             console.log(this.scene.get('MainGame'));
            // console.log(juego)

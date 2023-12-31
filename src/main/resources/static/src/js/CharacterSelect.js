@@ -5,17 +5,10 @@ class CharacterSelect extends Phaser.Scene {
         this.playersPanels = [];
         this.playersPanelsCreated = [];
         this.posX;
-        
-        /*
-        this.player1Panel = new SelectPlayer(this, 225, 'namebar');
-        this.player2Panel = new SelectPlayer(this, 570, 'namebar2');
-        */
     }
 
     preload(){
         this.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
-        
-        //this.load.image('markbox', "resources/img/interface/recuadroBoton.png"); //REPE
         this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
 
         //Menu
@@ -32,48 +25,27 @@ class CharacterSelect extends Phaser.Scene {
         }
 
         for(var i = 0; i < maxPlayers ; i++) this.playersPanels[i].preload();
-        /*
-        this.player1Panel.preload();
-        this.player2Panel.preload();
-        */
-        /*
-        //Aceptar
-        this.load.spritesheet('ok',
-            'resources/img/interface/botonOk.png',
-            { frameWidth: 120, frameHeight: 47 });
-        
-        
-        this.load.spritesheet('player1',
-            'resources/img/players/SpritesheetP1(Andar).png',
-            { frameWidth: 64, frameHeight: 64 });
-        */
-        //Multiplayer
-        //this.load.image("plus", "resources/img/interface/plus.png");
 
-        /*
-        this.load.spritesheet('player2',
-            'resources/img/players/SpritesheetP2(Andar).png',
-            { frameWidth: 64, frameHeight: 64 });
-        */
-        
+        //Multiplayer
+        this.load.image("plus", "resources/img/interface/plus.png");
     }
 
     create(){
-        playersList = [];
+        //playersList = [];
         this.add.image(400, 300, 'selectScreenBg');
 
         //Boton menu: volver al menu
         this.menu = this.add.sprite(100, 80, "menu").setInteractive();
-        this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
+        //this.marcoMenu = this.add.image(695, 525, 'marco').setVisible(false);
 
-        this.player1 = new Player('p1', 50, this);
-        playersList.push(this.player1);
+        //this.player1 = new Player('p1', 50, this);
+        //playersList.push(this.player1);
         //player1 = new Player('p1');
         this.playersPanels[0].create();
         this.playersPanelsCreated.push(this.playersPanels[0]);
         console.log('Panel 1 creado');
         //this.player1Panel.create();
-        /*
+        
         this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
         this.plus = this.add.image(570, 250, "plus").setScale(0.1);
 
@@ -106,7 +78,7 @@ class CharacterSelect extends Phaser.Scene {
         })
         this.newPlayer.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
-        })*/
+        })
 
         //menu:
         this.menu.on("pointerover", ()=>{
@@ -125,7 +97,7 @@ class CharacterSelect extends Phaser.Scene {
         this.menu.on("pointerup", ()=>{
             document.body.style.cursor = "auto";
             this.exitScreen();
-            playersList.splice(0, playersList.length);
+            //playersList.splice(0, playersList.length);
             this.scene.start("HomeScreen");
             /*
             this.player1Panel.desactivarInput();
@@ -217,7 +189,7 @@ class CharacterSelect extends Phaser.Scene {
             //playersList.splice(0, playersList.length);
                 
         }
-        this.playersPanels.splice(0, this.playersPanels.length);
-        this.playersPanelsCreated.splice(0, this.playersPanelsCreated.length);
+        //this.playersPanels.splice(0, this.playersPanels.length);
+        //this.playersPanelsCreated.splice(0, this.playersPanelsCreated.length);
     }
 }

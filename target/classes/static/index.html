@@ -27,20 +27,23 @@
     
         <script src="ConnectedUsers.js"></script>
 
-        <script src="signUp1.js?1"></script>
+        <script src="signUp1.js"></script>
         
+        <script src="src/js/LogIn.js"></script>
         <script src="src/js/LoadScreen.js"></script>
         <script src="src/js/GameLoader.js"></script>
         <script src="src/js/HomeScreen.js?k"></script>
         <script src="src/js/ModifyUser.js?0"></script>
         <script src="src/js/modifyingUser.js"></script>
-        <script src="src/js/CharacterSelect.js?pito"></script>
+        <script src="src/js/CharacterSelect.js"></script>
+        <script src="src/js/CharacterSelectMultiplayer.js"></script>
         <script src="src/js/MainGame.js?j"></script>
         <script src="src/js/Results.js?s"></script>
         <script src="src/js/Creditos.js"></script>
         <script src="src/js/HighScores.js"></script>
 
-        <script src="src/js/SelectPlayer.js?l"></script>
+        <script src="src/js/SelectPlayer.js"></script>
+        <script src="src/js/SelectPlayerMultiplayer.js"></script>
         <script src="src/js/Player.js"></script>
         <script src="src/js/Pause.js"></script>
 
@@ -52,14 +55,17 @@
     <body style="text-align: center">
 
         <div id="introTextoP1">
+            <!-- PARA EL INPUT DEL LOGIN -->
             <input id="namebar1" name="player1T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
             <input id="password1" name="password1" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
             <span id="error1" class="error-message" style="visibility: hidden;"></span>
 
+            <!-- NS PA Q ES -->
             <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
             <input id="password2" name="password2" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
             <span id="error2" class="error-message" style="visibility: hidden;"></span>
 
+            <!-- PAL INPUT DEL MODIFYUSER -->
             <input id="namebarMU" name="playerMU" class="nk-namebar-input" type="text" placeholder="Enter your name...">
             <input id="passwordMU" name="passwordMU" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
             <span id="errorMU" class="error-message" style="visibility: hidden;"></span>
@@ -80,6 +86,7 @@
             const ipAddress = window.location.hostname;
 
             var playersList = [];
+            var actualPlayer = [];
             //var namesText = [];
             var maxPlayers = 2;
             //var keys;
@@ -148,7 +155,7 @@
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, HomeScreen, Creditos, ModifyUser, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
+                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
             };   
             var game = new Phaser.Game(config);       
 

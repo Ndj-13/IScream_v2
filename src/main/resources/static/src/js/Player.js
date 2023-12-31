@@ -3,7 +3,8 @@ class Player {
 
         this.scene = scene;
         this.id = id;
-        this.playerName = 'Player1';
+        this.playerName = '';
+        this.playerPassword = '';
         
         this.ready = false;
         this.charactId = 1;
@@ -89,6 +90,13 @@ class Player {
     }
     getName(){
         return this.playerName;
+    }
+
+    setPassword(password){
+        this.playerPassword = password;
+    }
+    getPassword(){
+        return this.playerPassword;
     }
 
     getCharactId(){

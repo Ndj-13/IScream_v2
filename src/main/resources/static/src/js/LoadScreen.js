@@ -41,7 +41,7 @@ class LoadScreen extends Phaser.Scene {
         this.helado.setScale(1.3);
 
         this.time.delayedCall(2000, () => {
-            this.scene.start('HomeScreen');
+            this.scene.start('LogIn');
         });
     }
 }
