@@ -6,12 +6,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 
 
 @RestController
 public class UserController {
+
+	private Map<String, User> activeUsers = new HashMap<String, User>();
     
 	@PostMapping(value = "/User")
 	public ResponseEntity<String> newUser(@RequestBody User newUser) {
@@ -25,6 +31,8 @@ public class UserController {
 
 	        if (passwordMatched) {
 	            // Contraseña coincide
+				activeUsers.put(newUser.getName(),newUser);
+				System.out.println("User connected: " + activeUsers);
 	            return ResponseEntity.ok("Password correct.");
 	        } else {
 	            // Contraseña incorrecta
@@ -36,6 +44,15 @@ public class UserController {
 	        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully.");
 	    }
 	}
+
+	@DeleteMapping(value = "/User/{name}")
+	public void deleteActiveUser(@RequestBody User user) {
+		if(activeUsers.containsKey(user.getName())) {
+			activeUsers.remove(user.getName());
+			System.out.println("{name} disconnected.");
+		}
+	}
+
 	@PutMapping(value = "/ModifyingUser")
 	public ResponseEntity<String> modifyUser(@RequestBody User userToUpdate) {
 	    boolean userExists = userExists(userToUpdate);

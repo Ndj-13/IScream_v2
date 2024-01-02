@@ -7,7 +7,7 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         this.posX;
     }
 
-    preload(){
+    preload() {
         this.load.image("selectScreenBg", "resources/img/interface/pantallaSeleccion.png");
         this.load.image("chMarkbox", "resources/img/interface/eleccionPersonaje.png");
 
@@ -17,14 +17,14 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
             { frameWidth: 120, frameHeight: 47 });
 
         this.posX = 225;
-        for(var i = 1; i <= maxPlayers; i++){
+        for (var i = 1; i <= maxPlayers; i++) {
             //console.log(playersList[i].getName());
             this.playerPanel = new SelectPlayerMultiplayer(this, this.posX, i/*playersList[i-1].getId()*/);
             this.playersPanels.push(this.playerPanel);
             this.posX = this.posX + 345;
         }
 
-        for(var i = 0; i < maxPlayers ; i++) this.playersPanels[i].preload();
+        for (var i = 0; i < maxPlayers; i++) this.playersPanels[i].preload();
         /*
         //Aceptar
         this.load.spritesheet('ok',
@@ -44,10 +44,34 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
             'resources/img/players/SpritesheetP2(Andar).png',
             { frameWidth: 64, frameHeight: 64 });
         */
-        
+
     }
 
-    create(){
+    create() {
+        //////////////////WEBSOCKETS///////////////////
+        var connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
+        connection.onopen = function () {
+            console.log(`Socket abierto`);
+
+        }
+        connection.onclose = function (e) {
+            deleteActiveUser(usermane);
+            console.log(`Socket cerrado`);
+        }
+        connection.onmessage = function (msg) {
+            console.log("WS message: " + msg.data);
+        }
+
+        //Al cerrarse la pestaña se desconecta el usuario
+
+        window.addEventListener('beforeunload', () => {
+            deleteActiveUser(username);
+        });
+
+        //this.countdownEvent = this.time.addEvent({ delay: 1000, callback: countdownFunction, callbackScope: this, loop: true });
+
+        ////////////////////////////////////////////////
+
         //playersList = [];
         this.add.image(400, 300, 'selectScreenBg');
 
@@ -61,60 +85,60 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         this.playersPanelsCreated.push(this.playersPanels[0]);
         console.log('Panel 1 creado');
 
-        if(playersList.length > 1){
+        if (playersList.length > 1) {
             this.playersPanels[1].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
             console.log('Panel 2 creado');
         }
 
-       /* this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
-        this.plus = this.add.image(570, 250, "plus").setScale(0.1);
-        
-        //-New player
-        this.newPlayer.on("pointerover", ()=>{
-            document.body.style.cursor = "pointer";
-            this.newPlayer.setScale(1.1);
-            this.plus.setScale(0.15);
-        })
-        this.newPlayer.on("pointerout", ()=>{
-            document.body.style.cursor = "auto";
-            this.newPlayer.setScale(1);
-            this.plus.setScale(0.1);
-        })
-        this.newPlayer.on("pointerdown", ()=>{
-            this.newPlayer.setVisible(false);
-            this.plus.setVisible(false);
-
-            this.player2 = new Player('p2');
-            playersList.push(this.player2);
-            console.log(playersList);
-            //this.player2Panel.create();
-            this.playersPanels[1].create();
-            this.playersPanelsCreated.push(this.playersPanels[1]);
-            console.log('Panel 2 creado');
-            //player2 = new Player('p2');
-            
-            this.addPlayer = true
-        })
-        this.newPlayer.on("pointerup", ()=>{
-            document.body.style.cursor = "auto";
-        })
-*/
+        /* this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
+         this.plus = this.add.image(570, 250, "plus").setScale(0.1);
+         
+         //-New player
+         this.newPlayer.on("pointerover", ()=>{
+             document.body.style.cursor = "pointer";
+             this.newPlayer.setScale(1.1);
+             this.plus.setScale(0.15);
+         })
+         this.newPlayer.on("pointerout", ()=>{
+             document.body.style.cursor = "auto";
+             this.newPlayer.setScale(1);
+             this.plus.setScale(0.1);
+         })
+         this.newPlayer.on("pointerdown", ()=>{
+             this.newPlayer.setVisible(false);
+             this.plus.setVisible(false);
+ 
+             this.player2 = new Player('p2');
+             playersList.push(this.player2);
+             console.log(playersList);
+             //this.player2Panel.create();
+             this.playersPanels[1].create();
+             this.playersPanelsCreated.push(this.playersPanels[1]);
+             console.log('Panel 2 creado');
+             //player2 = new Player('p2');
+             
+             this.addPlayer = true
+         })
+         this.newPlayer.on("pointerup", ()=>{
+             document.body.style.cursor = "auto";
+         })
+ */
         //menu:
-        this.menu.on("pointerover", ()=>{
+        this.menu.on("pointerover", () => {
             document.body.style.cursor = "pointer";
             //this.marcoMenu.setVisible(true);
         })
-        this.menu.on("pointerout", ()=>{
+        this.menu.on("pointerout", () => {
             document.body.style.cursor = "auto";
             //this.marcoMenu.setVisible(false);
         })
-        this.menu.on("pointerdown", ()=>{
+        this.menu.on("pointerdown", () => {
             //this.marcoMenu.setVisible(false);
             this.menu.setFrame(1);
-            
+
         })
-        this.menu.on("pointerup", ()=>{
+        this.menu.on("pointerup", () => {
             document.body.style.cursor = "auto";
             this.exitScreen();
             playersList.splice(0, playersList.length);
@@ -122,14 +146,14 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         })
     }
 
-    update(){
+    update() {
 
-        if(playersList.length > 1 && this.playersPanels.length < 2){
+        if (playersList.length > 1 && this.playersPanels.length < 2) {
             this.playersPanels[1].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
             console.log('Panel 2 creado');
         }
-        for(var i = 0; i < this.playersPanelsCreated.length; i++) this.playersPanelsCreated[i].update();
+        for (var i = 0; i < this.playersPanelsCreated.length; i++) this.playersPanelsCreated[i].update();
         /*
         this.player1Panel.update();
         if(this.addPlayer == true) 
@@ -152,17 +176,15 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
             }
         }*/
 
-        if(playersList.length == 0) return;
+        if (playersList.length == 0) return;
         this.allReady = 0;
-        for(var i = 0; i < playersList.length; i++)
-        {
-            if(playersList[i].confirmReady()) this.allReady++;
+        for (var i = 0; i < playersList.length; i++) {
+            if (playersList[i].confirmReady()) this.allReady++;
         }
-        if(this.allReady == playersList.length)
-        {
+        if (this.allReady == playersList.length) {
             this.exitScreen();
-            for(var i = 0; i < playersList.length; i++) console.log('Player '+i+': '+playersList[i].getName().value);
-        
+            for (var i = 0; i < playersList.length; i++) console.log('Player ' + i + ': ' + playersList[i].getName().value);
+
             /*
             //this.scene.remove('CharacterSelectMultiplayer');
             var juego = this.scene.get('MainGame');
@@ -176,7 +198,7 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
             menuMusic == false;
             this.scene.start('GameLoader');
         }
-        
+
         //Animacion personajes en pausa
         //this.player1.anims.play('poseP1', true);
         //this.player2.anims.play('poseP2', true);
@@ -189,26 +211,59 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         }*/
     }
 
-    shutdown()
-    {
-        //this.scene.restart('CharacterSelect');
-    }
-
-    exitScreen()
-    {
-        for(var i = 1; i <= this.playersPanelsCreated.length; i++)
-        {
+    exitScreen() {
+        for (var i = 1; i <= this.playersPanelsCreated.length; i++) {
             //document.getElementById("namebar"+i).value = '';
             //document.getElementById("namebar"+i).setAttribute('placeholder', 'Enter your name...'); 
-            document.getElementById("namebar"+i).style.visibility = 'hidden';
-            document.getElementById("password"+i).style.visibility = 'hidden';
-            document.getElementById("error"+i).style.visibility = 'hidden';
+            document.getElementById("namebar" + i).style.visibility = 'hidden';
+            document.getElementById("password" + i).style.visibility = 'hidden';
+            document.getElementById("error" + i).style.visibility = 'hidden';
             //Vaciar array jugadores
-                
+
             //playersList.splice(0, playersList.length);
-                
+
         }
         this.playersPanels.splice(0, this.playersPanels.length);
         this.playersPanelsCreated.splice(0, this.playersPanelsCreated.length);
+    }
+
+    deleteActiveUser(name, errorSpan, callback) {
+        // NO FUNCIONA AUN, NO SALE EL MENSAJE DE USUARIO DESCONECTADO EN EL SERVIDOR 
+        $.ajax({
+            method: "DELETE",
+            url: `http://${ipAddress}:8080/User/` + name,
+            success: function (data, textStatus, jqXHR) {
+                console.log(textStatus + " " + jqXHR.status);
+                console.log(data);
+                // Limpiar y ocultar el mensaje de error
+                $(errorSpan).text('').css('visibility', 'hidden');
+                if (callback) callback(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + " " + jqXHR.status);
+                // Mostrar mensaje de error en rojo debajo del input de contraseña
+                $(errorSpan).text("Failed to delete").css("color", "red").css("visibility", "visible");
+            }
+        });
+    }
+
+    getActiveUsersCount(name, errorSpan, callback) {
+        // NO FUNCIONA AUN, NO SALE EL MENSAJE DE USUARIO DESCONECTADO EN EL SERVIDOR 
+        $.ajax({
+            method: "DELETE",
+            url: `http://${ipAddress}:8080/User/` + name,
+            success: function (data, textStatus, jqXHR) {
+                console.log(textStatus + " " + jqXHR.status);
+                console.log(data);
+                // Limpiar y ocultar el mensaje de error
+                $(errorSpan).text('').css('visibility', 'hidden');
+                if (callback) callback(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + " " + jqXHR.status);
+                // Mostrar mensaje de error en rojo debajo del input de contraseña
+                $(errorSpan).text("Failed to delete").css("color", "red").css("visibility", "visible");
+            }
+        });
     }
 }
