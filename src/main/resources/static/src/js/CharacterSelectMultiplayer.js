@@ -5,6 +5,8 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         this.playersPanels = [];
         this.playersPanelsCreated = [];
         this.posX;
+        this.activeUsersCount = 0;
+        this.countChanged = 0;
     }
 
     preload() {
@@ -67,9 +69,6 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         window.addEventListener('beforeunload', () => {
             deleteActiveUser(username);
         });
-
-        //this.countdownEvent = this.time.addEvent({ delay: 1000, callback: countdownFunction, callbackScope: this, loop: true });
-
         ////////////////////////////////////////////////
 
         //playersList = [];
@@ -84,12 +83,12 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         this.playersPanels[0].create();
         this.playersPanelsCreated.push(this.playersPanels[0]);
         console.log('Panel 1 creado');
-
-        if (playersList.length > 1) {
-            this.playersPanels[1].create();
+/*
+        for (var i=0; i==this.activeUsersCount-1; i++ ) {
+            this.playersPanels[i].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
-            console.log('Panel 2 creado');
-        }
+            console.log('Panel ' + i + ' creado');
+        }*/
 
         /* this.newPlayer = this.add.image(570, 250, "chMarkbox").setInteractive();
          this.plus = this.add.image(570, 250, "plus").setScale(0.1);
@@ -146,13 +145,24 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         })
     }
 
-    update() {
+    update() {   
+        this.getActiveUsersCount(); 
+        if(this.countChanged == 1){
+            this.playersPanels[activeUsersCount-1].create();
+            this.playersPanelsCreated.push(this.playersPanels[activeUsersCount-1]);
+            console.log('Panel' + this.activeUsersCount + ' creado');
+        }
+        if(this.countChanged == -1){
+            this.playersPanels[activeUsersCount-1].destroy();
+            this.playersPanelsCreated.pop(this.playersPanels[activeUsersCount-1]);
+            console.log('Panel' + this.activeUsersCount + '  eliminado');
+        }
 
-        if (playersList.length > 1 && this.playersPanels.length < 2) {
+        /*if (playersList.length > 1 && this.playersPanels.length < 2) {
             this.playersPanels[1].create();
             this.playersPanelsCreated.push(this.playersPanels[1]);
             console.log('Panel 2 creado');
-        }
+        }*/
         for (var i = 0; i < this.playersPanelsCreated.length; i++) this.playersPanelsCreated[i].update();
         /*
         this.player1Panel.update();
@@ -247,23 +257,23 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         });
     }
 
-    getActiveUsersCount(name, errorSpan, callback) {
+    getActiveUsersCount() {
         // NO FUNCIONA AUN, NO SALE EL MENSAJE DE USUARIO DESCONECTADO EN EL SERVIDOR 
+        this.prevCount = this.activeUsersCount;
         $.ajax({
-            method: "DELETE",
-            url: `http://${ipAddress}:8080/User/` + name,
-            success: function (data, textStatus, jqXHR) {
-                console.log(textStatus + " " + jqXHR.status);
-                console.log(data);
-                // Limpiar y ocultar el mensaje de error
-                $(errorSpan).text('').css('visibility', 'hidden');
-                if (callback) callback(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus + " " + jqXHR.status);
-                // Mostrar mensaje de error en rojo debajo del input de contraseña
-                $(errorSpan).text("Failed to delete").css("color", "red").css("visibility", "visible");
+            method: "GET",
+            url: `http://${ipAddress}:8080/UsersCount`,
+            dataType: 'json'
+        }).done(function(data) {
+            this.activeUsersCount = data;
+            if(this.prevCount < this.activeUsersCount){
+                this.countChanged = 1;
+            } else if (this.prevCount > this.activeUsersCount){
+                this.countChanged = -1;
+            } else {
+                this.countChanged = 0;
             }
-        });
+            console.log("usuarios conectados:" + this.activeUsersCount)
+        })
     }
 }
