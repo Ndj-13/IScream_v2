@@ -116,6 +116,9 @@ class GameLoader extends Phaser.Scene {
 
 
         }
+        else{
+            this.scene.start('MainGame');
+        }
 
     }
 }
