@@ -92,6 +92,7 @@ class LogIn extends Phaser.Scene {
         actualPlayer.push(pw);
 
         console.log(playersList);
+        //recordar quitar, que muestra la contraseña.
         console.log(actualPlayer);
 
     }

@@ -26,19 +26,21 @@
         </style>
     
         <script src="ConnectedUsers.js"></script>
+        <script src="WebSocketParameters.js"></script>
 
         <script src="signUp1.js"></script>
         
         <script src="src/js/LogIn.js"></script>
         <script src="src/js/LoadScreen.js"></script>
-        <script src="src/js/GameLoader.js"></script>
-        <script src="src/js/HomeScreen.js?k"></script>
-        <script src="src/js/ModifyUser.js?0"></script>
-        <script src="src/js/modifyingUser.js"></script>
+        <script src="src/js/GameLoader.js?"></script>
+        <script src="src/js/HomeScreen.js"></script>
+        <script src="src/js/ModifyUser.js"></script>
+        <!-- <script src="src/js/modifyingUser.js"></script>-->
         <script src="src/js/CharacterSelect.js"></script>
         <script src="src/js/CharacterSelectMultiplayer.js"></script>
-        <script src="src/js/MainGame.js?j"></script>
-        <script src="src/js/Results.js?s"></script>
+        <script src="src/js/MainGame.js"></script>
+        <script src="src/js/MainGameOnline.js"></script>
+        <script src="src/js/Results.js"></script>
         <script src="src/js/Creditos.js"></script>
         <script src="src/js/HighScores.js"></script>
 
@@ -155,7 +157,7 @@
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
+                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, MainGameOnline, Pause, Results, HighScores]
             };   
             var game = new Phaser.Game(config);       
 

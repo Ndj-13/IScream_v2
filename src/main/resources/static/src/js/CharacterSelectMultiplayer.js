@@ -51,7 +51,21 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
 
     create() {
         //////////////////WEBSOCKETS///////////////////
-        var connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
+        /*createWebSocketConnection();
+        connection.onmessage = function(msg) {
+            console.log("WS mensaje recibido: " + msg.data);
+        }
+        connection.onclose = (event) => {
+            if (event.wasClean) {
+                console.log(`La conexión cerrada correctamente. Código: ${event.code} | Razón: ${event.reason}`);
+            } else {
+                console.error('La conexión WS se cerró de manera inesperada');
+            }
+        };
+        connection.onerror = (error) => {
+            console.error('Error en la conexión WebSocket:', error);
+        };*/
+        /*var connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
         connection.onopen = function () {
             console.log(`Socket abierto`);
 
@@ -62,7 +76,7 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
         }
         connection.onmessage = function (msg) {
             console.log("WS message: " + msg.data);
-        }
+        }*/
 
         //Al cerrarse la pestaña se desconecta el usuario
 
@@ -273,7 +287,7 @@ class CharacterSelectMultiplayer extends Phaser.Scene {
             } else {
                 this.countChanged = 0;
             }
-            console.log("usuarios conectados:" + this.activeUsersCount)
+            //console.log("usuarios conectados:" + this.activeUsersCount)
         })
     }
 }

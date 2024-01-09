@@ -106,8 +106,16 @@ class GameLoader extends Phaser.Scene {
             
         }
 
-        this.time.delayedCall(2000, () => {
-            this.scene.start('MainGame');
-        });
+        console.log("usuarios en línea: " + connectedUsers);
+        if (connectedUsers==2){
+            //var playersConnected=2;
+
+            this.time.delayedCall(2000, () => {
+                this.scene.start('MainGameOnline');
+            });
+
+
+        }
+
     }
 }

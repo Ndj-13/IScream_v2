@@ -12,6 +12,7 @@ class Player {
         this.score = 0;
         this.hurt = false;
         this.picked=false;
+        this.paused=false;
     }
     /*preload(){
         this.scene.load.spritesheet('characterTransformed',

@@ -1,11 +1,33 @@
-class MainGame extends Phaser.Scene {
+class MainGameOnline extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'MainGame' });
-        /*this.playersConnected=2;
-        this.player2 = new Player('p2');
-        playersList.push(this.player2);
-        console.log(playersList);*/
+        super({ key: 'MainGameOnline' });
+        //this.playersConnected=2;
+        //this.connection = null; // Declarar la propiedad connection
+        console.log("Constructor MainagmeOnline");
+        if(userid!=-1){
+            this.localPlayer;
+            this.onlinePlayer;
+        }
+
+        // Llama a la función de conexión si connectedUsers es igual a 2
+        
+        /*this.connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
+        this.connection.onopen = () => {
+            this.connection.send('Conexión web socket realizada con éxito');
+            console.log("Conexión creada con mi hermanito webSocket");
+        }
+        this.connection.onclose = (event) => {
+            if (event.wasClean) {
+                console.log(`La conexión cerrada correctamente. Código: ${event.code} | Razón: ${event.reason}`);
+            } else {
+                console.error('La conexión se cerró de manera inesperada');
+            }
+        };
+        this.connection.onerror = (error) => {
+            console.error('Error en la conexión WebSocket:', error);
+        };
+        console.log("Constructor MainagmeOnline");*/
         //this.reiniciar = false;
         //this.mydocument = document.documentElement;
     }
@@ -13,8 +35,11 @@ class MainGame extends Phaser.Scene {
     preload(){
 
         this.pauseScene = new Pause(this);
-        this.player1Paused = false; 
-        this.player2Paused = false;
+        playersList[0].paused = false;
+        if(playersList.length>1) {
+            playersList[1].paused = false;
+        }
+        
 
         //Scene
         //this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
@@ -74,6 +99,8 @@ class MainGame extends Phaser.Scene {
     }
     
     create(){
+        //createWebSocketConnection();
+
         //////////AUDIO///////////////////
         this.sound.stopAll();
         this.hitSound = this.sound.add('ouch');
@@ -91,10 +118,10 @@ class MainGame extends Phaser.Scene {
         //this.scale.scaleMode = Phaser.Scale.FIT;
         //var mydocument= document.documentElement;
         ////resetear la skin del jugador////
-        for(let i=0; i<playersList.length; i++){
+        /*for(let i=0; i<connectedUsers/*playersList.length; i++){
             console.log(i);
             playersList[i].setPicked(false);
-        }
+        }*/
 
         //PLATAFORMAS
         var platforms = this.physics.add.staticGroup();
@@ -124,8 +151,9 @@ class MainGame extends Phaser.Scene {
                 
                 if (this.tiempoPartida === 0) {
                     this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
-                    
-                    this.scene.start("Results");                    
+                    //this.connection.close();
+                    this.scene.start("Results"); 
+                    connection.close();                   
                 }
                 if (this.tiempoPartida < 10){
                     timerText.setText('00:0'+this.tiempoPartida);
@@ -222,7 +250,16 @@ class MainGame extends Phaser.Scene {
         this.namesText = [];
         this.posX = 45;
         this.posXRec = 80;
-        for(var i = 0; i < playersList.length; i++)
+        if (playersList.length===1){
+            this.player2nuevo = new Player('p2');
+            if(this.player2nuevo.getName()==''){
+                this.player2nuevo.setName('j2');
+            }
+            this.player2nuevo.paused=false;
+            playersList.push(this.player2nuevo);
+            console.log(playersList);
+        }
+        for(var i = 0; i < connectedUsers/*playersList.length*/; i++)
         {
             
             this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
@@ -298,6 +335,7 @@ class MainGame extends Phaser.Scene {
             this.namesText.push(this.name);
 
             //Agregar jugador creado a lista global jugadores
+            console.log("comprobar la hitbox a través de player en el for: "+ this.player);
             playersList[i].hitbox = this.player;
 
             //Interface
@@ -337,7 +375,7 @@ class MainGame extends Phaser.Scene {
             let randomNumY = Phaser.Math.Between(-10, -250);
             bola.setPosition(randomNumX, randomNumY);
 
-            this.player1Paused = true;
+            playersList[0].paused = true;
             player.setVelocity(0);
             player.setTint(0xFF0000);
             player.anims.play('damageP0', true);
@@ -346,7 +384,7 @@ class MainGame extends Phaser.Scene {
                 callbackScope: this,
                 loop: false, 
                 callback: ()=> {
-                    this.player1Paused = false;
+                    playersList[0].paused = false;
                     player.clearTint();
                     player.setPosition(0, 500);
                     
@@ -450,6 +488,7 @@ class MainGame extends Phaser.Scene {
                 //if (this.tiempoTutorial === 0) {
                 //this.comenzarJuego();
                 this.continuarJuego();
+                //createWebSocketConnection();
                 //this.fondoTut.setVisible(false);
                 this.tutorial.setVisible(false);                   
                 //}
@@ -470,25 +509,53 @@ class MainGame extends Phaser.Scene {
                     console.log('Key Combo 2 matched!');
                 }
             });
+
+
+
+
+
+            console.log(playersList);
+
+            console.log(playersList[0].hitbox);
+            console.log(playersList[1].hitbox);
+            //Asignación jugador local y jugador online:
+            if(userid===1){
+                this.localPlayer=playersList[0];
+                this.onlinePlayer=playersList[1];
+            }
+            else{
+                this.localPlayer=playersList[1];
+                this.onlinePlayer=playersList[0];
+            }
+            createWebSocketConnection();
+            const self = this;
+            connection.onmessage = function(msg) {
+                console.log("WS mensaje recibido: " + msg.data);
+                //playersList[1].hitbox.x=msg.data;
+
+                if(!self.onlinePlayer.paused)
+                {
+                    self.onlinePlayerController(self.onlinePlayer.hitbox, 0, self.onlinePlayer.isPicked(), msg.data);
+                }
+                
+            }
             
     }
     
     update(){
         
         //1 player:
-        if(playersList.length == 1 && !this.player1Paused){
-            this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
+        /*if(playersList.length == 1 && !this.player1Paused){
+            this.localPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
             //this.secondPlayerController(this.players[0], 0);
-        }
+            console.log("Solo hay un personaje.");
+        }*/
         //2 players:
-        else if(playersList.length == 2) {
-            if(!this.player1Paused)
+        if(playersList.length == 2) {
+            //console.log("Hay 2 personajes.");
+            if(!this.localPlayer.paused)
             {
-                this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
-            }
-            if(!this.player2Paused)
-            {
-                this.secondPlayerController(playersList[1].hitbox, 1, playersList[1].isPicked());
+                this.localPlayerController(this.localPlayer.hitbox, 0, this.localPlayer.isPicked());
             }
         }
         
@@ -574,7 +641,7 @@ class MainGame extends Phaser.Scene {
         this.scene.restart();
     }*/
       
-    firstPlayerController(playerController, pIndex, picked)
+    localPlayerController(playerController, pIndex, picked)
     {
         //1st Player controlls
         //1st Player controlls
@@ -585,13 +652,22 @@ class MainGame extends Phaser.Scene {
             if (keyInput.A.isDown)
             {
                 playerController.setVelocityX(-160);
+                if (connection.readyState === WebSocket.OPEN) {
+                    connection.send('A');
+                } else {
+                    console.error('WebSocket is not open to send data.');
+                }
 
                 playerController.anims.play('leftP'+pIndex, true);
             }
             else if (keyInput.D.isDown)
             {
                 playerController.setVelocityX(160);
-
+                if (connection.readyState === WebSocket.OPEN) {
+                    connection.send('D');
+                } else {
+                    console.error('WebSocket is not open to send data.');
+                }
                 playerController.anims.play('rightP'+pIndex, true);
             }
             
@@ -605,12 +681,24 @@ class MainGame extends Phaser.Scene {
             if (keyInput.W.isDown && playerController.body.touching.down)
             {
                 playerController.setVelocityY(-630);
+                if (connection.readyState === WebSocket.OPEN) {
+                    connection.send('W');
+                } else {
+                    console.error('WebSocket is not open to send data.');
+                }
             }
         }
+        /*if (connection.readyState === WebSocket.OPEN) {
+            connection.send(playerController.x);
+        } else {
+            console.error('WebSocket is not open to send data.');
+        }*/
+        
+        //this.connection.send('playerController.x');
     }
 
        
-    secondPlayerController(playerController, pIndex, picked)
+    onlinePlayerController(playerController, pIndex, picked, msg)
     {
         //2nd Player controlls
         if (picked){
@@ -618,13 +706,13 @@ class MainGame extends Phaser.Scene {
         }
         else{
             //2nd player's controls
-            if (cursorInput.left.isDown)
+            if (msg== 'A')
             {
                 playerController.setVelocityX(-160);
 
                 playerController.anims.play('leftP'+pIndex, true);
             }
-            else if (cursorInput.right.isDown)
+            else if (msg== 'D')
             {
                 playerController.setVelocityX(160);
 
@@ -638,10 +726,16 @@ class MainGame extends Phaser.Scene {
                 playerController.anims.play('stoppedP'+pIndex);
             }
             
-            if (cursorInput.up.isDown && playerController.body.touching.down)
+            if (msg== 'W' && playerController.body.touching.down)
             {
                 playerController.setVelocityY(-630);
             }
+            /*if (connection.readyState === WebSocket.OPEN) {
+                connection.send('playerController.x');
+            } else {
+                console.error('WebSocket is not open to send data.');
+            }*/
+            //this.connection.send('playerController.x');
         }
         /*
         if (cursorInput.left.isDown)

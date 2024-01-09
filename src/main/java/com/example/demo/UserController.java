@@ -33,7 +33,7 @@ public class UserController {
 	        if (passwordMatched) {
 	            // Contraseña coincide
 				activeUsers.put(newUser.getName(),newUser);
-				System.out.println("User connected: " + activeUsers);
+				System.out.println("User connected apirest: " + activeUsers);
 	            return ResponseEntity.ok("Password correct.");
 	        } else {
 	            // Contraseña incorrecta
