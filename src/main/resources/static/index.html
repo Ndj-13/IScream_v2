@@ -26,8 +26,6 @@
         </style>
     
         <script src="ConnectedUsers.js"></script>
-
-        <script src="signUp1.js"></script>
         
         <script src="src/js/LogIn.js"></script>
         <script src="src/js/LoadScreen.js"></script>
@@ -38,7 +36,7 @@
         <script src="src/js/CharacterSelect.js"></script>
         <script src="src/js/CharacterSelectMultiplayer.js"></script>
         <script src="src/js/MainGame.js?j"></script>
-        <script src="src/js/Results.js?s"></script>
+        <script src="src/js/ResultsOnline.js?s"></script>
         <script src="src/js/Creditos.js"></script>
         <script src="src/js/HighScores.js"></script>
 
@@ -66,42 +64,36 @@
             <span id="error2" class="error-message" style="visibility: hidden;"></span>
 
             <!-- PAL INPUT DEL MODIFYUSER -->
-            <input id="namebarMU" name="playerMU" class="nk-namebar-input" type="text" placeholder="Enter your name...">
-            <input id="passwordMU" name="passwordMU" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
-            <span id="errorMU" class="error-message" style="visibility: hidden;"></span>
+            <input id="namebarMU" name="playerMU" class="mu-namebar-input" type="text" placeholder="Enter your name...">
+            <input id="passwordMU" name="passwordMU" class="mu-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
+            <span id="errorMU" class="muu-error-message" style="visibility: hidden;"></span>
 
             <span class="nk-namebar-indicator"></span>
             <span class="nk-password-indicator"></span>
         </div>
 
-        <div id="connectedUsersCount">Usuarios conectados: </div>
+        <div id="connectedUsersCount">Connected Users: </div>
         <div id="textContainer"></div>
         <div id="jsonContainer"></div>
+
         
-        <!--script type="text/javascript" src="src/js/game.js"></script-->
         <script type="text/javascript">
 
-            //var player1;
-            //var player2;
             const ipAddress = window.location.hostname;
+            var connection;
+            var desconectado = false; // para cuando se minimiza la pantalla, se desconecta el jugador y vuelve a la pantalla logIn
 
-            var playersList = [];
-            var actualPlayer = [];
-            //var namesText = [];
-            var maxPlayers = 2;
-            //var keys;
+            //var playersList = [];
+            var actualPlayer;
+            var rivalPlayer; // SE RELLENA EN EL CHARACTERSELECTMULTIPLAYER
+            var players;    // para establecer un orden de colocacion de los jugadores, el q vaya primero va a la izda y el segundo a la dcha. SE RELLENA EN EL GAMELOADER
+
+
             var cursorInput;
             var keyInput;
-            //var restart = false;
-            //var retry = false;
             var menuMusic = false;
 
-            var scoreScene;
-            var scoresText;
-
-            ///EVENTOS///
-            var onNewPlayer = new Phaser.Events.EventEmitter();
-
+            var thisScene;
 
             ////////Full screen con javascript///////
             /*
@@ -155,7 +147,7 @@
                     }
                 },
                 backgroundColor: '#5B2970',
-                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
+                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, Pause, ResultsOnline, HighScores]
             };   
             var game = new Phaser.Game(config);       
 

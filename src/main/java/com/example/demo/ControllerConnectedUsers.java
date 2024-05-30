@@ -24,7 +24,6 @@ public class ControllerConnectedUsers {
             userId = freeUserID.remove(0); 
         }
         usersAlive.put(userId, System.currentTimeMillis());
-        usersAlive.put(userId, System.currentTimeMillis());
         return userId;
     }
 
