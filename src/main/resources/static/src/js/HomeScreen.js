@@ -28,6 +28,39 @@ class HomeScreen extends Phaser.Scene {
         this.load.audio('menuOst', 'resources/audio/menuOst.mp3');
     }
     create() {
+
+        ///////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////WEBSOCKETS//////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
+
+        if(connection == undefined) connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
+
+        connection.onopen = function () {
+            console.log(`Socket abierto`);
+        }
+
+        connection.onclose = (e) => { //esto se ejecuta cuando se recarga pa pestaña tmb creo
+            console.log(`Socket cerrado`);
+            desconectado = true;
+            rivalPlayer = undefined;
+            actualPlayer = undefined;
+            players = null;
+            // va al login otra ve
+            this.scene.start('LogIn');
+            //endSession(actualPlayer.getName());
+        }
+
+        connection.onmessage = (message) => {
+            let msg = JSON.parse(message.data);
+            if (msg.type === 'session') this.updateWS(msg.id);
+        }
+
+        /*
+        //Al recargar la pestaña se desconecta el usuario 
+        window.addEventListener('beforeunload', () => {
+            deleteActiveUser(actualPlayer.getName());
+        });
+*/
         //audio
         if (menuMusic == false) {
             this.menuOst = this.sound.add('menuOst', { volume: 0.4 });
@@ -129,5 +162,20 @@ class HomeScreen extends Phaser.Scene {
             document.body.style.cursor = "auto";
             this.scene.start("ModifyUser");
         })
+
+    }
+
+    updateWS(id){
+        console.log('entra en updateWS');
+        $.ajax({
+            method: "PUT",
+            url: `http://${ipAddress}:8080/User/` + id,
+            data: JSON.stringify({ name: actualPlayer.getName(), id: id }),
+            processData: false,
+            contentType: "application/json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus + " " + jqXHR.status + " " + errorThrown);
+            }
+        });
     }
 }
