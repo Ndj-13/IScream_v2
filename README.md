@@ -96,6 +96,7 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 En este apartado se irán introduciendo los cambios que se vayan efectuando en las siguientes fases. 
 3/12/23: Se ha cambiado la naturaleza del juego, de juego tipo hack and slash a juego de acción/arcade. Esto significa que no hay hordas de enemigos y sooperación entre jugadores, si no que es competitivo y de recolección y evasión de obstáculos.Por ello, se ha reducido la cantidad de pantallas, niveles y mecánicas para adaptarlo al nuevo juego.
 19/12/23: Se ha cambiado el número de jugadore en local a 1. Hay cambios en el flujo de interfaces, se ha añadido una interfaz para modificar la cuenta llamada Account. Se ha implementado un sistema de Log in con usuario y contraseña, un sistema de reconocimiento de usuarios conectados y un sistema de records. Además se ha implementado un combo que cambia de skin al jugador. También se ha implementado un sistema de FullScreen.
+02/06/2024: Se ha añadido la jugabilidad de la partida en online y tiempo real. Se han implementado cambios en los servivios de login para mejorarlos en usabilidad y ante errores. Se ha modificado el ReadMe en consecuencia, añadiendo los siguientes apartados: Implementación online (apartado 5) y enlaces (apartado 7), donde se aportan enlaces al juego en diversas plataformas.
 
 ## 2.   Introducción
 
