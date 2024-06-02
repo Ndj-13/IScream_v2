@@ -260,7 +260,13 @@ Lista de los elementos:
 ![Pantalla de Account](/resources/img/readmeImgs/Pantalla_HighScore.jpg)
 _Pantalla de fin_
 
-## 5. Arte
+## 5. Juego Online
+
+### 5.1. Servicio Log In
+
+### 5.1. Juego Multijugador
+
+## 6. Arte
 
 ### 5.1. Estilo Visual
 
