@@ -96,7 +96,6 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 En este apartado se irán introduciendo los cambios que se vayan efectuando en las siguientes fases. 
 3/12/23: Se ha cambiado la naturaleza del juego, de juego tipo hack and slash a juego de acción/arcade. Esto significa que no hay hordas de enemigos y sooperación entre jugadores, si no que es competitivo y de recolección y evasión de obstáculos.Por ello, se ha reducido la cantidad de pantallas, niveles y mecánicas para adaptarlo al nuevo juego.
 19/12/23: Se ha cambiado el número de jugadore en local a 1. Hay cambios en el flujo de interfaces, se ha añadido una interfaz para modificar la cuenta llamada Account. Se ha implementado un sistema de Log in con usuario y contraseña, un sistema de reconocimiento de usuarios conectados y un sistema de records. Además se ha implementado un combo que cambia de skin al jugador. También se ha implementado un sistema de FullScreen.
-02/06/2024: Se ha añadido la jugabilidad de la partida en online y tiempo real. Se han implementado cambios en los servivios de login para mejorarlos en usabilidad y ante errores. Se ha modificado el ReadMe en consecuencia, añadiendo los siguientes apartados: Implementación online (apartado 5) y enlaces (apartado 7), donde se aportan enlaces al juego en diversas plataformas.
 
 ## 2.   Introducción
 
@@ -106,7 +105,7 @@ Este escrito tiene como objetivo principal plasmar los elementos que debe inclui
 
 ### 2.1.   Concepto del juego
 
- **_I-Scream vol.2_** es un videojuego en el que los jugadores deberán lograr superar los diferentes niveles para lograr la victoria.
+ **_I-Scream vol.2_** es un videojuego en el que los jugadores deberán competir por conseguir la máxima puntuación de manzanas.
  
 ### 2.2.   Características principales
 
@@ -118,7 +117,7 @@ El juego se basa en los siguientes pilares:
 
 ### 2.3.   Género
 
- **_I-Scream vol.2_** Este juego fusiona elementos de plataformas con mecánicas de sueperar obstáculos y puntuación. Los jugadores se sumergirán en un desafío donde la prioridad es sortear obstáculos y recoger pickUps que aumentan la puntuación. El foco está en la destreza para navegar un entorno lleno de desafíos, esquivando obstáculos y evitando perder contra tu compañero.
+ **_I-Scream vol.2_** Este juego fusiona elementos de plataformas con mecánicas de sueperar obstáculos y puntuación. Los jugadores se sumergirán en un desafío donde la prioridad es sortear obstáculos y recoger manzanas que aumentan la puntuación. El foco está en la destreza para navegar un entorno lleno de desafíos, esquivando obstáculos y evitando perder contra tu compañero.
  
 ### 2.4.   Propósito y público objetivo
 
@@ -132,7 +131,7 @@ El juego se basa en los siguientes pilares:
  
 ### 2.6.   Jugabilidad
 
- **_I-Scream vol.2_** consta de un escenario en el que el jugador se enfrentará contra su compañero o en solitario con un tiempo limitado, con el objetivo de conseguir el máximo de puntos posibles. Para ello, este videojuego dispondrá de:
+ **_I-Scream vol.2_** consta de un escenario en el que el jugador se enfrentará contra su compañero durante un tiempo limitado, con el objetivo de conseguir el máximo de puntos posibles. Para ello, este videojuego dispondrá de:
  
 - Movilidad: cada jugador controla a un personaje con el que desplazarse por todo el escenario, incluyendo el salto entre plataformas.
 - Selección de personajes: el jugador contará con personajes con distintas skins entre los que elegir para jugar con él.
@@ -144,28 +143,27 @@ El juego se basa en los siguientes pilares:
 
 ## 3.   Mecánicas
 
-En esta sección se describen todas las mecánicas implementadas y la jugabilidad del juego, así como el transcurso de una partida normal en modo local u online. Se detallan las acciones que pueden realizar los personajes, su interacción con el mundo virtual y una descripción a fondo sobre sus características. 
+En esta sección se describen todas las mecánicas implementadas y la jugabilidad del juego, así como el transcurso de una partida normal en modo online. Se detallan las acciones que pueden realizar los personajes, su interacción con el mundo virtual y una descripción a fondo sobre sus características. 
 
 ### 3.1. Jugabilidad
 
-El concepto inicial del videojuego está basado en los géneros de plataformas y arcade/acción. Se trata de un juego competitivo  en el que los jugadores se enfrentarán entre ellos, valiéndose de sus habilidades y destreza, para esquivar la lluvia de obstáculos y obtener la mayor puntuación.
+El concepto inicial del videojuego está basado en los géneros de plataformas y arcade/acción. Se trata de un juego competitivo en el que los jugadores se enfrentarán entre ellos, valiéndose de sus habilidades y destreza, para esquivar la lluvia de obstáculos y obtener la mayor puntuación.
 
 El plano de la cámara será frontal, de forma que se pueda observar todo el escenario. El estilo visual será 2D y todos los personajes serán visibles en pantalla, por lo que no será necesario requerir de una pantalla partida a la hora de jugar multijugador local.
 
-El juego se desarrolla en partidas independientes, en la que cada partida termina con un ganador, un perdedor y una puntuación. 
+El juego se desarrolla en partidas independientes, en la que cada partida termina con un ganador, un perdedor (o un empate) y una puntuación. 
 
 El modo de juego principal se explica a continuación:
 
-Modo principal: puede ser de uno o dos jugadores. La partida comienza y que gane el mejor.
+Modo principal: Dos jugadores competirán por conseguir la máxima puntuación.
 ### 3.2. Flujo de juego
-El juego comienza en la pantalla de inicio, en la cual se presenta la portada del juego; conformada por el título y la imagen principal.
-Luego, al pulsar PLAY, se mostrará la pantalla de selección de personaje. Esta pantalla está formada por una animación de personaje, un recuadro para escribir el nombre del jugador, y unas flechas para elegir las skins deseadas para jugar. Además aquí se muestra la posibilidad de jugar en solitario o en compañía; posibilidad representada con un botó de añadir jugador, el cual mostrará un segundo campo de selección para el jugador 2. En otras palabras, en el menú de selección de personaje, antes de iniciar la partida, el jugador podrá escoger el personaje con el que quiere jugar, ponerle nombre y comenzar a jugar.
-Al jugar, los jugadores se encontrarán el el juego principal, donde (aparte de jugar) se podrá pausar el juego (menú de pausa) y se terminará la partida surgiendo la pantalla de resultados; donde se mostrarán los resultados de los jugadores en esa partida. 
-En todas las pantallas se podrá volver hacia atrás; dicho de otra forma todas las pantallas están conectadas.
+El juego comienza en la pantalla de login en la cual se requerirá de un usuario y contraseña para acceder a la pantalla de inicio. Luego, la pantalla de inicio está conformada por el título y la imagen principal. Si desde esta, se pulsa el botón PLAY se mostrará la pantalla de selección de personaje. Esta pantalla está formada por una animación de personaje, un recuadro para escribir el nombre del jugador, y unas flechas para elegir las skins deseadas para jugar. En el menú de selección de personaje, antes de iniciar la partida, el jugador podrá escoger el personaje con el que quiere jugar y comenzar a jugar.
+Al jugar, los jugadores se encontrarán el el juego principal, donde se podrá pausar el juego (menú de pausa) y se terminará la partida surgiendo la pantalla de resultados y donde se mostrarán los resultados de los jugadores en esa partida. 
+En todas las pantallas se podrá volver hacia atrás a través de diferentes botones.
 
 ### 3.3. Personajes
 
-Los personajes seleccionables se corresponden con las distintas skins que se podrán usar; que en nuestro caso son dos helados. También se cambiará de skin al recoger un objeto pikable de bonus, lo que mostrará qué jugador tiene la ventaja de la partida.
+Los personajes seleccionables se corresponden con las distintas skins que se podrán usar; que en nuestro caso son cuatro helados. También se puede realizar un combo de teclas para transformarse en un color especial.
   
 ### 3.4. Objetos
 
