@@ -69,19 +69,25 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 4.6. Fin de nivel	
 
-### 5. Arte	
+### 5. Iplementación Online	
 
-5.1. Estilo Visual	
+5.1. Servicio LogIn	
 
-5.2. Personajes	
+5.2. Juego Multijugador
 
-5.3. Paleta de Colores	
+### 6. Arte	
 
-5.4. Animación	
+6.1. Estilo Visual	
 
-5.5. Fondos y Escenarios	
+6.2. Personajes	
 
-### 6. Instrucciones para ejecutar la aplicación
+6.3. Paleta de Colores	
+
+6.4. Animación	
+
+6.5. Fondos y Escenarios	
+
+### 7. Instrucciones para ejecutar la aplicación y enlaces
 
 
 
@@ -276,11 +282,11 @@ En este juego, el "servidor" también se ha desarrollado con Spring Boot y se ge
 Esta implementación permite a los usuarios participar en partidas multijugador en línea con otras personas, además de gestionar desconexiones y problemas relacionados con el envío de información.
 ## 6. Arte
 
-### 5.1. Estilo Visual
+### 6.1. Estilo Visual
 
  **_I-Scream vol.2_** presenta un estilo de arte en pixel art que rinde homenaje a la estética clásica de los videojuegos, creando una experiencia visual nostálgica para los jugadores. El juego se desarrolla en un mundo vibrante y colorido que combina elementos del género de plataformas con una temática de helados.
  
-### 5.2. Personajes
+### 6.2. Personajes
 
  Los personajes de **_I-Scream vol.2_** son seres animados que encarnan diferentes variedades de helados, cada uno con su propia personalidad única. Los diseños de los personajes se basan en conceptos cuidadosamente elaborados que reflejan su sabor y estilo, lo que aporta un toque distintivo a cada uno. Los jugadores pueden seleccionar a su personaje favorito antes de embarcarse en la aventura, lo que les permite disfrutar de diferentes habilidades y armas relacionadas con su elección.
 
@@ -290,7 +296,7 @@ _Primeros concepts de los personajes_
 ![Primeros sprites de los personajes](/resources/img/readmeImgs/conceptsJeR.jpg)
 _Primeros sprites de los personajes_
 
-### 5.3. Paleta de Colores
+### 6.3. Paleta de Colores
 
  La paleta de colores de **_I-Scream vol.2_** está compuesta por una gama de tonos brillantes y atractivos que recuerdan a los colores de los helados y postres. Los fondos y entornos se diseñan de manera que reflejen una sensación de diversión y alegría, mientras que los enemigos y obstáculos presentan colores que contrastan para destacar en la pantalla y proporcionar una experiencia visual estimulante.
 
@@ -301,13 +307,13 @@ _Paleta de colores 1_
 _Paleta de colores 2_
 
 
-### 5.4. Animación
+### 6.4. Animación
 
  El juego incorpora animaciones fluidas y detalladas para los personajes y enemigos, lo que da vida al mundo del juego. Cada personaje tiene animaciones de caminar, correr, saltar y atacar que reflejan sus características y personalidad, mientras que los enemigos se mueven de manera única y reaccionan de forma distintiva a los ataques de los jugadores. Las animaciones se integran perfectamente con la jugabilidad para ofrecer una experiencia inmersiva.
 
 Primeras animaciones del personaje:
 
-### 5.5. Fondos y Escenarios
+### 6.5. Fondos y Escenarios
 
 Los fondos y escenarios de **_I-Scream vol.2_** son una parte crucial de la experiencia de juego. Cada nivel está cuidadosamente diseñado para ofrecer una variedad de entornos que incluyen paisajes de postres, áreas heladas y escenarios temáticos relacionados con los sabores de los personajes. Los fondos están llenos de detalles y elementos interactivos que contribuyen a la inmersión del jugador.
 
@@ -316,7 +322,12 @@ Imágenes de referencia para los escenarios:
 En resumen, el arte de **_I-Scream vol.2_** combina elementos nostálgicos del píxel art con diseños creativos que representan la temática de helados de una manera única. Tanto los personajes como los enemigos están diseñados con atención al detalle, y la paleta de colores y animaciones contribuyen a la creación de un mundo visualmente atractivo y cautivador que complementa la jugabilidad del juego.
 
 
-### 6. Instrucciones para ejecutar la aplicación
+### 7. Instrucciones para ejecutar la aplicación y enlaces.
 
-Para ejecutar la aplicación deberá lanzarse SpringBoot para crear el servidor. Por defecto se lanzará el la IP de la máquina desde la que se lance y en el puerto 8080. Una vez el servidor esté ejecutando se podrá acceder a la aplicación desde el navegador insertando en la url del buscador IPdelamáquina:8080.
+Para ejecutar la aplicación deberá lanzarse SpringBoot para crear el servidor. Por defecto se lanzará la IP de la máquina desde la que se lance y en el puerto 8080. Una vez el servidor esté ejecutando se podrá acceder a la aplicación desde el navegador insertando en la url del buscador IPdelamáquina:8080.
+Además el juego, en su versión local, se ha subido a diversas plataformas de juegos ejecutados en buscadores. 
+Itch.io: https://bakerystudios.itch.io/iscreamv2
+Gamejolt: https://gamejolt.com/games/bakerystudios_iscreamv2/901167
+NewGrounds: https://www.newgrounds.com/portal/view/932975
+
  
