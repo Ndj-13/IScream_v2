@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,3 +48,36 @@ public class ControllerHighScore {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
     }*/
+
+    // DELETE
+    @DeleteMapping("/Score")
+    public ResponseEntity<String> deleteScore(@RequestBody User user) throws IOException {
+        if (scoreExists(user)) {
+            boolean deleteSuccessful = ScoreFileManager.deleteScoreFromFile(user);
+            if (deleteSuccessful) {
+                return ResponseEntity.ok("Score deleted successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete score.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+    }
+
+    private boolean scoreExists(User newScore) throws IOException {
+        List<User> existingScores = ScoreFileManager.loadScores();
+        if(newScore.getScore() == 0) return true;
+        for (User existingUser : existingScores) {
+            System.out.println(existingUser.getName() + newScore.getName() + existingUser.getScore() + newScore.getScore());
+            if (existingUser.getName().equals(newScore.getName())) {
+                System.out.println(newScore.getName() + " ya tiene un highScore");
+                if(existingUser.getScore() >= newScore.getScore()) {
+                    System.out.println("Su nuevo score es mayor");
+                    return true;
+                }
+            }
+        }
+        // Usuario no tiene high score o es menor que el de esta partida
+        return false;
+    }
+}
