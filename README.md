@@ -261,11 +261,19 @@ Lista de los elementos:
 _Pantalla de fin_
 
 ## 5. Juego Online
-
+En este juego se han implementado tecnologías que facilitan la comunicación e intercambio de información entre jugadores, así como su almacenamiento. Estas funcionalidades permiten a los usuarios crear una cuenta con contraseña, conocer la cantidad de usuarios conectados y participar en partidas multijugador en línea con amigos.
 ### 5.1. Servicio Log In
+El servicio de Inicio de Sesión, Registro, Modificación de Usuario y Eliminación de Usuario, entre otros, se han implementado utilizando la tecnología API Rest (servicios RESTful). Estos servicios siguen un enfoque restringido para la comunicación entre distintos sistemas de software y se caracterizan por el uso de métodos HTTP para realizar peticiones y recibir respuestas por parte del servidor. En el caso de IScream Vol2, las solicitudes del cliente se han realizado a través de jQuery (importado desde un CDN en la cabecera del index.html del juego), mientras que la parte del servidor se ha desarrollado con código Java utilizando un proyecto Maven con Spring Boot.
 
-### 5.1. Juego Multijugador
+En este escenario, existen archivos JavaScript que envían peticiones HTTP (Inicio de Sesión, Puntuaciones Altas, Modificación de Usuario, etc.) a otros archivos Java que reciben y procesan la información (Controlador de Usuarios Conectados, Controlador de Usuarios, Controlador de Puntuaciones Altas, etc.). Específicamente, el Inicio de Sesión envía solicitudes POST al Controlador de Usuarios, donde se envía el nombre y la contraseña del usuario para su almacenamiento si los datos son correctos; la modificación de usuarios realiza solicitudes HTTP DELETE, MODIFY y POST al Controlador de Usuarios para modificar, eliminar y crear nuevos usuarios. Los archivos Java del Controlador de Usuarios Conectados reciben solicitudes GET cada cierto tiempo desde ConnectedUsers.js, además de solicitudes POST cada vez que se conecta un nuevo usuario. Este mismo enfoque se sigue en los archivos HighScores.js y ControladorHighScores.java.
 
+De esta manera, se ha utilizado la tecnología API Rest para gestionar la información de los usuarios en IScream.Vol2, un videojuego RESTful.
+### 5.2. Juego Multijugador
+El servicio de juego en línea se ha implementado utilizando otra tecnología: WebSockets. Esta tecnología implica una comunicación bidireccional activa entre el cliente y el servidor, lo que permite abrir una conexión persistente para el intercambio continuo de mensajes. A diferencia de la API Rest, WebSockets posibilita un flujo de mensajes más dinámico y rápido. En el lado del cliente, solo cuenta con 4 métodos: open, close, send y otros. Además, incluye atributos como OnMessage, OnClose y OnOpen que informan sobre la apertura, cierre de conexión y recepción de mensajes.
+
+En este juego, el "servidor" también se ha desarrollado con Spring Boot y se gestiona desde el archivo WebSocketEchoHandler, el cual administra las sesiones abiertas del juego y facilita el reenvío de información entre las sesiones de sockets. La información se envía y recibe a través de los archivos CharacterSelect y MainGame, donde se llevan a cabo la creación y desarrollo de las partidas.
+
+Esta implementación permite a los usuarios participar en partidas multijugador en línea con otras personas, además de gestionar desconexiones y problemas relacionados con el envío de información.
 ## 6. Arte
 
 ### 5.1. Estilo Visual
