@@ -1,5 +1,4 @@
-  
-
+URL a vídeo explicativo: https://youtu.be/GBBt1Mr0QYE
 
 # I-Scream vol.2
 ## Game Design Document
