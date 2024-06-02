@@ -2,29 +2,11 @@ class HighScores extends Phaser.Scene {
 
     constructor() {
         super({ key: 'HighScores' });
-        this.buttonBorrar = false;
-        this.buttonPUT = false;
-        this.buttonGET = false;
-        this.buttonPUT2 = false;
-
-        thisScene = this;
+        thisScene = this; // mantiene el contexto de la escena en métodos externos
     }
 
     preload() {
         this.load.image("highscoreBg", "resources/img/interface/highScores.png");
-
-        this.load.spritesheet('deleteScores',
-            'resources/img/interface/botonDelete.png',
-            { frameWidth: 122.3, frameHeight: 47 });
-
-        this.load.spritesheet('updateNewScore',
-            'resources/img/interface/botonUpdateNewScore.png',
-            { frameWidth: 122.3, frameHeight: 70 });
-
-        this.load.spritesheet('showScore',
-            'resources/img/interface/botonShowScores.png',
-            { frameWidth: 122.3, frameHeight: 70 });
-
         this.load.spritesheet('goBack',
             'resources/img/interface/botonBack.png',
             { frameWidth: 122.3, frameHeight: 47 });
@@ -37,26 +19,17 @@ class HighScores extends Phaser.Scene {
 
         connection.onclose = (e) => {
             console.log(`Socket cerrado`);
-            //endSession(actualPlayer.getName());
-            desconectado = true;
-            // se reinician variables globales 
-            rivalPlayer = undefined;
-            actualPlayer = undefined;
-            players = null;
-            this.scene.start('LogIn');
-        }
-        connection.onmessage = (message) => {
-            let msg = JSON.parse(message.data);
-            //console.log(msg);
+            location.reload();
         }
 
         ///////////////////////////////////////////////////////////////////////////
         /////////////////////////////// INTERFAZ //////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////
         this.add.image(400, 300, "highscoreBg");
-        this.goBack = this.add.sprite(80, 570, "goBack").setInteractive();
+        this.goBackButton = this.add.sprite(80, 570, "goBack").setInteractive();
+        this.goBackMarco = this.add.sprite(80, 570, "marco").setVisible(false);
 
-        const hsText = {
+        const hsScoreText = {
             origin: 'center',
             x: 400,
             y: 300,
@@ -68,20 +41,33 @@ class HighScores extends Phaser.Scene {
                 lineSpacing: 10
             }
         }
+        const hsNameText = {
+            origin: 'center',
+            x: 400,
+            y: 300,
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 27,
+                textAlign: 'center',
+                fontStyle: 'bold',
+                lineSpacing: 10
+            }
+        }
 
         $.ajax({
             type: "GET",
             url: `http://${ipAddress}:8080/Score`,
             success: function (data) {
-                this.dataSorted = data.sort((a, b) => b.score - a.score);
-                let altoCelda = (550 - 150) / data.length;
+                //this.dataSorted = data.sort((a, b) => b.score - a.score);
+                let altoCelda = (520 - 150) / 10;
                 let anchoCelda = 600 / 3
                 let xNombre = 100 + (anchoCelda / 2);
                 let xScore = 500 + (anchoCelda / 2);
                 for (let i = 0; i < data.length; i++) {
-                    let y = 170 + altoCelda * i;
-                    thisScene.make.text(hsText).setText(data[i].score).setPosition(xScore, y);
-                    thisScene.make.text(hsText).setText(data[i].name).setPosition(xNombre, y);
+                    let y = 173 + altoCelda * i;
+                    thisScene.make.text(hsScoreText).setText(data[i].score).setPosition(xScore, y);
+                    thisScene.make.text(hsNameText).setText(data[i].name).setPosition(xNombre, y);
                 }
             },
             error: function (xhr, status, error) {
@@ -89,73 +75,21 @@ class HighScores extends Phaser.Scene {
             }
         });
 
-
-        this.goBack.on("pointerover", () => {
+        this.goBackButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.goBack.setFrame(1);
+            this.goBackMarco.setVisible(true);
         })
-        this.goBack.on("pointerout", () => {
+        this.goBackButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.goBack.setFrame(0);
+            this.goBackMarco.setVisible(false);
         })
-        this.goBack.on("pointerdown", () => {
-            this.goBack.setFrame(2);
+        this.goBackButton.on("pointerdown", () => {
+            this.goBackButton.setFrame(2);
         })
-        this.goBack.on("pointerup", () => {
+        this.goBackButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            this.goBack.setFrame(0);
-            this.scene.start("ResultsOnline");
-        })
+            this.goBackButton.setFrame(0);
+            this.scene.start("Results");
+        });
     }
 }
-
-
-
-
-/*$.ajax({
-    type: "POST",
-    url: `http://${ipAddress}:8080/Score`,
-    data: JSON.stringify({ name: actualPlayer.getName(), score: actualPlayer.getScore() }),
-    processData: false,
-    contentType: "application/json",
-    success: function (status) {
-        console.log(status);
-        $.ajax({
-            type: "POST",
-            url: `http://${ipAddress}:8080/Score`,
-            data: JSON.stringify({ name: rivalPlayer.getName(), score: rivalPlayer.getScore() }),
-            processData: false,
-            contentType: "application/json",
-            success: function (status) {
-                console.log(status);
-                // luego se obtienen todas y se guardan en una lista
-                $.ajax({
-                    type: "GET",
-                    url: `http://${ipAddress}:8080/Score`,
-                    success: function (data) {
-                        console.log(data);
-                        let altoCelda = (550 - 150) / data.length;
-                        let anchoCelda = 600 / 3
-                        let xNombre = 100 + (anchoCelda / 2);
-                        let xScore = 500 + (anchoCelda / 2);
-                        for (let i = 0; i < data.length; i++) {
-                            // pos y (alto)
-                            let y = 200 + (altoCelda / 2) * i;
-                            thisScene.make.text(hsText).setText(data[i].score).setPosition(xScore, y);
-                            thisScene.make.text(hsText).setText(data[i].name).setPosition(xNombre, y);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Solicitud get:', status, error);
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Solicitud post 2:', status, error);
-            }
-        });
-    },
-    error: function (xhr, status, error) {
-        console.error('Solicitud post 1:', status, error);
-    }
-});*/

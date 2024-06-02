@@ -1,55 +1,36 @@
-body{
-    margin: 0 auto;
-    margin-top: 200px;
+body {
+  margin: 0 auto;
+  margin-top: 200px;
 }
-/*
-.SectionBackground ::part(image) {
-    object-position: top;
-    object-fit: cover;
-  }
-  @media (min-width: 720px) {
-    .SectionBackground ::part(image) {
-      object-fit: none;
-    }
-  }
-  @media (min-width: 2600px) {
-    .SectionBackground ::part(image) {
-      object-fit: cover;
-    }
-}*/
 
 #connectedUsersCount {
-  font-size: 20px; /* Tamaño de fuente más grande */
-  color: rgb(255, 255, 255); /* Texto en color blanco */
+  font-size: 20px;
+  color: rgb(255, 255, 255);
   font-weight: bold;
   font-family: Courier;
-  /* display: inline-block; */
-  background-color: rgba(138, 89, 218, 0.712); /* Fondo blanco con cierta transparencia */
-  /* padding: 5px;  */
+  background-color: rgba(138, 89, 218, 0.712);
 }
 
-.nk-namebar-input{
-  padding:0 0.75rem;
+.nk-namebar-input {
+  padding: 0 0.75rem;
   width: 16em;
   height: 2em;
   text-align: center;
   font-size: 1em;
   font-family: 'estilo';
   background-color: #ffffff;
-  /*background-image: linear-gradient(180deg, #ffffff 0%, #9e7aa5 100%);*/
   border-radius: 5px;
-  /*text-shadow: 0 4px 8px rgb(0 0 0 / 20%);
-  outline: 0.2em;*/
   z-index: 1;
 
   position: absolute;
-  top: 550px;
+  top: 570px;
   margin-left: -130px;
 
   align-items: inherit;
   visibility: hidden;
   display: inline-block;
 }
+
 .nk-password-input {
   padding: 0 0.75rem;
   width: 16em;
@@ -60,29 +41,69 @@ body{
   background-color: #ffffff;
   border-radius: 5px;
   z-index: 1;
-  
-  /* Modificar estos valores para ajustar la posición */
-  position: absolute;
-  top: 590px; /* Ajusta la posición vertical */
-  margin-left: -130px; /* Ajusta la posición horizontal */
 
-  /* Estilos adicionales si es necesario */
-  /* align-items: inherit;
+  position: absolute;
+  top: 610px;
+  margin-left: -130px;
+}
+
+.mu-namebar-input {
+  padding: 0 0.75rem;
+  width: 16em;
+  height: 2em;
+  text-align: center;
+  font-size: 1em;
+  font-family: 'estilo';
+  background-color: #ffffff;
+  border-radius: 5px;
+  z-index: 1;
+
+  position: absolute;
+  top: 570px;
+  margin-left: -130px;
+
+  align-items: inherit;
   visibility: hidden;
-  display: inline-block; */
+  display: inline-block;
+}
+
+.mu-password-input {
+  padding: 0 0.75rem;
+  width: 16em;
+  height: 2em;
+  text-align: center;
+  font-size: 1em;
+  font-family: 'estilo';
+  background-color: #ffffff;
+  border-radius: 5px;
+  z-index: 1;
+
+  position: absolute;
+  top: 610px;
+  margin-left: -130px;
+}
+
+.mu-error-message {
+  position: absolute;
+  top: 500px;
+  margin-left: -230px;
+  background-color: rgb(255, 242, 219);
+  font-size: 1em;
+  font-family: 'estilo';
+  color: red;
 }
 
 .error-message {
-  /* Ajusta estos valores según sea necesario */
   position: absolute;
-  top: 660px; /* Ajusta la posición vertical */
-  margin-left: -130px; /* Ajusta la posición horizontal */
-  visibility: hidden;
+  top: 520px;
+  margin-left: -230px;
+  background-color: rgb(255, 242, 219);
   font-size: 1em;
-  color: red; /* Color de texto en rojo */
+  font-family: 'estilo';
+  color: red;
 }
 
-.animacion{
+.animacion {
   animation-name: parpadeo;
   animation-duration: 1s;
   animation-timing-function: linear;
@@ -94,33 +115,53 @@ body{
   -webkit-animation-iteration-count: infinite;
 }
 
-@-moz-keyframes parpadeo{  
-  0% { opacity: 1.0; }
-  50% { opacity: 0.0; }
-  100% { opacity: 1.0; }
+@-moz-keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
 }
 
-@-webkit-keyframes parpadeo {  
-  0% { opacity: 1.0; }
-  50% { opacity: 0.0; }
-   100% { opacity: 1.0; }
+@-webkit-keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
 }
 
-@keyframes parpadeo {  
-  0% { opacity: 1.0; }
-  50% { opacity: 0.0; }
-  100% { opacity: 1.0; }
+@keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
-input[type-text]{
+input[type-text] {
   writing-mode: horizontal-tb;
   cursor: text;
-  
 }
-
-
-

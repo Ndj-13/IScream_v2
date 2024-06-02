@@ -1,30 +1,24 @@
-class HomeScreen extends Phaser.Scene {
+class Menu extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'HomeScreen' });
+        super({ key: 'Menu' });
     }
 
     preload() {
         this.load.image('background', 'resources/img/interface/pantallaInicio.png');
         this.load.image('title', 'resources/img/interface/LogoI-ScreamFondoBlanco.png');
+        // botones
         this.load.spritesheet('playButton',
-            'resources/img/interface/botonLocal.png',
-            { frameWidth: 124, frameHeight: 47 });
-        this.load.spritesheet('onlineBt',
-            'resources/img/interface/botonOnline.png',
-            { frameWidth: 124, frameHeight: 47 });
-
-        this.load.spritesheet('creditsButton',
-            'resources/img/interface/botonCredits.png',
-            { frameWidth: 124, frameHeight: 47 });
-
+            'resources/img/interface/BotonPlay.png',
+            { frameWidth: 122, frameHeight: 47 });
         this.load.spritesheet('accountButton',
             'resources/img/interface/botonAccount.png',
             { frameWidth: 122, frameHeight: 47 });
+        this.load.spritesheet('creditsButton',
+            'resources/img/interface/botonCredits.png',
+            { frameWidth: 122, frameHeight: 47 });
 
-        //this.load.image('markbox', "resources/img/interface/recuadroBoton.png");
-
-        //audio
+        // audio
         this.load.audio('menuOst', 'resources/audio/menuOst.mp3');
     }
     create() {
@@ -33,7 +27,7 @@ class HomeScreen extends Phaser.Scene {
         ///////////////////////////////WEBSOCKETS//////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////
 
-        if(connection == undefined) connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
+        if (connection == undefined) connection = new WebSocket(`ws://${ipAddress}:8080/echo`);
 
         connection.onopen = function () {
             console.log(`Socket abierto`);
@@ -41,13 +35,13 @@ class HomeScreen extends Phaser.Scene {
 
         connection.onclose = (e) => { //esto se ejecuta cuando se recarga pa pestaña tmb creo
             console.log(`Socket cerrado`);
-            desconectado = true;
+            /*desconectado = true;
             rivalPlayer = undefined;
             actualPlayer = undefined;
             players = null;
             // va al login otra ve
-            this.scene.start('LogIn');
-            //endSession(actualPlayer.getName());
+            this.scene.start('LogIn');*/
+            location.reload();
         }
 
         connection.onmessage = (message) => {
@@ -55,12 +49,6 @@ class HomeScreen extends Phaser.Scene {
             if (msg.type === 'session') this.updateWS(msg.id);
         }
 
-        /*
-        //Al recargar la pestaña se desconecta el usuario 
-        window.addEventListener('beforeunload', () => {
-            deleteActiveUser(actualPlayer.getName());
-        });
-*/
         //audio
         if (menuMusic == false) {
             this.menuOst = this.sound.add('menuOst', { volume: 0.4 });
@@ -69,75 +57,53 @@ class HomeScreen extends Phaser.Scene {
             menuMusic = true;
         }
 
+        ///////////////////////////////////////////////////////////////////////////
+        ////////////////////////////// INTERFAZ ///////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
 
         this.add.image(400, 300, 'background');
         this.add.image(game.renderer.width / 2, 200, 'title');
 
-
         this.playButton = this.add.sprite(400, 400, "playButton").setInteractive();
-        this.onlineBt = this.add.sprite(400, 460, "onlineBt").setInteractive()
-        this.creditsButton = this.add.sprite(400, 520, "creditsButton").setInteractive();
+        this.playMarco = this.add.sprite(400,400,"marco").setVisible(false);
+        this.creditsButton = this.add.sprite(400, 480, "creditsButton").setInteractive();
+        this.creditsMarco = this.add.sprite(400,480,"marco").setVisible(false);
         this.accountButton = this.add.sprite(725, 35, "accountButton").setInteractive();
+        this.accountMarco = this.add.sprite(725,35,"marco").setVisible(false);
 
-        //this.markbox = this.add.image(400, 425, 'markbox').setVisible(false);
-        //this.markbox.setScale(1.2);
+        ///////////////////////////////////////////////////////////////////////////
+        /////////////////////////// FUNCIONALIDADES ///////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
 
-        // Local
+        // Online
         this.playButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.playButton.setFrame(1);
+            this.playMarco.setVisible(true);
         })
-
         this.playButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.playButton.setFrame(0);
+            this.playMarco.setVisible(false);
         })
-
         this.playButton.on("pointerdown", () => {
             this.playButton.setFrame(2);
         })
-
         this.playButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-
             this.scene.start("CharacterSelect");
-        })
-
-        // Online
-        this.onlineBt.on("pointerover", () => {
-            document.body.style.cursor = "pointer";
-            this.onlineBt.setFrame(1);
-        })
-
-        this.onlineBt.on("pointerout", () => {
-            document.body.style.cursor = "auto";
-            this.onlineBt.setFrame(0);
-        })
-
-        this.onlineBt.on("pointerdown", () => {
-            this.onlineBt.setFrame(2);
-        })
-
-        this.onlineBt.on("pointerup", () => {
-            document.body.style.cursor = "auto";
-            this.scene.start("CharacterSelectMultiplayer");
         })
 
         // Creditos
         this.creditsButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.creditsButton.setFrame(1);
+            this.creditsMarco.setVisible(true);
         })
-
         this.creditsButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.creditsButton.setFrame(0);
+            this.creditsMarco.setVisible(false);
         })
-
         this.creditsButton.on("pointerdown", () => {
             this.creditsButton.setFrame(2);
         })
-
         this.creditsButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
             this.scene.start("Creditos");
@@ -146,18 +112,15 @@ class HomeScreen extends Phaser.Scene {
         // Account
         this.accountButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.accountButton.setFrame(1);
+            this.accountMarco.setVisible(true);
         })
-
         this.accountButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.accountButton.setFrame(0);
+            this.accountMarco.setVisible(false);
         })
-
         this.accountButton.on("pointerdown", () => {
             this.accountButton.setFrame(2);
         })
-
         this.accountButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
             this.scene.start("ModifyUser");
@@ -165,8 +128,11 @@ class HomeScreen extends Phaser.Scene {
 
     }
 
-    updateWS(id){
-        console.log('entra en updateWS');
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// API-REST /////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    updateWS(id) {
         $.ajax({
             method: "PUT",
             url: `http://${ipAddress}:8080/User/` + id,

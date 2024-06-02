@@ -1,156 +1,160 @@
 <!DOCTYPE html>
-<html lang ="es">
-    <head>
-        <meta charset="UTF-8">
-        <!--meta http-equiv="X-UA-Compatible" content="IE=edge"-->
-        <title>IScream vol.2</title>
-        <!--Versión de phaser antigua (3.11). No permitía fullscreen. Si da problemas la nueva podéis descomentarla-->
-        <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>-->
-        <!--Importación de CDNs-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-        <style type="text/css">
-            body{
-                background-image: url("resources/img/fondoHTML.png");
-                margin: 0;
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <!--meta http-equiv="X-UA-Compatible" content="IE=edge"-->
+    <title>IScream vol.2</title>
+    <!--Versión de phaser antigua (3.11). No permitía fullscreen. Si da problemas la nueva podéis descomentarla-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>-->
+    <!--Importación de CDNs-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <style type="text/css">
+        body {
+            background-image: url("resources/img/fondoHTML.png");
+            margin: 0;
+        }
+
+        @font-face {
+            font-family: 'estilo';
+            src: url('./resources/serif_pixel-7.ttf');
+        }
+
+        @font-face {
+            font-family: 'titulo';
+            src: url('./resources/04B_30__.TTF');
+        }
+    </style>
+
+    <script src="ConnectedUsers.js"></script>
+
+    <script src="src/js/LogIn.js"></script>
+    <script src="src/js/LoadScreen.js"></script>
+    <script src="src/js/GameLoader.js"></script>
+    <script src="src/js/Menu.js"></script>
+    <script src="src/js/ModifyUser.js"></script>
+    <script src="src/js/CharacterSelect.js"></script>
+    <script src="src/js/MainGame.js"></script>
+    <script src="src/js/Results.js"></script>
+    <script src="src/js/Creditos.js"></script>
+    <script src="src/js/HighScores.js"></script>
+
+    <script src="src/js/PlayerPanel.js"></script>
+    <script src="src/js/Player.js"></script>
+    <script src="src/js/Pause.js"></script>
+
+    <link rel="stylesheet" media="all" href="src/css/stylesheet.css?version=3.0">
+
+
+</head>
+
+<body style="text-align: center">
+
+    <div id="introTextoP1">
+        <!-- PARA EL INPUT DEL LOGIN -->
+        <input id="namebar1" name="player1T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
+        <input id="password1" name="password1" class="nk-password-input" type="password"
+            placeholder="Enter your password..." style="visibility: hidden;">
+        <span id="error1" class="error-message" style="visibility: hidden;"></span>
+
+        <!-- NS PA Q ES -->
+        <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
+        <input id="password2" name="password2" class="nk-password-input" type="password"
+            placeholder="Enter your password..." style="visibility: hidden;">
+        <span id="error2" class="error-message" style="visibility: hidden;"></span>
+
+        <!-- PARA EL INPUT DEL MODIFYUSER -->
+        <input id="namebarMU" name="playerMU" class="mu-namebar-input" type="text" placeholder="Enter your name...">
+        <input id="passwordMU" name="passwordMU" class="mu-password-input" type="password"
+            placeholder="Enter your password..." style="visibility: hidden;">
+        <span id="errorMU" class="muu-error-message" style="visibility: hidden;"></span>
+
+        <span class="nk-namebar-indicator"></span>
+        <span class="nk-password-indicator"></span>
+    </div>
+
+    <div id="connectedUsersCount">Connected Users: </div>
+    <div id="textContainer"></div>
+    <div id="jsonContainer"></div>
+
+
+    <script type="text/javascript">
+
+        const ipAddress = window.location.hostname;
+        var connection;
+        var desconectado = false; // para cuando se minimiza la pantalla, se desconecta el jugador y vuelve a la pantalla logIn
+
+        var actualPlayer;
+        var rivalPlayer; // SE RELLENA EN EL CHARACTERSELECTMULTIPLAYER
+        var players;    // para establecer un orden de colocacion de los jugadores, el q vaya primero va a la izda y el segundo a la dcha. SE RELLENA EN EL GAMELOADER
+
+
+        var cursorInput;
+        var keyInput;
+        var menuMusic = false;
+
+        var thisScene;
+
+        ////////Full screen con javascript///////
+        /*
+        //Devuelve el elemento que esté full screen. Si está full screen devuelve null.
+        function getFullScreenElement(){
+            return document.fullscreenElement
+            || document.webkitFullscreenElement
+            || document.mozFullscreenElement
+            || document.msFullscreenElement;
+        }
+        function toggleFullScreen(){
+            if(getFullScreenElement()){
+                document.exitFullscreen();
+            }else{
+                document.documentElement.requestFullscreen().catch(console.log);//recoge el posible error y lo muestra por pantalla.
             }
-            @font-face{
-               font-family: 'estilo';
-               src: url('./resources/serif_pixel-7.ttf');
-           }
-            @font-face{
-               font-family: 'titulo';
-               src: url('./resources/04B_30__.TTF');
-           }
-        </style>
-    
-        <script src="ConnectedUsers.js"></script>
-        
-        <script src="src/js/LogIn.js"></script>
-        <script src="src/js/LoadScreen.js"></script>
-        <script src="src/js/GameLoader.js"></script>
-        <script src="src/js/HomeScreen.js?k"></script>
-        <script src="src/js/ModifyUser.js?0"></script>
-        <script src="src/js/modifyingUser.js"></script>
-        <script src="src/js/CharacterSelect.js"></script>
-        <script src="src/js/CharacterSelectMultiplayer.js"></script>
-        <script src="src/js/MainGame.js?j"></script>
-        <script src="src/js/ResultsOnline.js?s"></script>
-        <script src="src/js/Creditos.js"></script>
-        <script src="src/js/HighScores.js"></script>
-
-        <script src="src/js/SelectPlayer.js"></script>
-        <script src="src/js/SelectPlayerMultiplayer.js"></script>
-        <script src="src/js/Player.js"></script>
-        <script src="src/js/Pause.js"></script>
-
-        <link rel="stylesheet" media="all" href="src/css/stylesheet.css?version=3.0">
-
-        
-    </head>
-
-    <body style="text-align: center">
-
-        <div id="introTextoP1">
-            <!-- PARA EL INPUT DEL LOGIN -->
-            <input id="namebar1" name="player1T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
-            <input id="password1" name="password1" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
-            <span id="error1" class="error-message" style="visibility: hidden;"></span>
-
-            <!-- NS PA Q ES -->
-            <input id="namebar2" name="player2T" class="nk-namebar-input" type="text" placeholder="Enter your name...">
-            <input id="password2" name="password2" class="nk-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
-            <span id="error2" class="error-message" style="visibility: hidden;"></span>
-
-            <!-- PAL INPUT DEL MODIFYUSER -->
-            <input id="namebarMU" name="playerMU" class="mu-namebar-input" type="text" placeholder="Enter your name...">
-            <input id="passwordMU" name="passwordMU" class="mu-password-input" type="password" placeholder="Enter your password..." style="visibility: hidden;">
-            <span id="errorMU" class="muu-error-message" style="visibility: hidden;"></span>
-
-            <span class="nk-namebar-indicator"></span>
-            <span class="nk-password-indicator"></span>
-        </div>
-
-        <div id="connectedUsersCount">Connected Users: </div>
-        <div id="textContainer"></div>
-        <div id="jsonContainer"></div>
-
-        
-        <script type="text/javascript">
-
-            const ipAddress = window.location.hostname;
-            var connection;
-            var desconectado = false; // para cuando se minimiza la pantalla, se desconecta el jugador y vuelve a la pantalla logIn
-
-            //var playersList = [];
-            var actualPlayer;
-            var rivalPlayer; // SE RELLENA EN EL CHARACTERSELECTMULTIPLAYER
-            var players;    // para establecer un orden de colocacion de los jugadores, el q vaya primero va a la izda y el segundo a la dcha. SE RELLENA EN EL GAMELOADER
-
-
-            var cursorInput;
-            var keyInput;
-            var menuMusic = false;
-
-            var thisScene;
-
-            ////////Full screen con javascript///////
-            /*
-            //Devuelve el elemento que esté full screen. Si está full screen devuelve null.
-            function getFullScreenElement(){
-                return document.fullscreenElement
-                || document.webkitFullscreenElement
-                || document.mozFullscreenElement
-                || document.msFullscreenElement;
+        }
+        //Se puede dar doble click en todo el doc.
+        document.addEventListener("dblclick",()=>{
+            toggleFullScreen();
+        })
+        //FullScreen con Phaser. Funciona por escenas, pero ha dado error al usarlo. No se usa actualmente.
+        function FullScreen (scene){
+            if (scene.scale.isFullScreen){
+                scene.scale.stopFullscreen();
             }
-            function toggleFullScreen(){
-                if(getFullScreenElement()){
-                    document.exitFullscreen();
-                }else{
-                    document.documentElement.requestFullscreen().catch(console.log);//recoge el posible error y lo muestra por pantalla.
-                }
-            }
-            //Se puede dar doble click en todo el doc.
-            document.addEventListener("dblclick",()=>{
-                toggleFullScreen();
-            })
-            //FullScreen con Phaser. Funciona por escenas, pero ha dado error al usarlo. No se usa actualmente.
-            function FullScreen (scene){
-                if (scene.scale.isFullScreen){
-                    scene.scale.stopFullscreen();
-                }
-                else{
-                    scene.scale.startFullscreen();
+            else{
+                scene.scale.startFullscreen();
 
-                }
             }
-            */
+        }
+        */
 
-            var config = {
-                type: Phaser.AUTO,
-                /*scale: {
-                    mode: Phaser.Scale.FIT,
-                    parent: 'phaser-example',
-                    autoCenter: Phaser.Scale.CENTER_BOTH,
-                    width: 800,
-                    height: 600
-                },*/
+        var config = {
+            type: Phaser.AUTO,
+            /*scale: {
+                mode: Phaser.Scale.FIT,
+                parent: 'phaser-example',
+                autoCenter: Phaser.Scale.CENTER_BOTH,
                 width: 800,
-                height: 600,
-                pixelArt: true,
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        gravity: {y: 980},
-                        debug: false
-                    }
-                },
-                backgroundColor: '#5B2970',
-                scene:[LoadScreen, LogIn, HomeScreen, Creditos, ModifyUser, CharacterSelectMultiplayer, CharacterSelect, GameLoader, MainGame, Pause, ResultsOnline, HighScores]
-            };   
-            var game = new Phaser.Game(config);       
+                height: 600
+            },*/
+            width: 800,
+            height: 600,
+            pixelArt: true,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 980 },
+                    debug: false
+                }
+            },
+            backgroundColor: '#5B2970',
+            scene: [LoadScreen, LogIn, Menu, Creditos, ModifyUser, CharacterSelect, GameLoader, MainGame, Pause, Results, HighScores]
+        };
+        var game = new Phaser.Game(config);
 
-        </script>        
-    </body>
+    </script>
+</body>
+
 </html>

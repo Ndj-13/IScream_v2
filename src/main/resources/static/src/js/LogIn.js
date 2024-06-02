@@ -8,7 +8,7 @@ class LogIn extends Phaser.Scene {
         this.playerName = document.getElementById('namebar1');
         this.playerPassword = document.getElementById('password1');
         this.playerError = document.getElementById('error1');
-        this.signUp = false;
+        this.signUp = false; // distingue entre cuando los botones tienen funcion de sing up y cuando tienen de login
     }
 
     preload() {
@@ -16,6 +16,10 @@ class LogIn extends Phaser.Scene {
         this.load.image('title', 'resources/img/interface/LogoI-ScreamFondoBlanco.png');
         this.load.image('textBanner', 'resources/img/interface/bannerLogIn.png');
 
+        // marco boton (para todas las pantallas)
+        this.load.image("marco", "resources/img/interface/recuadroBoton.png");
+
+        // botones
         this.load.spritesheet('ok',
             'resources/img/interface/botonOk.png',
             { frameWidth: 120, frameHeight: 47 });
@@ -31,7 +35,7 @@ class LogIn extends Phaser.Scene {
     create() {
         // si llega a esta pantalla pk se ha desconectado, se reinicia
         desconectado = false;
-        
+
         //audio
         if (menuMusic == false) {
             this.menuOst = this.sound.add('menuOst', { volume: 0.4 });
@@ -39,6 +43,10 @@ class LogIn extends Phaser.Scene {
             this.menuOst.setLoop(true);
             menuMusic = true;
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        ////////////////////////////// INTERFAZ ///////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
 
         // texto 
         const confBannerTxt = {
@@ -53,11 +61,11 @@ class LogIn extends Phaser.Scene {
 
         this.add.image(400, 300, 'background');
         this.add.image(game.renderer.width / 2, 180, 'title');
-        
-        banner = this.add.image(630,530, 'textBanner').setVisible(false).setScale(3);
+
+        banner = this.add.image(630, 530, 'textBanner').setVisible(false).setScale(3);
         bannerTxt = this.make.text(confBannerTxt).setText('').setPosition(630, 530);
 
-        //Inputs
+        ///// INPUTS //////
         this.playerName.disabled = false;
         this.playerName.value = '';
         this.playerName.setAttribute('placeholder', 'Enter your name...');
@@ -68,21 +76,23 @@ class LogIn extends Phaser.Scene {
         this.playerPassword.style.visibility = "visible";
 
         this.logInButton = this.add.sprite(325, 300, "logInButton").setInteractive();
+        this.logInMarco = this.add.sprite(325, 300, "marco").setVisible(false);
         this.signUpButton = this.add.sprite(475, 300, "signUpButton").setInteractive();
+        this.signUpMarco = this.add.sprite(475, 300, "marco").setVisible(false);
         this.okButton = this.add.sprite(400, 470, "ok").setInteractive();
+        this.okMarco = this.add.sprite(400, 470, "marco").setVisible(false);
 
-        // Interaccion botones
+        ///////////////////////////////////////////////////////////////////////////
+        /////////////////////////// FUNCIONALIDADES ///////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
         this.logInButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            if(this.logInButton.frame.name != 2){
-                this.logInButton.setFrame(1);
-            }
+            this.logInMarco.setVisible(true);
         })
         this.logInButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            if(this.logInButton.frame.name != 2){
-                this.logInButton.setFrame(0);
-            }
+            this.logInMarco.setVisible(false);
+
         })
         this.logInButton.on("pointerdown", () => {
             this.logInButton.setFrame(2);
@@ -97,15 +107,11 @@ class LogIn extends Phaser.Scene {
 
         this.signUpButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            if(this.signUpButton.frame.name != 2){
-                this.signUpButton.setFrame(1);
-            }        
+            this.signUpMarco.setVisible(true);
         })
         this.signUpButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            if(this.signUpButton.frame.name != 2){
-                this.signUpButton.setFrame(0);
-            }    
+            this.signUpMarco.setVisible(false);
         })
         this.signUpButton.on("pointerdown", () => {
             this.signUpButton.setFrame(2);
@@ -120,42 +126,45 @@ class LogIn extends Phaser.Scene {
 
         this.okButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.okButton.setFrame(1);
+            this.okMarco.setVisible(true);
         })
         this.okButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.okButton.setFrame(0);
+            this.okMarco.setVisible(false);
         })
         this.okButton.on("pointerdown", () => {
-            this.okButton.setFrame(2);
+            this.okButton.setFrame(1);
         })
         this.okButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            if(this.signUp){
+            if (this.signUp) {
                 createUser("#namebar1", "#password1", "#error1");
-            } else {            
+            } else {
                 logIn("#namebar1", "#password1", (response) => {
                     if (response === "Password correct.") {
-                        this.addPlayer(this.playerName.value, this.playerPassword.value );
+                        this.addPlayer(this.playerName.value, this.playerPassword.value);
 
                         this.playerName.disabled = true;
                         this.okButton.setFrame(1);
 
                         this.playerName.style.visibility = 'hidden';
                         this.playerPassword.style.visibility = 'hidden';
-                        this.scene.start("HomeScreen");
+                        this.scene.start("Menu");
                     }
-                });                
+                });
             }
-        })
+        });
     }
 
-    addPlayer(name, pw){
+    addPlayer(name, pw) {
         actualPlayer = new Player(name);
         actualPlayer.setPassword(pw);
-        console.log(actualPlayer);
     }
 }
+
+///////////////////////////////////////////////////////////////////////////
+/////////////////////////////// API-REST //////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 function logIn(namebar, password, callback) {
     var name = $(namebar).val();
@@ -166,12 +175,12 @@ function logIn(namebar, password, callback) {
         data: JSON.stringify({ name: name, password: pass }),
         processData: false,
         contentType: "application/json",
-        success: function(data, textStatus, jqXHR) {
+        success: function (data, textStatus, jqXHR) {
             console.log(textStatus + " " + jqXHR.status);
             console.log(data);
             if (callback) callback(data);
         },
-        error: function(jqXHR, textStatus) {
+        error: function (jqXHR, textStatus) {
             console.log(textStatus + " " + jqXHR.status);
             console.log(jqXHR.responseText);
             // mostrar el error
@@ -190,13 +199,13 @@ function createUser(namebar, password, errorSpan) {
         data: JSON.stringify({ name: name, password: pass }),
         processData: false,
         contentType: "application/json",
-        success: function(data, textStatus, jqXHR) {
+        success: function (data, textStatus, jqXHR) {
             console.log(textStatus + " " + jqXHR.status);
             console.log(data);
             banner.setVisible(true);
             bannerTxt.setText("User created succesfully");
         },
-        error: function(jqXHR, textStatus) {
+        error: function (jqXHR, textStatus) {
             console.log(textStatus + " " + jqXHR.status);
             // mostrar el error
             banner.setVisible(true);

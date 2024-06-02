@@ -1,4 +1,5 @@
 package com.example.demo;
+
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -16,6 +17,7 @@ public class UserFileManager {
             e.printStackTrace();
         }
     }
+
     public static List<User> loadUsers() {
         List<User> users = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
@@ -23,7 +25,7 @@ public class UserFileManager {
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
                 if (userData.length == 2) {
-                    User user = new User(userData[0], userData[1]);
+                    User user = new User(userData[0], userData[1], 0);
                     users.add(user);
                 }
             }
@@ -32,6 +34,7 @@ public class UserFileManager {
         }
         return users;
     }
+
     public static boolean updateUserPassword(User userToUpdate) {
         List<User> existingUsers = loadUsers();
         boolean passwordUpdated = false;
@@ -59,7 +62,7 @@ public class UserFileManager {
     public static boolean deleteUserFromFile(User userToDelete) {
         List<User> existingUsers = loadUsers();
         boolean userDeleted = false;
-    
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
             for (User existingUser : existingUsers) {
                 if (!existingUser.getName().equals(userToDelete.getName())) {
@@ -75,11 +78,8 @@ public class UserFileManager {
             e.printStackTrace();
             return false; // Si hay un error al escribir en el archivo, devuelve false.
         }
-    
+
         return userDeleted; // Devuelve true si el usuario fue encontrado y eliminado.
     }
-    
+
 }
-
-
-

@@ -1,37 +1,32 @@
+var scoresText = [];
+var namesText = [];
+var pauseScene;
+var pauseButton;
+var reloadButton;
+var juegoParado = false; // solo controla la pausa del boton pause
+var rivalActivo = true; // controla si la otra sesion ws sigue activa
+var CARGADO = false; // controla que hasta que el otro jugador no haya cargado, no empieza la partida
+var dir;
+var comboTimer = false;
+
 class MainGame extends Phaser.Scene {
 
     constructor() {
         super({ key: 'MainGame' });
-        //this.reiniciar = false;
-        //this.mydocument = document.documentElement;
     }
 
-    preload(){
-
-        this.pauseScene = new Pause(this);
-        this.player1Paused = false; 
-        this.player2Paused = false;
+    preload() {
+        pauseScene = new Pause(this);
 
         //Scene
-        //this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
+        this.load.image('gameBg', 'resources/img/scene/fondoNivel1.png');
         this.load.image('ground', 'resources/img/scene/suelo.png');
-        //interface
-        this.load.image('defeat', 'resources/img/interface/pantallaDefeat.png');
         this.load.image('timerImg', 'resources/img/interface/timer.png');
-        this.load.spritesheet('timer', 'resources/img/interface/timerSpritesheet.png',
-            { frameWidth: 800, frameHeight: 600 });
-
-        //Tutorial
-        this.load.image('fondoTut', 'resources/img/interface/pauseFondo1.png');
-        this.load.image('tutorial', 'resources/img/scene/tutorial.png');
-
-        //Items
-        this.load.image('red', 'resources/img/scene/red.png');
-        //this.load.image('rock', 'resources/img/scene/rock.png');
         this.load.image('fruit', 'resources/img/scene/cereza.png');
         this.load.image('trans', 'resources/img/scene/trans.png');
-        this.load.spritesheet('fireball', 'resources/img/scene/fireball.png',
-            { frameWidth: 65, frameHeight: 100 });
+       // this.load.image('icyIcon0', 'resources/img/interface/charactIcon1.png');
+        this.load.image('score', 'resources/img/interface/InterfazPuntuacionVacio.png');
+        this.load.image('warning', 'resources/img/interface/connectionLost.png')
 
         //audio
         this.load.audio('ouch', 'resources/audio/OuchSound.mp3');
@@ -40,155 +35,137 @@ class MainGame extends Phaser.Scene {
         this.load.audio('ost', 'resources/audio/ost.mp3');
 
         //Players
-        this.load.spritesheet('characterTransformed',
-            'resources/img/players/Spritesheet(Andar)Transformed.png',
-            { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('damageT',
-        'resources/img/players/DamageP1.png',
-        { frameWidth: 64, frameHeight: 64 });
+        for (var i = 1; i <= 4; i++) {
+            this.load.image('icyIcon' + i, 'resources/img/players/charactIcon' + i + '.png');
+        }
         
-        /*
-        for(var i = 0; i < playersList.length; i++)
-        {
-            this.load.spritesheet('character'+playersList[i].getCharactId(),
-            'resources/img/players/SpritesheetP'+playersList[i].getCharactId()+'(Andar).png',
-            { frameWidth: 64, frameHeight: 64 });
-            //Damage
-            this.load.spritesheet('damageP'+playersList[i].getCharactId(),
-            'resources/img/players/DamageP'+playersList[i].getCharactId()+'.png',
+        this.load.spritesheet('icyT', 'resources/img/players/Spritesheet(Andar)Transformed.png',
+            { frameWidth: 64, frameHeight: 64 })
+        this.load.spritesheet('icyDamage', 'resources/img/players/DamageP1.png',
             { frameWidth: 64, frameHeight: 64 });
 
-            //Character interface
-            this.load.image('charactIcon'+playersList[i].getCharactId(), 'resources/img/interface/charactIcon'+playersList[i].getCharactId()+'.png');
-            this.load.image('score'+i, 'resources/img/interface/InterfazPuntuacionVacio.png');
-        }*/
-
+        //Pause
         this.load.spritesheet('pause', 'resources/img/interface/botonPause.png',
-            { frameWidth: 80, frameHeight: 47});
-
-        this.pauseScene.preload();
+            { frameWidth: 80, frameHeight: 47 });
+        //Timer
+        this.load.spritesheet('timer', 'resources/img/interface/timerSpritesheet.png',
+            { frameWidth: 800, frameHeight: 600 });
+        //Items
+        this.load.spritesheet('fireball', 'resources/img/scene/fireball_compacto.png',
+            { frameWidth: 33, frameHeight: 73 });
+        //Reload
+        this.load.spritesheet('reload', 'resources/img/interface/botonReload.png',
+            { frameWidth: 80, frameHeight: 47 });
+        pauseScene.preload();
     }
-    
-    create(){
-        //////////AUDIO///////////////////
+
+    create() {
+        ///////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////WEBSOCKETS//////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
+
+        connection.onclose = (e) => {
+            console.log(`Socket cerrado`);
+            /*rivalActivo = false;
+            rivalPlayer = null;
+            actualPlayer = null;
+            players = null;
+            this.scene.start('LogIn');*/
+            location.reload();
+        }
+
+        connection.onmessage = (message) => {
+            let msg = JSON.parse(message.data);
+            //console.log(msg);
+
+            // PLAYER
+            if (msg.type === 'rival') {
+                if (actualPlayer.getName() == players[1] && msg.scorePlayer0 !== undefined && msg.scorePlayer1 !== undefined) {
+                    actualPlayer.setScore(msg.scorePlayer1);
+                    rivalPlayer.setScore(msg.scorePlayer0);
+                }
+                this.updateRival(msg.dir, msg.x, msg.y, msg.combo, msg.paused, msg.retry, msg.menu);
+            }
+            // FRUTA
+            if (msg.type === 'fruit' && msg.xFruit !== undefined && msg.yFruit !== undefined) this.createFruit(msg.xFruit, msg.yFruit);
+            // BOLAS
+            if (msg.type === 'ball' && msg.xBall !== undefined && msg.yBall !== undefined) this.createBall(msg.xBall, msg.yBall);
+            if (msg.type === 'session' && msg.closed) this.gameOver();
+            if(msg.type === 'startGame') CARGADO = true;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// GAME ///////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////  
+
+        /////// AUDIO
         this.sound.stopAll();
         this.hitSound = this.sound.add('ouch');
-        this.coinSound = this.sound.add('coin', {volume: 0.5});
-        this.jumpSound = this.sound.add('jump', {volume: 0.6});
-        
+        this.coinSound = this.sound.add('coin', { volume: 0.5 });
+        this.jumpSound = this.sound.add('jump', { volume: 0.6 });
+
         this.ost = this.sound.add('ost');
         this.ost.play();
         this.ost.setLoop(true);
-        
-        /////////SCENE//////////////
+
+        //////// BG
         this.add.image(400, 300, 'gameBg');
-        ///////////FULLSCREEN////////////////
-
-        //this.scale.scaleMode = Phaser.Scale.FIT;
-        //var mydocument= document.documentElement;
-        ////resetear la skin del jugador////
-        for(let i=0; i<playersList.length; i++){
-            playersList[i].setPicked(false);
-        }
-
-        //PLATAFORMAS
+        /////// PLATAFORMAS
         var platforms = this.physics.add.staticGroup();
         platforms.create(400, 580, 'ground').refreshBody();
         platforms.create(800, 410, 'ground');
         platforms.create(-100, 270, 'ground');
         platforms.create(1000, 220, 'ground');
 
-        
-        //////////TIMER///////////////////
+        /////// TIMER
         this.add.image(400, 300, 'timerImg');
-        //this.timerSprite = this.add.sprite(400, 300, 'timer');
         this.anims.create({
             key: 'timer',
             frames: this.anims.generateFrameNumbers('timer', { start: 0, end: 12 }),
             frameRate: 15,
             repeat: -1
         });
-        //this.timerSpriteCount = 1;
         this.tiempoPartida = 60; // Duración de la partida en segundos
-        var timerText = this.add.text(365, 20, '00:'+this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
+        var timerText = this.add.text(365, 20, '00:' + this.tiempoPartida, { font: '30px estilo', fill: '#000000' });
         this.timer = this.time.addEvent({
-            delay: 1000, // Ejecutar cada segundo
-            callback: ()=> {
-                this.tiempoPartida--;
-                timerText.setText('00:'+this.tiempoPartida);
-                
+            delay: 1000,
+            callback: () => {
+                if(CARGADO) this.tiempoPartida--;
+                timerText.setText('00:' + this.tiempoPartida);
+
                 if (this.tiempoPartida === 0) {
-                    this.timer.paused = true; // Pausar el temporizador cuando llegue a 0
-                    
-                    this.scene.start("Results");                    
+                    this.timer.paused = true;
+                    this.scene.start("Results");
                 }
-                if (this.tiempoPartida < 10){
-                    timerText.setText('00:0'+this.tiempoPartida);
+                if (this.tiempoPartida < 10) {
+                    timerText.setText('00:0' + this.tiempoPartida);
                     timerText.style.color = '#FF1D1D';
-                    //timerText.setStyle({fontSize: '19px',color: '#FF1D1D'});
                 }
 
             },
             callbackScope: this,
-            loop: true // Repetir el evento
+            loop: true
         });
-        
-        /////////ITEMS//////////////
+
+        ////// ITEMS
         //Frutas
         this.fruits = this.physics.add.group({
             allowGravity: false,
             velocityY: 150
         })
-        
-        this.fruitSpawn = this.time.addEvent({
-            delay: 3000, 
-            callback: createFruit, 
-            callbackScope: this, 
-            loop: true 
-        });
-        function createFruit() {
-            let randomNum = Phaser.Math.Between(100, 700);
-            this.fruit = this.fruits.create(randomNum, 0, 'fruit');
-            //debug
-            //console.log("fruta");
-        }
+
         //Fireballs
         this.bolas = this.physics.add.group({
             allowGravity: false,
             velocityY: 150,
         });
-         //creacion n bolas
-        var yBolaPos = -35;
-        //this.animatedBolas = [];
-        var animatedBolas = [];
-        for(let i = 0; i < 10; i++)
-        { 
-            let randomNum = Phaser.Math.Between(100, 700);
-            this.bola = this.bolas.create(randomNum, yBolaPos, 'fireball');
-            this.bola.setScale(0.5);
-            this.anims.create({
-                key: 'fireball'+i,
-                frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
-                frameRate: 15,
-                repeat: -1
-            });
-            yBolaPos -= 200;
-            //this.animatedBolas.push(this.bola);
-            animatedBolas.push(this.bola);
-            //debug
-            //console.log("yBolaPos: " + yBolaPos);
-        }   
-        this.animarBolas = this.time.addEvent({
-            delay: 3000, 
-            callback: () => {
-                for(let i = 0; i < 10; i++)
-                {
-                    animatedBolas[i].anims.play('fireball'+i, true);
-                }
-            }, 
-            callbackScope: this, 
-            loop: true 
+        this.anims.create({
+            key: 'fireball',
+            frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 7 }),
+            frameRate: 15,
+            repeat: -1
         });
+
         //Hitboxes
         this.hitbox = this.physics.add.group({
             allowGravity: false
@@ -196,7 +173,11 @@ class MainGame extends Phaser.Scene {
         this.hitboxOOB = this.hitbox.create(400, 850, 'trans');
         this.hitboxOOB.setScale(30, 0.5);
 
-        ////////CONFIG TEXT////////////
+        ///////////////////////////////////////////////////////////////////////////
+        //////////////////////////////// PLAYERS //////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////  
+
+        /////// CONFIG TEXT
         const confJugadores = {
             origin: 'center',
             x: 240,
@@ -211,580 +192,454 @@ class MainGame extends Phaser.Scene {
             }
         }
 
-        //////////////EACH PLAYER/////////////////////
-        this.players = [];
-        this.scoresText = [];
-        this.namesText = [];
-        this.posX = 45;
-        this.posXRec = 80;
-        for(var i = 0; i < playersList.length; i++)
-        {
-            
-            this.player = this.physics.add.sprite(this.posX, 450, 'character'+playersList[i].getCharactId());
-            this.player.setBounce(0.2);
-            this.player.setCollideWorldBounds(true);
+        /////// RESET
+        scoresText = [];
+        namesText = [];
+        actualPlayer.setScore(0);
+        rivalPlayer.setScore(0);
 
-            /*
-            this.anims.create({
-                key: 'leftP'+i,
-                frames: this.anims.generateFrameNumbers('character'+playersList[i].getCharactId(), { start: 28, end: 32 }),
-                frameRate: 15,
-                repeat: -1
-            });
+        /////// ADD PLAYERS
+        this.addPlayerToGame(actualPlayer, platforms, confJugadores);
+        this.addPlayerToGame(rivalPlayer, platforms, confJugadores);
 
-            this.anims.create({
-                key: 'stoppedP'+i,
-                frames: [ { key: 'character'+playersList[i].getCharactId(), frame: 0 } ],
-                frameRate: 20
-            });
-
-            this.anims.create({
-                key: 'rightP'+i,
-                frames: this.anims.generateFrameNumbers('character'+playersList[i].getCharactId(), { start: 21, end: 25 }),
-                frameRate: 15,
-                repeat: -1
-            });
-
-            this.anims.create({
-                key: 'damageP'+i,
-                frames: this.anims.generateFrameNumbers('damageP'+playersList[i].getCharactId(), { start: 36, end: 44 }),
-                frameRate: 10,
-                repeat: 0
-            });*/
-            //SPRITE TRANSFORMATION
-            this.anims.create({
-                key: 'leftT',
-                frames: this.anims.generateFrameNumbers('characterTransformed', { start: 28, end: 32 }),
-                frameRate: 15,
-                repeat: -1
-            });
-    
-            this.anims.create({
-                key: 'stoppedT',
-                frames: [ { key: 'characterTransformed', frame: 0 } ],
-                frameRate: 20
-            });
-    
-            this.anims.create({
-                key: 'rightT',
-                frames: this.anims.generateFrameNumbers('characterTransformed', { start: 21, end: 25 }),
-                frameRate: 15,
-                repeat: -1
-            });
-    
-            /*this.scene.anims.create({
-                key: 'damageT',
-                frames: this.scene.anims.generateFrameNumbers('damageT', { start: 36, end: 44 }),
-                frameRate: 10,
-                repeat: 0
-            });*/
-            //COLLISIONS
-            this.physics.add.collider(this.player, platforms);
-            //this.physics.add.collider(bolas, platforms);
-            this.physics.add.collider(this.fruits, platforms);
-            this.physics.add.collider(this.player, this.hitbox);
-
-            //Name
-            this.name = this.make.text(confJugadores).setText(playersList[i].getName());
-            this.name.setStyle({font: '12px estilo', fill:'#ffffff'});
-            this.name.setPosition(this.posX, this.player.y+45);
-
-            this.namesText.push(this.name);
-
-            //Agregar jugador creado a lista global jugadores
-            playersList[i].hitbox = this.player;
-
-            //Interface
-            this.rec = this.add.image(this.posXRec, 40, 'score'+i);
-            if(playersList[i].getId() == 'p2'){
-                this.rec.flipX = true;
-            }
-            this.add.image(this.posX, 40, 'charactIcon'+playersList[i].getCharactId());
-            this.score = this.make.text(confJugadores).setText(playersList[i].showScore());
-            this.score.setPosition(this.posXRec+30, 40);
-            if(playersList[i].getId() == 'p2') this.score.setPosition(this.posXRec-30, 40);
-            this.scoresText.push(this.score);
-
-            this.posX = this.posX + 705;  
-            this.posXRec = this.posXRec + 640;
-        }
-        
-        /////////KEYBOARD INPUT//////////////
+        //////// KEYBOARD INPUT
         cursorInput = this.input.keyboard.createCursorKeys();
-        keyInput = this.input.keyboard.addKeys(
-        {
-            'A': Phaser.Input.Keyboard.KeyCodes.A,
-            'D': Phaser.Input.Keyboard.KeyCodes.D,
-            'W': Phaser.Input.Keyboard.KeyCodes.W,
-            'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
-            //'F':Phaser.Input.Keyboard.KeyCodes.F
+        this.keyInput = this.input.keyboard.addKeys(
+            {
+                'A': Phaser.Input.Keyboard.KeyCodes.A,
+                'D': Phaser.Input.Keyboard.KeyCodes.D,
+                'W': Phaser.Input.Keyboard.KeyCodes.W,
+                /*'ESC': Phaser.Input.Keyboard.KeyCodes.ESC,
+                'LEFT': Phaser.Input.Keyboard.KeyCodes.LEFT,
+                'RIGHT': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                'UP': Phaser.Input.Keyboard.KeyCodes.UP,*/
+            });
+
+        //////// COMBO
+        var combo = this.input.keyboard.createCombo('UIOP');
+        this.input.keyboard.on('keycombomatch', function (event) {
+            if (CARGADO && event.keyCodes.toString() === combo.keyCodes.toString()) {
+                actualPlayer.setCombo(true);
+                comboTimer = true;
+                console.log('Key Combo 1 matched!');
+            }
         });
 
-        
-        ///COLLISIONS///////////////////////////
-        //JUGADOR 1
-        var player1 = playersList[0];
-        //colision bolas-jugador
-        this.physics.add.overlap(player1.hitbox, this.bolas, function(player, bola) {
-            //this.hitSound.play();
-            let randomNumX = Phaser.Math.Between(100, 700);
-            let randomNumY = Phaser.Math.Between(-10, -250);
-            bola.setPosition(randomNumX, randomNumY);
-
-            this.player1Paused = true;
-            player.setVelocity(0);
-            player.setTint(0xFF0000);
-            player.anims.play('damageP0', true);
-            this.stop = this.time.addEvent({
-                delay: 2000, 
-                callbackScope: this,
-                loop: false, 
-                callback: ()=> {
-                    this.player1Paused = false;
-                    player.clearTint();
-                    player.setPosition(0, 500);
-                    
-                },
-            });         
-        }, null, this);
-
-        //colision fruta-jugador
-        this.physics.add.overlap(player1.hitbox, this.fruits, function(player, fruit) {
-            //this.coinSound.play();
-            player1.updateScore(1);
-            fruit.destroy();    
-        }, null, this);
-
-        if(playersList.length > 1)
-        {
-            var player2 = playersList[1];
-            this.physics.add.overlap(player2.hitbox, this.bolas, function(player, bola) {
-                this.hitSound.play();
-                let randomNumX = Phaser.Math.Between(100, 700);
-                let randomNumY = Phaser.Math.Between(-10, -250);
-                bola.setPosition(randomNumX, randomNumY);
-
-                this.player2Paused = true;
-                player.setVelocity(0);
-                player.setTint(0xFF0000);
-                player.anims.play('damageP0', true);
-                this.stop = this.time.addEvent({
-                    delay: 2000, 
-                    callbackScope: this,
-                    loop: false, 
-                    callback: ()=> {
-                        this.player2Paused = false;
-                        player.clearTint();
-                        player.setPosition(800, 500);
-                    },
-                });
-            }, null, this);
-            this.physics.add.overlap(player2.hitbox, this.fruits, function(player, fruit) {
-                //this.coinSound.play();
-                player2.updateScore(1);
-                fruit.destroy();    
-            }, null, this);
-        }
+        //////// COLLISIONS
+        //colision bolas-jugadores
+        this.collisionPlayer(actualPlayer, this.bolas, this.fruits);
+        this.collisionPlayer(rivalPlayer, this.bolas, this.fruits);
 
         //colision bolas-hitbox
-        this.physics.add.overlap(this.bolas, this.hitbox, function(bola, hitbox)
-        {
-            let randomNumX = Phaser.Math.Between(100, 700);
-            let randomNumY = Phaser.Math.Between(-10, -250);
-            bola.setPosition(randomNumX, randomNumY);
-        }); 
-
-        //colision bola-bola
-        this.physics.add.overlap(this.bolas, this.bolas, function(bola1, bola2)
-        {
-            let randomNumX = Phaser.Math.Between(100, 700);
-            let randomNumY = Phaser.Math.Between(-10, -250);
-            bola1.setPosition(randomNumX, randomNumY);
-        }); 
-        //}
-
-
-        //// PAUSE QUE ESTO NO LO TOQUE NADIE Y SI ALGUIEN LO TOCA Q PREGUNTE A ROSA
-        this.pauseScene.create();
-        this.pauseScene.setInvisible();
-
-        
-        this.pauseButton = this.add.sprite(400,90,"pause").setInteractive();
-        this.pauseButton.on("pointerdown", ()=>{
-            //this.marcoMenu.setVisible(false);
-            if(this.pauseButton.frame.name === 0){
-                this.pauseButton.setFrame(1);
-            }else{
-                this.pauseButton.setFrame(0);
-            }
-        })
-
-        this.pauseButton.on("pointerup", ()=>{
-            document.body.style.cursor = "auto";
-            if(this.pauseButton.frame.name === 1){
-                this.pararJuego();
-                this.pauseScene.setVisible()
-            } else {
-                this.continuarJuego();
-                if(this.pauseScene){
-                }
-                this.pauseScene.setInvisible();
-            }
-        })
-
-        //////TUTORIAL/////////
-        //this.fondoTut = this.add.image(400, 300, 'fondoTut');
-        this.tutorial = this.add.image(400, 375, 'tutorial');
-        this.tiempoTutorial = 3;
-        this.pausaTutorial(); 
-        this.timerTut = this.time.addEvent({
-            delay: 3000, // Ejecutar cada segundo
-            callback: ()=> {
-                //this.tiempoTutorial--;
-                //if (this.tiempoTutorial === 0) {
-                //this.comenzarJuego();
-                this.continuarJuego();
-                //this.fondoTut.setVisible(false);
-                this.tutorial.setVisible(false);                   
-                //}
-                console.log("llamada timerTut");
-            },
-            callbackScope: this,
-            loop: false // Repetir el evento
+        this.physics.add.overlap(this.bolas, this.hitbox, function (bola, hitbox) {
+            bola.destroy();
         });
-            /////////COMBO///////////
-            var combo = this.input.keyboard.createCombo('ABCD');
-            var comboP2= this.input.keyboard.createCombo('7890');
-            this.input.keyboard.on('keycombomatch', function (event) {
-                if (event.keyCodes.toString() === combo.keyCodes.toString()) {
-                    playersList[0].setPicked(true);
-                    console.log('Key Combo 1 matched!');
-                } else if (event.keyCodes.toString() === comboP2.keyCodes.toString()) {
-                    playersList[1].setPicked(true);
-                    console.log('Key Combo 2 matched!');
-                }
-            });
-            
+
+        console.log(actualPlayer, rivalPlayer);
+
+        ///////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////// PAUSE ///////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////// 
+
+        pauseButton = this.add.sprite(400, 90, "pause").setInteractive();
+        this.pauseMarco = this.add.sprite(400, 90, "marco").setVisible(false).setScale(0.9);
+
+        pauseScene.create();
+        pauseScene.setInvisible();
+
+        pauseButton.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.pauseMarco.setVisible(true);
+        })
+        pauseButton.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.pauseMarco.setVisible(false);
+        })
+
+        pauseButton.on("pointerup", () => {
+            document.body.style.cursor = "auto";
+            console.log('entra en pausebutton on pointerup');
+            if (pauseButton.frame.name === 0) {
+                pauseButton.setFrame(1);
+            } else {
+                pauseButton.setFrame(0);
+            }
+        })
+
+        ///////////////////////// notify ready to star playing
+        this.sendInfoGame(true);
     }
-    
-    update(){
-        
-        //1 player:
-        if(playersList.length == 1 && !this.player1Paused){
-            this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
-            //this.secondPlayerController(this.players[0], 0);
-        }
-        //2 players:
-        else if(playersList.length == 2) {
-            if(!this.player1Paused)
-            {
-                this.firstPlayerController(playersList[0].hitbox, 0, playersList[0].isPicked());
-            }
-            if(!this.player2Paused)
-            {
-                this.secondPlayerController(playersList[1].hitbox, 1, playersList[1].isPicked());
-            }
-        }
-        
-        /*
-        for(let i = 0; i < 10; i++)
-        {
-            this.animatedBolas[i].anims.play('fireball'+i, true);
-        }*/
 
-        ///TIMER ANIMATION////
-        /*
-        if(this.tiempoPartida % 10 == 0)
-        {
-            this.timerSprite.setFrame(this.timerSpriteCount);
-            this.timerSpriteCount++;
-        }*/
+    update() {
+        // mandar info si los dos sockets están activos
+        if (rivalActivo) this.sendInfoGame(false); // false pk si es true es pa q notifique q empieza el juego (no quiere q empiece, quiere actualizar)
 
-        ///////TIMER/////////////////
-        //this.timerSprite.anims.play('time', true);
-        ////////KEYBOARD INPUT//////////////
-        if(keyInput.ESC.isDown)
-        {
-            //console.log("LE DA PA PARAR");
-            this.pararJuego();
-            this.pauseScene.setVisible();
-            this.pauseButton.setFrame(1);
-                   
+        if (CARGADO) {
+            // actualizar pause
+            if (pauseButton.frame.name == 0 && !juegoParado) {
+                this.continuarJuego();
+            } else if (pauseButton.frame.name == 1 && juegoParado) {
+                this.pararJuego(false);
+            }
+            // actualizar jugador si no está parado
+            if (pauseButton.frame.name == 0 && !actualPlayer.getHurt()) {
+                this.actualPlayerController(actualPlayer.getHitbox(), actualPlayer.getIcy(), actualPlayer.getCombo());
+            }
+            // si se activa el combo, empezar tiempo de combo
+            if (actualPlayer.getCombo() && comboTimer) {
+                comboTimer = false;
+                this.timerCombo = this.time.addEvent({
+                    delay: 3000,
+                    callback: () => {
+                        actualPlayer.setCombo(false);
+                        console.log('END of Key Combo 1');
+                    },
+                    callbackScope: this,
+                    loop: false
+                });
+            }
         }
-        //FullScreen
-        //const FKey = this.input.keyboard.addKey('F');
-        /*if (keyInput.F.isDown)
-            {
-                toggleFullScreen();
-                /*console.log("Me detecta pero no me hace puto caso");
-                if (this.mydocument.requestFullscreen/*this.scene.scale.isFullscreen)
-                {
-                    //FullScreen(this);
-                    console.log("Problema del mydocument");
-                    this.mydocument.requestFullscreen();
-                }
-                else if(this.mydocument.exitFullscreen)
-                {
-                    //FullScreen(this);
-                    console.log("problema del document");
-                    this.mydocument.exitFullscreen();
-                }  */
-            //}
-        if(this.pauseScene.checkGoBack() == true)
-        {
-            this.pauseScene.setInvisible();
+
+
+        ////// BOTONES PAUSE //////
+        if (pauseScene.getRetry()) {
+            this.scene.restart();
+            pauseScene.setRetry(false);
             this.continuarJuego();
-            this.pauseScene.resetGoBack();
-            this.pauseButton.setFrame(0);
         }
+        if(pauseScene.getMenu()) {
+            this.sendInfoGame(false);
+            this.sound.stopAll();
+            player2Panel.invisible();
+            panelsCount--;
+            actualPlayer.setReady(false);
+            rivalPlayer = null;
+            players = null;
 
+            this.scene.start("Menu");
+        }
 
         /////////NAME///////////
-        for(var i = 0; i < playersList.length; i++)
-        {
-            this.namesText[i].setPosition(playersList[i].hitbox.x, playersList[i].hitbox.y-40);
-        } 
-        
+        namesText[0].setPosition(actualPlayer.hitbox.x, actualPlayer.hitbox.y - 40);
+        if (rivalPlayer) namesText[1].setPosition(rivalPlayer.hitbox.x, rivalPlayer.hitbox.y - 40);
 
         ////////SCORE////////////
-        for(var i = 0; i < playersList.length; i++)
-        {
-            this.scoresText[i].setText(playersList[i].showScore());
-        }
-
-        ////////////RETRY//////////////
-        /*
-        if(this.pauseScene.retryGame() == true)
-        {
-            //splice(0, this.playersPanels.length);
-            for(var i = 0; i < playersList.lenth; i++) playersList[i].hitbox.anims.play('stoppedP'+i);
-            this.pauseScene.resetRetry();
-            this.scene.restart();
-        }*/
+        scoresText[0].setText(actualPlayer.getScore());
+        if (rivalPlayer) scoresText[1].setText(rivalPlayer.getScore());
     }
 
-    /*shutdown()
-    {
-        this.scene.restart();
-    }*/
-      
-    firstPlayerController(playerController, pIndex, picked)
-    {
-        //1st Player controlls
-        //1st Player controlls
-        if (picked){
-            this.TransformPlayerController(playerController, pIndex);
-        }
-        else{
-            if (keyInput.A.isDown)
-            {
+    collisionPlayer(player, bolas, fruits) {
+        // DAÑO
+        this.physics.add.overlap(player.getHitbox(), bolas, function (playerHB, bola) {
+            this.hitSound.play();
+            bola.destroy();
+
+            player.setHurt(true);
+            playerHB.setVelocity(0);
+            playerHB.setTint(0xFF0000);
+            playerHB.anims.play('damage', true);
+            this.stop = this.time.addEvent({
+                delay: 2000,
+                callbackScope: this,
+                loop: false,
+                callback: () => {
+                    player.setHurt(false);
+                    playerHB.clearTint();
+                    if (player.getName() == players[1]) {
+                        playerHB.setPosition(750, 500);
+                    } else {
+                        playerHB.setPosition(45, 500);
+                    }
+
+                },
+            });
+        }, null, this);
+
+        // GANA PUNTOS
+        this.physics.add.overlap(player.getHitbox(), fruits, function (playerHB, fruit) {
+            this.coinSound.play();
+            console.log('COLISION CON FRUTA DE ', player.getName())
+            if (actualPlayer.getName() == players[0]) player.getCombo() ? player.updateScore(2) : player.updateScore(1);
+            fruit.destroy();
+        }, null, this);
+    }
+
+    actualPlayerController(playerController, icy, combo) {
+        if (combo) {
+            if (this.keyInput.A.isDown) {
                 playerController.setVelocityX(-160);
-
-                playerController.anims.play('leftP'+pIndex, true);
+                playerController.anims.play('leftT', true);
+                dir = 'left';
             }
-            else if (keyInput.D.isDown)
-            {
+            else if (this.keyInput.D.isDown) {
                 playerController.setVelocityX(160);
-
-                playerController.anims.play('rightP'+pIndex, true);
+                playerController.anims.play('rightT', true);
+                dir = 'right';
             }
-            
-            else
-            {
+            else {
                 playerController.setVelocityX(0);
-
-                playerController.anims.play('stoppedP'+pIndex);
+                playerController.anims.play('stoppedT');
+                dir = 'stop';
             }
-            
-            if (keyInput.W.isDown && playerController.body.touching.down)
-            {
-                playerController.setVelocityY(-630);
-            }
-        }
-    }
-
-       
-    secondPlayerController(playerController, pIndex, picked)
-    {
-        //2nd Player controlls
-        if (picked){
-            this.TransformPlayerController2(playerController, pIndex);
-        }
-        else{
-            //2nd player's controls
-            if (cursorInput.left.isDown)
-            {
+        } else {
+            if (this.keyInput.A.isDown) {
                 playerController.setVelocityX(-160);
-
-                playerController.anims.play('leftP'+pIndex, true);
+                playerController.anims.play('left' + icy, true);
+                dir = 'left';
             }
-            else if (cursorInput.right.isDown)
-            {
+            else if (this.keyInput.D.isDown) {
                 playerController.setVelocityX(160);
-
-                playerController.anims.play('rightP'+pIndex, true);
+                playerController.anims.play('right' + icy, true);
+                dir = 'right';
             }
-            
-            else
-            {
+            else {
                 playerController.setVelocityX(0);
-
-                playerController.anims.play('stoppedP'+pIndex);
-            }
-            
-            if (cursorInput.up.isDown && playerController.body.touching.down)
-            {
-                playerController.setVelocityY(-630);
+                playerController.anims.play('stopped' + icy);
+                dir = 'stop';
             }
         }
-        /*
-        if (cursorInput.left.isDown)
-        {
-            playerController.setVelocityX(-160);
-
-            playerController.anims.play('leftP'+pIndex, true);
-        }
-        else if (cursorInput.right.isDown)
-        {
-            playerController.setVelocityX(160);
-
-            playerController.anims.play('rightP'+pIndex, true);
-        }
-        else
-        {
-            playerController.setVelocityX(0);
-            playerController.anims.play('stoppedP'+pIndex);
-        }
-        
-        if (cursorInput.up.isDown && playerController.body.touching.down)
-        {
-            this.jumpSound.play();
-            playerController.setVelocityY(-630);
-        }*/
-    }
-    //Activar el sprite
-    TransformPlayerController(playerController, pIndex)
-    {
-        //1st Player controlls
-        if (keyInput.A.isDown)
-        {
-            playerController.setVelocityX(-160);
-
-            playerController.anims.play('leftT', true);
-        }
-        else if (keyInput.D.isDown)
-        {
-            playerController.setVelocityX(160);
-
-            playerController.anims.play('rightT', true);
-        }
-        
-        else
-        {
-            playerController.setVelocityX(0);
-
-            playerController.anims.play('stoppedT');
-        }
-        
-        if (keyInput.W.isDown && playerController.body.touching.down)
-        {
+        if (this.keyInput.W.isDown && playerController.body.touching.down) {
             playerController.setVelocityY(-630);
         }
     }
-    TransformPlayerController2(playerController, pIndex)
-    {
-        //1st Player controlls
-        if (cursorInput.left.isDown)
-        {
-            playerController.setVelocityX(-160);
 
-            playerController.anims.play('leftT', true);
-        }
-        else if (cursorInput.right.isDown)
-        {
-            playerController.setVelocityX(160);
+    updateRival(direction, xPos, yPos, combo, paused, retry, menu) {
+        // botones pause
+        if (retry !== undefined) pauseScene.setRetry(retry);
+        if (menu !== undefined) pauseScene.setMenu(menu);
 
-            playerController.anims.play('rightT', true);
+        // actualiza posicion (con un poco de lag pero es lo q hay)
+        if (xPos !== undefined && yPos !== undefined) {
+            rivalPlayer.hitbox.x = xPos;
+            rivalPlayer.hitbox.y = yPos;
         }
-        
-        else
-        {
-            playerController.setVelocityX(0);
-
-            playerController.anims.play('stoppedT');
-        }
-        
-        if (cursorInput.up.isDown && playerController.body.touching.down)
-        {
-            playerController.setVelocityY(-630);
+        // actualiza combo y pause
+        if (combo !== undefined && rivalPlayer.getCombo() !== combo) rivalPlayer.setCombo(combo);
+        if (paused !== undefined && juegoParado !== paused) {
+            juegoParado = paused;
+            if (paused) {
+                pauseButton.setFrame(1);
+            } else if (!paused) {
+                pauseButton.setFrame(0);
+            }
         }
 
+        if (!rivalPlayer.getHurt() && direction !== undefined) {
+            if (rivalPlayer.getCombo()) {
+                if (direction == 'left') {
+                    rivalPlayer.hitbox.anims.play('leftT', true);
+                }
+                else if (direction == 'right') {
+                    rivalPlayer.hitbox.anims.play('rightT', true);
+                }
+                else {
+                    rivalPlayer.hitbox.setVelocityX(0);
+                    rivalPlayer.hitbox.anims.play('stoppedT');
+                }
+            }
+            else {
+                if (direction == 'left') {
+                    rivalPlayer.hitbox.anims.play('left' + rivalPlayer.icy, true);
+                }
+                else if (direction == 'right') {
+                    rivalPlayer.hitbox.anims.play('right' + rivalPlayer.icy, true);
+                }
+                else {
+                    rivalPlayer.hitbox.anims.play('stopped' + rivalPlayer.icy);
+                }
+            }
+        }
     }
-        
-        
-    pararJuego(){
-        this.fruitSpawn.paused = true;
-        //this.fruits.paused = true;
+
+    pararJuego(gameOver) {
+        if (!gameOver) {
+            if (pauseButton.frame.name === 0) pauseButton.setFrame(1);
+            pauseScene.setVisible();
+        }
+
+        // SE PARA EL SPAWN DE FRUTAS EN EL SERVIDOR
         this.fruits.children.iterate(function (fruit) {
-            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
+            fruit.body.setVelocity(0); // Detener la velocidad de cada fruta
         });
+
+        // SE PARA EL SPAWN DE BOLAS EN EL SERVIDOR
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocity(0); // Detener la velocidad de cada bola
         });
-        this.player1Paused = true;
-        this.player2Paused = true;
+
+        actualPlayer.hitbox.setVelocityX(0);
+        actualPlayer.hitbox.setVelocityY(0);
         this.anims.pauseAll();
-
         this.timer.paused = true;
 
-        console.log("pararJuego");
-
+        juegoParado = true;
     }
 
-    continuarJuego(){
-        this.fruitSpawn.paused = false;
+    continuarJuego() {
+        if (pauseButton.frame.name === 1) pauseButton.setFrame(0);
+        pauseScene.setInvisible()
+
+        // SE REANUDA EL SPAWN DE FRUTAS EN EL SERVIDOR
         this.fruits.children.iterate(function (fruit) {
-            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
+            fruit.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
+        // SE REANUDA EL SPAWN DE BOLAS EN EL SERVIDOR
         this.bolas.children.iterate(function (bola) {
             bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
         });
-        this.player1Paused = false;
-        this.player2Paused = false;
         this.anims.resumeAll();
-
         this.timer.paused = false;
 
-        console.log("continuarJuego");
-
+        juegoParado = false;
     }
 
-    pausaTutorial(){
-        this.fruitSpawn.paused = true;
-        //this.fruits.paused = true;
-        this.fruits.children.iterate(function (fruit) {
-            fruit.body.setVelocity(0); // Detener la velocidad de cada bola
-        });
-        this.bolas.children.iterate(function (bola) {
-            bola.body.setVelocity(0); // Detener la velocidad de cada bola
-        });
-        this.timer.paused = true;
+    addPlayerToGame(player, platforms, confJugadores) {
+        this.posX = 45; this.posXRec = 80;
+        if (player.getName() == players[1]) { this.posX = 750; this.posXRec = 720; }
 
-        console.log("pausaTutorial");
+        this.icy = this.physics.add.sprite(this.posX, 450, 'icy' + player.getIcy());
+        this.icy.setBounce(0.2);
+        this.icy.setCollideWorldBounds(true);
+
+        // ANIMS
+        this.anims.create({
+            key: 'left' + player.getIcy(),
+            frames: this.anims.generateFrameNumbers('icy' + player.getIcy(), { start: 28, end: 32 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'stopped' + player.getIcy(),
+            frames: [{ key: 'icy' + player.getIcy(), frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'right' + player.getIcy(),
+            frames: this.anims.generateFrameNumbers('icy' + player.getIcy(), { start: 21, end: 25 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'damage',
+            frames: this.anims.generateFrameNumbers('icyDamage', { start: 36, end: 44 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        // ANIMS CON EL COMBO
+        this.anims.create({
+            key: 'leftT',
+            frames: this.anims.generateFrameNumbers('icyT', { start: 28, end: 32 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'stoppedT',
+            frames: [{ key: 'icyT', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'rightT',
+            frames: this.anims.generateFrameNumbers('icyT', { start: 21, end: 25 }),
+            frameRate: 15,
+            repeat: -1
+        });
+
+        //COLLISIONS
+        this.physics.add.collider(this.icy, platforms);
+        this.physics.add.collider(this.fruits, platforms);
+        this.physics.add.collider(this.icy, this.hitbox);
+
+        //Name
+        this.nameText = this.make.text(confJugadores).setText(player.getName());
+        this.nameText.setStyle({ font: '12px estilo', fill: '#ffffff' });
+        this.nameText.setPosition(this.posX, this.icy.y + 45);
+
+        namesText.push(this.nameText);
+
+        //Agregar jugador creado a lista global jugadores
+        player.setHitbox(this.icy);
+
+        //Interface
+        this.rec = this.add.image(this.posXRec, 40, 'score');
+        this.icyIcon = this.add.image(this.posXRec - 30, 40, 'icyIcon' + player.getIcy());
+        this.score = this.make.text(confJugadores).setText(player.getScore());
+        this.score.setPosition(this.posXRec + 30, 40);
+        if (player.getName() == players[1]) {
+            this.score.setPosition(this.posXRec - 30, 40);
+            this.icyIcon.setPosition(this.posXRec + 30, 40);
+            this.rec.flipX = true;
+        }
+        scoresText.push(this.score);
     }
 
-    comenzarJuego(){
-        this.fruitSpawn.paused = false;
-        this.fruits.children.iterate(function (fruit) {
-            fruit.body.setVelocityY(150); // Detener la velocidad de cada bola
-        });
-        this.bolas.children.iterate(function (bola) {
-            bola.body.setVelocityY(150); // Reanudar la velocidad de cada bola
-        });
-        this.timer.paused = false;
-
-        console.log("comenzarJuego");
+    createFruit(x, y) {
+        this.fruit = this.fruits.create(x, y, 'fruit');
+        this.fruit.setScale(0.9);
     }
-    
+    createBall(x, y) {
+        this.bola = this.bolas.create(x, -y, 'fireball');
+        this.bola.setScale(0.6);
+        this.bola.anims.play('fireball', true);
+    }
+
+    sendInfoGame(loaded) {
+        let message;
+        if (actualPlayer.getName() == players[0]) {
+            message =
+            {
+                loaded: loaded,
+                paused: pauseButton.frame.name == 1 ? true : false,
+                combo: actualPlayer.getCombo(),
+                dir: dir,
+                x: actualPlayer.hitbox.x,
+                y: actualPlayer.hitbox.y,
+                retry: pauseScene.getRetry(),
+                menu: pauseScene.getMenu(),
+                scorePlayer0: actualPlayer.getScore(),
+                scorePlayer1: rivalPlayer.getScore(),
+            }
+        } else {
+            message =
+            {
+                loaded: loaded,
+                paused: pauseButton.frame.name == 1 ? true : false,
+                combo: actualPlayer.getCombo(),
+                dir: dir,
+                retry: pauseScene.getRetry(),
+                menu: pauseScene.getMenu(),
+                x: actualPlayer.hitbox.x,
+                y: actualPlayer.hitbox.y,
+            }
+        }
+        connection.send(JSON.stringify(message));
+    }
+
+    gameOver() {
+        rivalActivo = false;
+        console.log('EL RIVAL SE HA DESCONECTADO, rivalActivo = ', rivalActivo);
+        this.pararJuego(true);
+        juegoParado = true;
+
+        this.niebla = this.add.graphics({
+            fillStyle: {
+                color: 0x828282,
+                alpha: 0.6,
+            }
+        });
+        this.niebla.fillRect(0, 0, 800, 600);
+        this.add.image(400, 300, 'warning');
+
+        reloadButton = this.add.sprite(400, 400, "reload").setInteractive();
+        reloadButton.on("pointerdown", () => {
+            //this.marcoMenu.setVisible(false);
+            reloadButton.setFrame(1);
+        })
+
+        reloadButton.on("pointerup", () => {
+            document.body.style.cursor = "auto";
+            reloadButton.setFrame(0);
+            location.reload();
+        })
+    }
 }
-

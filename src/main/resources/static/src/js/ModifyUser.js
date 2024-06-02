@@ -7,138 +7,230 @@ class ModifyUser extends Phaser.Scene {
         this.playerError = document.getElementById('errorMU');
     }
 
-    preload(){
+    preload() {
         this.load.image('selectScreenBg', 'resources/img/interface/pantallaSeleccion.png');
         this.load.image('AccountTitle', 'resources/img/interface/ACCOUNT.png');
 
+        // botones
         this.load.spritesheet('modifyBt',
             'resources/img/interface/botonModify.png',
-            { frameWidth: 124, frameHeight: 47 });
-
+            { frameWidth: 122, frameHeight: 47 });
         this.load.spritesheet('deleteBt',
             'resources/img/interface/botonDelete.png',
-            { frameWidth: 124, frameHeight: 47 });
-
+            { frameWidth: 122, frameHeight: 47 });
         this.load.spritesheet('menu',
             'resources/img/interface/botonMenu.png',
             { frameWidth: 120, frameHeight: 47 });
+        this.load.spritesheet('ok',
+            'resources/img/interface/botonOk.png',
+            { frameWidth: 120, frameHeight: 47 });
 
-        //audio
+        // audio
         this.load.audio('menuOst', 'resources/audio/menuOst.mp3');
     }
-    create(){
+    create() {
+        /////// WEBSOCKETS ///////
+        connection.onclose = (e) => {
+            console.log(`Socket cerrado`);
+            location.reload();
+        }
+
         //audio
-        if(menuMusic == false)
-        {
-            this.menuOst = this.sound.add('menuOst', {volume:0.4});
+        if (menuMusic == false) {
+            this.menuOst = this.sound.add('menuOst', { volume: 0.4 });
             this.menuOst.play();
             this.menuOst.setLoop(true);
             menuMusic = true;
         }
 
+        ///////////////////////////////////////////////////////////////////////////
+        /////////////////////////////// INTERFAZ //////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
         this.add.image(400, 300, 'selectScreenBg');
         this.add.image(400, 200, 'AccountTitle');
 
-        this.modifyButton = this.add.sprite(475, 460, "modifyBt").setInteractive();
-        this.deleteButton = this.add.sprite(325, 460, "deleteBt").setInteractive();
+        this.modifyButton = this.add.sprite(475, 300, "modifyBt").setInteractive();
+        this.modifyMarco = this.add.sprite(475,300,'marco').setVisible(false);
 
-        //Iniciar los inputs
-        this.playerName.disabled = false;
-        this.playerName.value = '';
-        //this.playerName.setAttribute('placeholder', 'Enter your name...');
-        this.playerName.style.visibility = "visible";
+        this.deleteButton = this.add.sprite(325, 300, "deleteBt").setInteractive();
+        this.deleteMarco = this.add.sprite(325,300,'marco').setVisible(false);
 
-        this.playerPassword.disabled = false;
-        this.playerPassword.value = '';
-        //this.playerPassword.setAttribute('placeholder', 'Enter your password...');
-        this.playerPassword.style.visibility = "visible";
+        this.okModifyButton = this.add.sprite(400, 450, "ok").setInteractive().setVisible(false);
+        this.okModifyMarco = this.add.sprite(400,450,'marco').setVisible(false);
 
-        //Interaccion botones
-        this.modifyButton.on("pointerover", ()=>{
+        this.okDeleteButton = this.add.sprite(400, 450, "ok").setInteractive().setVisible(false);
+        this.okDeleteMarco = this.add.sprite(400,450,'marco').setVisible(false);
+
+        this.menuButton = this.add.sprite(100, 80, "menu").setInteractive();
+        this.menuMarco = this.add.sprite(100,80,"marco").setVisible(false);
+
+        // Alerta para eliminar cuenta
+        const confAlertaDelete = {
+            origin: 'center',
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 20,
+                fontStyle: 'bold'
+            }
+        }
+        this.alertaDelete = this.make.text(confAlertaDelete).setText('Are you sure you want to delete this account? \n \t         You will have to log in again.').setPosition(400, 375).setVisible(false);
+
+        ///////////////////////////////////////////////////////////////////////////
+        /////////////////////////// FUNCIONALIDADES ///////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
+        this.modifyButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.modifyButton.setFrame(1);
+            this.modifyMarco.setVisible(true);
         })
-
-        this.modifyButton.on("pointerout", ()=>{
+        this.modifyButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.modifyButton.setFrame(0);
+            this.modifyMarco.setVisible(false);
         })
-
-        this.modifyButton.on("pointerdown", ()=>{
-            this.modifyButton.setFrame(2);
+        this.modifyButton.on("pointerdown", () => {
+            if (this.modifyButton.frame.name == 0) {
+                this.modifyButton.setFrame(2);
+            } else {
+                this.modifyButton.setFrame(0);
+            }
         })
-
-        this.modifyButton.on("pointerup", ()=>{
+        this.modifyButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            modifyDataToServer("#namebarMU", "#passwordMU", "#errorMU", (response) => {console.log(response);});     
+            if (this.modifyButton.frame.name == 2) {
+                // Ocultar cosas del delete
+                if (this.deleteButton.frame.name == 2) this.deleteButton.setFrame(0);
+                this.okDeleteButton.setVisible(false);
+                this.alertaDelete.setVisible(false);
+
+                this.okModifyButton.setVisible(true);
+                //Iniciar los inputs
+                this.playerName.value = actualPlayer.getName();
+                this.playerName.style.visibility = "visible";
+
+                this.playerPassword.disabled = false;
+                this.playerPassword.value = '';
+                this.playerPassword.style.visibility = "visible";
+
+            } else {
+                this.okModifyButton.setVisible(false);
+                //Quitar los inputs
+                this.playerName.style.visibility = "hidden";
+                this.playerPassword.style.visibility = "hidden";
+            }
         })
 
-        // creditos
-        this.deleteButton.on("pointerover", ()=>{
+        this.okModifyButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
-            this.deleteButton.setFrame(1);
+            this.okModifyMarco.setVisible(true);
         })
-
-        this.deleteButton.on("pointerout", ()=>{
+        this.okModifyButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
-            this.deleteButton.setFrame(0);
+            this.okModifyMarco.setVisible(false);
         })
-
-        this.deleteButton.on("pointerdown", ()=>{
-            this.deleteButton.setFrame(2);
+        this.okModifyButton.on("pointerdown", () => {
+            this.okModifyButton.setFrame(1);
         })
-
-        this.deleteButton.on("pointerup", ()=>{
+        this.okModifyButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            deleteDataToServer("#namebarMU", "#passwordMU", "#errorMU", (response) => {console.log(response);});
+            this.modifyUser("#passwordMU", "#errorMU", (response) => { console.log(response); });
+            this.okModifyButton.setFrame(0);
         })
 
-        this.menu = this.add.sprite(100, 80, "menu").setInteractive();
-
-        this.menu.on("pointerover", ()=>{
+        this.deleteButton.on("pointerover", () => {
             document.body.style.cursor = "pointer";
+            this.deleteMarco.setVisible(true);
         })
-        this.menu.on("pointerout", ()=>{
+        this.deleteButton.on("pointerout", () => {
             document.body.style.cursor = "auto";
+            this.deleteMarco.setVisible(false);
         })
-        this.menu.on("pointerdown", ()=>{
-            this.menu.setFrame(1);
-            
+        this.deleteButton.on("pointerdown", () => {
+            if (this.deleteButton.frame.name == 0) {
+                this.deleteButton.setFrame(2);
+            } else {
+                this.deleteButton.setFrame(0);
+            }
         })
-        this.menu.on("pointerup", ()=>{
+        this.deleteButton.on("pointerup", () => {
             document.body.style.cursor = "auto";
-            //playersList.splice(0, playersList.length);
+            if (this.deleteButton.frame.name == 2) {
+                // ocultar cosas del modify
+                if (this.modifyButton.frame.name == 2) this.modifyButton.setFrame(0);
+                this.okModifyButton.setVisible(false);
+                this.playerName.style.visibility = "hidden";
+                this.playerPassword.style.visibility = "hidden";
 
-            this.playerName.disabled = true;
-            this.playerName.value = '';
-            this.playerName.style.visibility = "hidden"; // Oculta el campo de nombre
+                this.okDeleteButton.setVisible(true);
+                this.alertaDelete.setVisible(true);
+            } else {
+                this.okDeleteButton.setVisible(false);
+                this.alertaDelete.setVisible(false);
+            }
+        })
+
+        this.okDeleteButton.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.okDeleteMarco.setVisible(true);
+        })
+
+        this.okDeleteButton.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.okDeleteButton.setFrame(0);
+            this.okDeleteMarco.setVisible(false);
+        })
+
+        this.okDeleteButton.on("pointerdown", () => {
+            this.okDeleteButton.setFrame(1);
+        })
+
+        this.okDeleteButton.on("pointerup", () => {
+            document.body.style.cursor = "auto";
+            this.deleteUser();
+        })
+
+        this.menuButton.on("pointerover", () => {
+            document.body.style.cursor = "pointer";
+            this.menuMarco.setVisible(true);
+        })
+        this.menuButton.on("pointerout", () => {
+            document.body.style.cursor = "auto";
+            this.menuMarco.setVisible(false);
+        })
+        this.menuButton.on("pointerdown", () => {
+            this.menuButton.setFrame(1);
+
+        })
+        this.menuButton.on("pointerup", () => {
+            document.body.style.cursor = "auto"; 
+            this.playerName.style.visibility = "hidden";
             this.playerPassword.disabled = true;
             this.playerPassword.value = '';
-            this.playerPassword.style.visibility = "hidden"; // Oculta el campo de contraseña
-            this.playerError.style.visibility = "hidden"; // Oculta el campo de contraseña
-        
-            this.scene.start("HomeScreen");
-        })   
+            this.playerPassword.style.visibility = "hidden";
+            this.playerError.style.visibility = "hidden";
+
+            this.scene.start("Menu");
+        })
     }
 
-    modifyDataToServer(namebar, password, errorSpan, callback) {
-        var name = $(namebar).val();
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// API-REST /////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    modifyUser(password, errorSpan, callback) {
         var pass = $(password).val();
         $.ajax({
             method: "PUT",
-            url: `http://${ipAddress}:8080/ModifyingUser`/*"http://127.0.0.1:8080/User"*/,
-            data: JSON.stringify({ name: name, password: pass }),
+            url: `http://${ipAddress}:8080/ModifyingUser`,
+            data: JSON.stringify({ name: actualPlayer.getName(), password: pass }),
             processData: false,
             contentType: "application/json",
-            success: function(data, textStatus, jqXHR) {
+            success: function (data, textStatus, jqXHR) {
                 console.log(textStatus + " " + jqXHR.status);
                 console.log(data);
-                //console.log(response);
-                // Limpiar y ocultar el mensaje de error
                 $(errorSpan).text('').css('visibility', 'hidden');
                 if (callback) callback(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus + " " + jqXHR.status);
                 // Mostrar mensaje de error en rojo debajo del input de contraseña
                 $(errorSpan).text("Password doesn't match or user doesn't exist.").css("color", "red").css("visibility", "visible");
@@ -146,29 +238,40 @@ class ModifyUser extends Phaser.Scene {
         });
     }
 
-    deleteDataToServer(namebar, password, errorSpan, callback) {
-        var name = $(namebar).val();
-        var pass = $(password).val();
+    deleteUser() {
+        // elimina nombre y contraseña del users.txt
         $.ajax({
             method: "DELETE",
-            url: `http://${ipAddress}:8080/ModifyingUser`/*"http://127.0.0.1:8080/User"*/,
-            data: JSON.stringify({ name: name, password: pass }),
+            url: `http://${ipAddress}:8080/ModifyingUser`,
+            data: JSON.stringify({ name: actualPlayer.getName(), password: actualPlayer.getPassword() }),
             processData: false,
             contentType: "application/json",
-            success: function(data, textStatus, jqXHR) {
+            success: function (data, textStatus, jqXHR) {
                 console.log(textStatus + " " + jqXHR.status);
                 console.log(data);
-                //console.log(response);
-                // Limpiar y ocultar el mensaje de error
-                $(errorSpan).text('').css('visibility', 'hidden');
-                if (callback) callback(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, error) {
                 console.log(textStatus + " " + jqXHR.status);
-                // Mostrar mensaje de error en rojo debajo del input de contraseña
-                $(errorSpan).text("Password doesn't match or user doesn't exist.").css("color", "red").css("visibility", "visible");
+                console.error('Hubo un problema con la solicitud:', error);
+            }
+        });
+
+        // elimina nombre y score del highscores.txt
+        $.ajax({
+            method: "DELETE",
+            url: "/User/score",
+            data: JSON.stringify({ name: actualPlayer.getName(), score: actualPlayer.getScore() }),
+            processData: false,
+            contentType: "application/json",
+            success: function (data, textStatus, jqXHR) {
+                console.log(textStatus + " " + jqXHR.status);
+                console.log(data);
+                location.reload();
+            },
+            error: function (jqXHR, textStatus, error) {
+                console.log(textStatus + " " + jqXHR.status);
+                console.error('Hubo un problema con la solicitud:', error);
             }
         });
     }
-    
 }
