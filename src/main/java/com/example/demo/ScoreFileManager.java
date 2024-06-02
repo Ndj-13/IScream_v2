@@ -23,11 +23,6 @@ public class ScoreFileManager {
                 iterator.remove();
             }
         }
-        /*for (User score : scores) {
-            if (score.getName().equals(user.getName())) {
-                scores.remove(score);
-            }
-        }*/
         scores.add(user);
 
         // ordenar en orden descendente

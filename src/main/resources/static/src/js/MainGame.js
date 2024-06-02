@@ -289,7 +289,7 @@ class MainGame extends Phaser.Scene {
             if (actualPlayer.getCombo() && comboTimer) {
                 comboTimer = false;
                 this.timerCombo = this.time.addEvent({
-                    delay: 3000,
+                    delay: 10000,
                     callback: () => {
                         actualPlayer.setCombo(false);
                         console.log('END of Key Combo 1');
