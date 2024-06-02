@@ -69,7 +69,7 @@ Jorge Sanz Coronel - j.sanzc.2020@alumnos.urjc.es - Jorgesanzcoronel
 
 4.6. Fin de nivel	
 
-### 5. Iplementación Online	
+### 5. Implementación Online	
 
 5.1. Servicio LogIn	
 
